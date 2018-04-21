@@ -9,7 +9,7 @@ package Entities;
 import java.time.LocalDate;
 import java.util.Objects;
 import java.util.Date;
-import zanimaux.util.Session;
+import Util.Session;
 
 /**
  *

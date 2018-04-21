@@ -6,20 +6,21 @@
 
 package Entities;
 
-import com.calendarfx.model.Calendar;
+//import com.calendarfx.model.Calendar;
 
 
 /**
  *
  * @author Mariam
  */
-public class calendrier1 extends Calendar {
+public class calendrier1 //extends Calendar 
+ {
    
     
 
    
     public calendrier1(String name) {
-        super(name);
+        //super(name);
         
         
     

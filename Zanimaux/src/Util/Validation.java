@@ -5,7 +5,7 @@
  */
 package Util;
 
-import com.jfoenix.controls.JFXComboBox;
+//import com.jfoenix.controls.JFXComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
@@ -14,7 +14,7 @@ import javafx.scene.control.TextField;
  * @author Azza
  */
 public class Validation {
-       public static boolean textValidation(TextField tf){
+       /*public static boolean textValidation(TextField tf){
     
     boolean b=false;
     if (tf.getText().length()!=0 || !tf.getText().isEmpty()){
@@ -136,5 +136,5 @@ public class Validation {
    lb.setText(mag);
     return b;
     
-    }
+    }*/
 }

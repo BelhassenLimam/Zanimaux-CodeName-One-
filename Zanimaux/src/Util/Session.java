@@ -5,7 +5,7 @@
  */
 package Util;
 
-import zanimaux.entities.User;
+import Entities.User;
 
 
 

@@ -5,13 +5,12 @@
  */
 package Services;
 
-import Entities.Magasin;
+import Entities.Commentaires;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
-import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -20,15 +19,14 @@ import java.util.Map;
 
 /**
  *
- * @author macbookpro
+ * @author Azza
  */
-public class MagasinService {
-     
-
-        public ArrayList<Magasin> getAllMagasin(){
-        ArrayList<Magasin> listTasks = new ArrayList<>();
+public class CommentaireService {
+     public ArrayList<Commentaires> getComByRef(String im) {
+        ArrayList<Commentaires> listcom = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/ZanimauxFinal%202/web/app_dev.php/api/afficheMagasin");
+        con.setUrl("http://localhost/Mobile/GetComByRefuge.php?refuge="+im);
+    
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -42,28 +40,27 @@ public class MagasinService {
 
                     List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
 
-                    for (Map<String, Object> obj : list) {   
-                        float id = Float.parseFloat(obj.get("idMagasin").toString());
-                        float cdp = Float.parseFloat(obj.get("codePostaleMagasin").toString());
-                        Magasin m = new Magasin();
-                        m.setIdMagasin((int)id);
-                        m.setNomMagasin(obj.get("nomMagasin").toString());
-                        m.setAdresseMagasin(obj.get("adresseMagasin").toString());
-                        m.setCodePostaleMagasin((int)cdp);
-                        m.setVilleMagasin(obj.get("villeMagasin").toString());
-                        m.setNumRC(obj.get("numRC").toString());
-                        m.setCinProprietaireMagasin(obj.get("cinProprietaireMagasin").toString());
-                        m.setPhotoMagasin(obj.get("photoMagasin").toString());
-                        listTasks.add(m);
+                    for (Map<String, Object> obj : list) {
+                        Commentaires animal = new Commentaires();
+                        int id=Integer.parseInt(obj.get("id").toString());
+                        //long date = Date.parse(obj.get("date").toString());
+                         
+                        animal.setRefuge(im);
+                        animal.setId(id);
+                        animal.setCin(obj.get("cin").toString());
+                        animal.setContenant(obj.get("contenant").toString());
+                       
+                   
+                        listcom.add(animal);
+
                     }
                 } catch (IOException ex) {
                 }
 
             }
         });
-        
         NetworkManager.getInstance().addToQueueAndWait(con);
-        return listTasks;
+        return listcom;
     }
-    
+
 }

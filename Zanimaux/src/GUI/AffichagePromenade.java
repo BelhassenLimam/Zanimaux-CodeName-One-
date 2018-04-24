@@ -6,9 +6,13 @@
 package GUI;
 
 import Entities.Magasin;
+import Entities.Parc;
 import Entities.Produit;
+import Entities.Promenade;
 import Services.MagasinService;
+import Services.ParcService;
 import Services.ProduitService;
+import Services.PromenadeService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
@@ -28,43 +32,35 @@ import java.util.ArrayList;
  *
  * @author macbookpro
  */
-public class AffichageMagasin 
+public class AffichagePromenade 
 {
     private Resources theme;
     Form f;
    
     
     
-    public AffichageMagasin() { 
+    public AffichagePromenade() { 
         theme = UIManager.initFirstTheme("/theme");
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
-        MagasinService ms=new MagasinService();
-        ArrayList<Magasin> lis=ms.getAllMagasin();
+        PromenadeService ms=new PromenadeService();
+        ArrayList<Promenade> lis=ms.getAllPromenade();/*
         for (int i =0;i<lis.size();i++)
             
         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
             SpanLabel lb = new SpanLabel("");
-            Button b =new Button("Cosulter Magasin");
+            Button b =new Button("Cosulter Parc");
             //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
-            ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoMagasin()).scaled(350, 200));
-            Label t =new Label(lis.get(i).getAdresseMagasin()+" "+lis.get(i).getVilleMagasin()+", "+lis.get(i).getCodePostaleMagasin());
-            Magasin m = lis.get(i);
-            b.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                ProduitService ps = new ProduitService();
-                ArrayList<Produit> liste = ps.getAllProduit(m.getIdMagasin());
-                AffichageProduit FormProduit = new AffichageProduit(liste);
-                FormProduit.getF().show();
-            }
-        });
-            c.add(iv);
+            
+            Label t =new Label(lis.get(i).getAdresseParc()+" "+lis.get(i).getVilleParc()+", "+lis.get(i).getCodePostaleParc());
+            Parc m = lis.get(i);
+            
+            
             c.add(lb);
             c.add(t);
             c.add(b);
             f.add(c);    
-            lb.setText(lis.get(i).getNomMagasin());
-        }
+            lb.setText(lis.get(i).getNomParc());
+        }*/
     }
 
     public Form getF() {

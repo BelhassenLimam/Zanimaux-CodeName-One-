@@ -3,8 +3,12 @@ package Zanimaux;
 
 import Entities.Magasin;
 import GUI.AffichageMagasin;
+<<<<<<< HEAD
 import GUI.affichageAnnonce;
 import GUI.afficherEvenement;
+=======
+import GUI.AffichageParc;
+>>>>>>> 07be1b25b9ba4040d97b134f8fd78936a27b73db
 import Services.MagasinService;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
@@ -41,7 +45,11 @@ public class MyApplication {
             current.show();
             return;
         }
+<<<<<<< HEAD
        /* AffichageMagasin a= new AffichageMagasin();
+=======
+        AffichageParc a= new AffichageParc();
+>>>>>>> 07be1b25b9ba4040d97b134f8fd78936a27b73db
         
         a.getF().show();*/
      

@@ -3,6 +3,7 @@ package Zanimaux;
 
 import Entities.Magasin;
 import GUI.AffichageMagasin;
+import GUI.AffichageParc;
 import Services.MagasinService;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
@@ -39,7 +40,7 @@ public class MyApplication {
             current.show();
             return;
         }
-        AffichageMagasin a= new AffichageMagasin();
+        AffichageParc a= new AffichageParc();
         
         a.getF().show();
     }

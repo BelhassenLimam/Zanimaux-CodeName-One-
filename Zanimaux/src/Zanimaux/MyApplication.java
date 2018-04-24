@@ -3,6 +3,8 @@ package Zanimaux;
 
 import Entities.Magasin;
 import GUI.AffichageMagasin;
+import GUI.affichageAnnonce;
+import GUI.afficherEvenement;
 import Services.MagasinService;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
@@ -39,9 +41,16 @@ public class MyApplication {
             current.show();
             return;
         }
-        AffichageMagasin a= new AffichageMagasin();
+       /* AffichageMagasin a= new AffichageMagasin();
         
-        a.getF().show();
+        a.getF().show();*/
+     
+      /* afficherEvenement e = new afficherEvenement();
+       e.getF().show();*/
+      
+       affichageAnnonce a = new affichageAnnonce();
+       a.getF().show();
+       
     }
 
     public void stop() {

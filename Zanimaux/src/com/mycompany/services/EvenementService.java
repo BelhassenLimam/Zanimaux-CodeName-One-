@@ -85,4 +85,55 @@ public class EvenementService {
         return listTasks;
     }
     
+    public ArrayList<Evenement> getListEvenetById(int id) {
+        ArrayList<Evenement> listEvent= new ArrayList<>();
+        ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost/zanimauxFinal/web/app_dev.php/api/afficherEvenementById"+id);
+    
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                //listTasks = getListTask(new String(con.getResponseData()));
+                JSONParser jsonp = new JSONParser();
+                
+                try {
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
+                    System.out.println("roooooot:" +tasks.get("root"));
+                    
+
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
+                   
+
+                    for (Map<String, Object> obj : list) {
+                        Evenement event = new Evenement();
+                        Double nbp = (Double) (obj.get("nbPlace"));
+                        int b = (int) round(nbp);
+                        event.setIdEvt(id);
+                           event.setCinUser(obj.get("cin").toString());
+                        event.setLieu(obj.get("lieu").toString());
+                       // e1.setDateDebut(obj.get("dateDebut"));
+                        //e1.setDateFin(obj.get("dateFin"));
+                        event.setType(obj.get("type").toString());
+                        event.setTitre(obj.get("titre").toString());
+                        event.setDescription(obj.get("description").toString());
+                       event.setImageEvt(obj.get("imageEvt").toString());
+                      event.setNbPlace(b);
+                        //System.out.println(e1.getLieu());
+                       // System.out.println(obj.get("lieu").toString());
+                  
+                   
+                        listEvent.add(event);
+
+                    }
+                } catch (IOException ex) {
+                }
+
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return listEvent;
+    }
+ 
+    
 }

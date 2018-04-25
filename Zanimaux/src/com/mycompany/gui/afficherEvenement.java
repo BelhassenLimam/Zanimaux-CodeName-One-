@@ -9,9 +9,12 @@ import com.mycompany.entities.Evenement;
 import com.mycompany.services.EvenementService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
+import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
@@ -47,6 +50,7 @@ public class afficherEvenement {
             conth = new Container(BoxLayout.x());
             ImageViewer img=new ImageViewer();
             img.setImage(theme.getImage(lis.get(i).getImageEvt()).scaled(150, 150));
+            Button b =new Button("See More");
             lb = new Label("\n");
             lb.setWidth(20);
              lb.setText(lis.get(i).getLieu());
@@ -55,8 +59,21 @@ public class afficherEvenement {
             lb2.setWidth(20);
             lb2.setText(lis.get(i).getTitre());
             System.out.println(lis.get(i).getTitre());
+             Evenement e = lis.get(i);
+            
+            b.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                     EvenementService ess=new EvenementService();
+                 ArrayList<Evenement> lis= ess.getListEvenetById(e.getIdEvt());
+                 detailsEvent AA =new detailsEvent(lis);
+                 AA.getF().show();
+                    
+                }
+            });
             conth.add(img);
             conth.add(lb);
+            conth.add(b);
            // conth.add(lb2);
             contv.add(conth);
             // f.add(img);

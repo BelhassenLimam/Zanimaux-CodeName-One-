@@ -14,9 +14,11 @@ import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
+import com.codename1.ui.Stroke;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import java.util.ArrayList;
@@ -39,6 +41,10 @@ public class AffichageProduit {
         for (int i =0;i<list.size();i++)
             
         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+            c.setHeight(200);
+            c.setWidth(250);
+            Style s = c.getAllStyles();
+            
             SpanLabel lb = new SpanLabel("");
             Button b =new Button("Ajouter au panier");
             //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));

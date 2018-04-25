@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package com.mycompany.gui;
 
 
-import Entities.Parc;
-import Services.ParcService;
+import com.mycompany.entities.Parc;
+import com.mycompany.services.ParcService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;

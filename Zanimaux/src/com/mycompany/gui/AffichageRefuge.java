@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package com.mycompany.gui;
 
-import Entities.Magasin;
-import Entities.Produit;
-import Services.MagasinService;
-import Services.ProduitService;
-import com.codename1.components.ImageViewer;
+import com.mycompany.entities.Animal;
+import com.mycompany.services.RefugeService;
 import com.codename1.components.SpanLabel;
+import com.codename1.ui.Form;
+import java.util.ArrayList;
+import com.mycompany.entities.Refuge;
+import com.codename1.components.ImageViewer;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
-import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
@@ -22,48 +22,47 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import java.io.IOException;
-import java.util.ArrayList;
+import javafx.scene.image.ImageView;
 
 /**
  *
- * @author macbookpro
+ * @author Azza
  */
-public class AffichageMagasin 
-{
+public class AffichageRefuge {
     private Resources theme;
     Form f;
    
     
     
-    public AffichageMagasin() { 
+    public AffichageRefuge() { 
         theme = UIManager.initFirstTheme("/theme");
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
-        MagasinService ms=new MagasinService();
-        ArrayList<Magasin> lis=ms.getAllMagasin();
+        RefugeService ms=new RefugeService();
+        ArrayList<Refuge> lis=ms.getListRefuges();
         for (int i =0;i<lis.size();i++)
             
         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
             SpanLabel lb = new SpanLabel("");
-            Button b =new Button("Cosulter Magasin");
+            Button b =new Button("Cosulter Refuge");
             //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
-            ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoMagasin()).scaled(350, 200));
-            Label t =new Label(lis.get(i).getAdresseMagasin()+" "+lis.get(i).getVilleMagasin()+", "+lis.get(i).getCodePostaleMagasin());
-            Magasin m = lis.get(i);
-            b.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                ProduitService ps = new ProduitService();
-                ArrayList<Produit> liste = ps.getAllProduit(m.getIdMagasin());
-                AffichageProduit FormProduit = new AffichageProduit(liste);
-                FormProduit.getF().show();
-            }
-        });
+            ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoRefuge()).scaled(350, 200));
+            Label t =new Label(lis.get(i).getAdresseRefuge()+" "+lis.get(i).getGouvernementRefuge()+", "+lis.get(i).getCodePostaleRefuge());
+            Refuge m = lis.get(i);
             c.add(iv);
             c.add(lb);
             c.add(t);
             c.add(b);
             f.add(c);    
-            lb.setText(lis.get(i).getNomMagasin());
+            lb.setText("Nom: "+lis.get(i).getNomRefuge());
+            b.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                RefugeService rs=new RefugeService();
+                 ArrayList<Animal> lis= rs.getListAnimauxByRef(m.getImmatriculation());
+                 AffichageAnimaux AA =new AffichageAnimaux(lis);
+                 AA.getF().show();
+            }
+        });
         }
     }
 
@@ -74,5 +73,4 @@ public class AffichageMagasin
     public void setF(Form f) {
         this.f = f;
     }
-
 }

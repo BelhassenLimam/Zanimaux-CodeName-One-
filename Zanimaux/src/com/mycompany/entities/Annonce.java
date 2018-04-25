@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Entities;
+package com.mycompany.entities;
 
 
 
@@ -17,23 +17,23 @@ public class Annonce {
     private String type;
     private String titre;
     private String description;
-    private String photoAnimal;
+    private String pieceJointe;
 
-    public Annonce(int idAnnonce, String cinUser, String type, String titre, String description, String photoAnimal) {
+    public Annonce(int idAnnonce, String cinUser, String type, String titre, String description, String pieceJointe) {
         this.idAnnonce = idAnnonce;
         this.cinUser = cinUser;
         this.type = type;
         this.titre = titre;
         this.description = description;
-        this.photoAnimal = photoAnimal;
+        this.pieceJointe = pieceJointe;
     }
 
-    public Annonce(String cinUser,String type, String titre, String description, String photoAnimal) {
+    public Annonce(String cinUser,String type, String titre, String description, String pieceJointe) {
         this.cinUser = cinUser;
         this.type = type;
         this.titre = titre;
         this.description = description;
-        this.photoAnimal = photoAnimal;
+        this.pieceJointe = pieceJointe;
     }
 
     public Annonce() {
@@ -82,17 +82,17 @@ public class Annonce {
         this.description = description;
     }
 
-    public String getPhotoAnimal() {
-        return photoAnimal;
+    public String getPieceJointe() {
+        return pieceJointe;
     }
 
-    public void setPhotoAnimal(String pieceJointe) {
-        this.photoAnimal = photoAnimal;
+    public void setPieceJointe(String pieceJointe) {
+        this.pieceJointe = pieceJointe;
     }
 
     @Override
     public String toString() {
-        return "Annonce{" + "idAnnonce=" + idAnnonce + ", cinUser=" + cinUser + ", type=" + type + ", titre=" + titre + ", description=" + description + ", pieceJointe=" + photoAnimal + '}';
+        return "Annonce{" + "idAnnonce=" + idAnnonce + ", cinUser=" + cinUser + ", type=" + type + ", titre=" + titre + ", description=" + description + ", pieceJointe=" + pieceJointe + '}';
     }
 
   

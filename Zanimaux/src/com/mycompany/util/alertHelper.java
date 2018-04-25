@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package Util;
+package com.mycompany.util;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;

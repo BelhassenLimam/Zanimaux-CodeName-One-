@@ -3,32 +3,32 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Services;
+package com.mycompany.services;
 
-import Entities.Magasin;
+
+import com.mycompany.entities.Annonce;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
-import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionListener;
 import java.io.IOException;
+import static java.lang.Math.round;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
  *
- * @author macbookpro
+ * @author Maroua
  */
-public class MagasinService {
-     
-
-        public ArrayList<Magasin> getAllMagasin(){
-        ArrayList<Magasin> listTasks = new ArrayList<>();
+public class AnnonceService {
+    
+     public ArrayList<Annonce> getAllAnnonce(){
+        ArrayList<Annonce> listTasks = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/ZanimauxFinal%202/web/app_dev.php/api/afficheMagasin");
+        con.setUrl("http://localhost/zanimauxFinal/web/app_dev.php/api/afficheAnnonce");
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -38,23 +38,32 @@ public class MagasinService {
                 try {
                     //renvoi une map avec clé = root et valeur le reste
                     Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
-                    System.out.println("roooooot:" +tasks.get("root"));
+                    System.out.println("rooot:" +tasks.get("root"));
 
                     List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
+                   
 
-                    for (Map<String, Object> obj : list) {   
-                        float id = Float.parseFloat(obj.get("idMagasin").toString());
-                        float cdp = Float.parseFloat(obj.get("codePostaleMagasin").toString());
-                        Magasin m = new Magasin();
-                        m.setIdMagasin((int)id);
-                        m.setNomMagasin(obj.get("nomMagasin").toString());
-                        m.setAdresseMagasin(obj.get("adresseMagasin").toString());
-                        m.setCodePostaleMagasin((int)cdp);
-                        m.setVilleMagasin(obj.get("villeMagasin").toString());
-                        m.setNumRC(obj.get("numRC").toString());
-                        m.setCinProprietaireMagasin(obj.get("cinProprietaireMagasin").toString());
-                        m.setPhotoMagasin(obj.get("photoMagasin").toString());
-                        listTasks.add(m);
+
+                    for (Map<String, Object> obj : list) {
+                        
+
+                                           
+                       Double idA = (Double) (obj.get("idAnnonce"));
+                        int a = (int) round(idA);
+                       Annonce a1 = new Annonce();
+                       
+                    
+                       a1.setIdAnnonce(a);
+                       a1.setCinUser(obj.get("cin").toString());
+                       a1.setTitre(obj.get("titre").toString());
+                       a1.setType(obj.get("type").toString());
+                       a1.setDescription(obj.get("description").toString());
+                       a1.setPieceJointe(obj.get("pieceJointe").toString());
+                    
+                                             
+                  
+                    listTasks.add(a1);
+
                     }
                 } catch (IOException ex) {
                 }
@@ -65,5 +74,6 @@ public class MagasinService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return listTasks;
     }
+    
     
 }

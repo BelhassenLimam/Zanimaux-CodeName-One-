@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package GUI;
+package com.mycompany.gui;
 
-import Entities.Animal;
-import Entities.Commentaires;
-import Entities.Refuge;
-import Services.CommentaireService;
-import Services.RefugeService;
+import com.mycompany.entities.Animal;
+import com.mycompany.entities.Commentaires;
+import com.mycompany.entities.Refuge;
+import com.mycompany.services.CommentaireService;
+import com.mycompany.services.RefugeService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;

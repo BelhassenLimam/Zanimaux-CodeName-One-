@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mycompany.gui;
+package GUI;
 
 
-import com.mycompany.entities.Parc;
-import com.mycompany.services.ParcService;
+import Entities.Parc;
+import Services.ParcService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
@@ -42,24 +42,18 @@ public class AffichageParc
         for (int i =0;i<lis.size();i++)
             
         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-            Container c2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
-            Container c3 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-            Label lb = new Label();
+            SpanLabel lb = new SpanLabel("");
             Button b =new Button("Cosulter Parc");
             //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
-            ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoParc()).scaled(100, 100));
+            
             Label t =new Label(lis.get(i).getAdresseParc()+" "+lis.get(i).getVilleParc()+", "+lis.get(i).getCodePostaleParc());
             Parc m = lis.get(i);
             
-            c2.add(iv);
-            c3.add(lb);
-            c3.add(t);
-            c2.add(c3);
-            c.add(c2);
+            
+            c.add(lb);
+            c.add(t);
             c.add(b);
-            
-            f.add(c);  
-            
+            f.add(c);    
             lb.setText(lis.get(i).getNomParc());
         }
     }

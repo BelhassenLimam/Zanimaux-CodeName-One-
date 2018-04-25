@@ -16,7 +16,7 @@
  * CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE 
  * OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. 
  */
-package GUI;
+package com.mycompany.gui;
 
 
 import com.codename1.io.CharArrayReader;
@@ -35,8 +35,8 @@ import com.codename1.ui.FontImage;
 
 import com.codename1.ui.events.ActionListener;
 
-import Entities.User;
-import Services.UserService;
+import com.mycompany.entities.User;
+import com.mycompany.services.UserService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;

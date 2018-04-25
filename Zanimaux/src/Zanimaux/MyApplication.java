@@ -3,16 +3,16 @@ package Zanimaux;
 
 import Entities.Magasin;
 import GUI.AffichageMagasin;
-<<<<<<< HEAD
+
 import GUI.SignInForm;
-=======
-<<<<<<< HEAD
+
+
 import GUI.affichageAnnonce;
 import GUI.afficherEvenement;
-=======
+
 import GUI.AffichageParc;
->>>>>>> 07be1b25b9ba4040d97b134f8fd78936a27b73db
->>>>>>> e92b534205435f9e181a470c23b680f1bb7deb97
+
+
 import Services.MagasinService;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
@@ -49,23 +49,12 @@ public class MyApplication {
             current.show();
             return;
         }
-<<<<<<< HEAD
+
         //AffichageMagasin a= new AffichageMagasin();
         
         //a.getF().show();
-                SignInForm loginForm = new SignInForm(theme);
-        // after splash
-        new java.util.Timer().schedule( 
-        new java.util.TimerTask() {
-            @Override
-            public void run() {
-               loginForm.show();
-            }
-        }, 
-        5000 
-);
-=======
-<<<<<<< HEAD
+       
+        
        /* AffichageMagasin a= new AffichageMagasin();
 =======
         AffichageParc a= new AffichageParc();
@@ -76,10 +65,10 @@ public class MyApplication {
       /* afficherEvenement e = new afficherEvenement();
        e.getF().show();*/
       
-       affichageAnnonce a = new affichageAnnonce();
+       AffichageParc a = new AffichageParc();
        a.getF().show();
        
->>>>>>> e92b534205435f9e181a470c23b680f1bb7deb97
+
     }
 
     public void stop() {

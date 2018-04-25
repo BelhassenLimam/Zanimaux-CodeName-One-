@@ -3,6 +3,7 @@ package Zanimaux;
 
 import Entities.Magasin;
 import GUI.AffichageMagasin;
+import GUI.SignInForm;
 import Services.MagasinService;
 import com.codename1.ui.Display;
 import com.codename1.ui.Form;
@@ -39,9 +40,20 @@ public class MyApplication {
             current.show();
             return;
         }
-        AffichageMagasin a= new AffichageMagasin();
+        //AffichageMagasin a= new AffichageMagasin();
         
-        a.getF().show();
+        //a.getF().show();
+                SignInForm loginForm = new SignInForm(theme);
+        // after splash
+        new java.util.Timer().schedule( 
+        new java.util.TimerTask() {
+            @Override
+            public void run() {
+               loginForm.show();
+            }
+        }, 
+        5000 
+);
     }
 
     public void stop() {

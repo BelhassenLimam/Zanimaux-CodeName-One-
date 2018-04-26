@@ -113,5 +113,42 @@ public class RefugeService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return listAnimaux;
     }
+ public static Refuge u;
+ public Refuge getRefugeByImm(String imm){
+       ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost/Mobile/GetRefugeByImm.php?immatriculation="+imm);
+    
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                //listTasks = getListTask(new String(con.getResponseData()));
+                JSONParser jsonp = new JSONParser();
+                
+                try {
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
+                    System.out.println("roooooot:" +tasks.get("root"));
+
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
+
+                    for (Map<String, Object> obj : list) {
+                        Refuge user = new Refuge();
+                        
+                       
+                        user.setImmatriculation(obj.get("immatriculation").toString());
+                        user.setNomRefuge(obj.get("nomRefuge").toString());
+                      
+                  u=user;
+                        
+
+                    }
+                } catch (IOException ex) {
+                }
+
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return u;
+ }
  
 }

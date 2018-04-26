@@ -23,6 +23,7 @@ import java.util.Map;
  */
 public class UserService {
     User m;
+     public static User u;
     public User getConnectedUser(String rep)
     {
        
@@ -47,6 +48,48 @@ public class UserService {
         
         
         return m;
+    }
+    public User getUserBycin(String cin) {
+       
+        ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost/Mobile/GetUserByCin.php?cin="+cin);
+    
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                //listTasks = getListTask(new String(con.getResponseData()));
+                JSONParser jsonp = new JSONParser();
+                
+                try {
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
+                    System.out.println("roooooot:" +tasks.get("root"));
+
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
+
+                    for (Map<String, Object> obj : list) {
+                        User user = new User();
+                        
+                        int cp=Integer.parseInt(obj.get("codePostale").toString());
+                        user.setCin(obj.get("cin").toString());
+                        user.setAdresse(obj.get("adresse").toString());
+                        user.setUsername(obj.get("username").toString());
+                        user.setEmail(obj.get("email").toString());
+                        user.setNom(obj.get("nom").toString());
+                        user.setPrenom(obj.get("prenom").toString());
+                        user.setVille(obj.get("ville").toString());
+                        user.setCodePostale(cp);
+                  u=user;
+                        
+
+                    }
+                } catch (IOException ex) {
+                }
+
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return u;
     }
     
 }

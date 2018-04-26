@@ -14,6 +14,7 @@ import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.io.Log;
 import com.codename1.ui.Toolbar;
+import com.mycompany.gui.AffichagePromenade;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -64,8 +65,13 @@ public class MyApplication {
         
         a.getF().show();*/
      
+<<<<<<< HEAD
       /* afficherEvenement e = new afficherEvenement();
        e.getF().show();*/
+=======
+       AffichageMagasin e = new AffichageMagasin();
+       e.getF().show();
+>>>>>>> 596c4c49a052c368e07dd8a19f34e06fda42d87d
       
        affichageAnnonce a = new affichageAnnonce();
        a.getF().show();

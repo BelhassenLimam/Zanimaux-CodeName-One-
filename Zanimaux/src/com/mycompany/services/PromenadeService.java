@@ -36,7 +36,7 @@ public class PromenadeService {
             public void actionPerformed(NetworkEvent evt) {
                 //listTasks = getListTask(new String(con.getResponseData()));
                 JSONParser jsonp = new JSONParser();
-           /*     
+               
                 try {
                     //renvoi une map avec clé = root et valeur le reste
                     Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
@@ -51,14 +51,14 @@ public class PromenadeService {
                         m.setTypePromenade(obj.get("typePromenade").toString());
                         m.setLieuPromenade(obj.get("lieuPromenade").toString());
                         m.setDescriptionPromenade(obj.get("descriptionPromenade").toString());
-                        m.setDateDebutPromenade(Date.);
-                        m.setDateFinPromenade(Date.parse(df));
-                        m.setPhotoParc(obj.get("photoParc").toString());
+                        /*m.setDateDebutPromenade(Date.);
+                        m.setDateFinPromenade(Date.parse(df));*/
+                        m.setPhotoPromenade(obj.get("photoPromenade").toString());
                         listTasks.add(m);
                     }
                 } catch (IOException ex) {
                 }
-*/
+
             }
         });
         

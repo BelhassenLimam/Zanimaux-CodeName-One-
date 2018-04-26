@@ -45,7 +45,7 @@ public class MyApplication {
         //AffichageMagasin a= new AffichageMagasin();
         
         //a.getF().show();
-       /* SignInForm loginForm = new SignInForm(theme);
+      /* SignInForm loginForm = new SignInForm(theme);
         // after splash
         new java.util.Timer().schedule( 
         new java.util.TimerTask() {
@@ -64,11 +64,11 @@ public class MyApplication {
         
         a.getF().show();*/
      
-       afficherEvenement e = new afficherEvenement();
-       e.getF().show();
+      /* afficherEvenement e = new afficherEvenement();
+       e.getF().show();*/
       
-       /*affichageAnnonce a = new affichageAnnonce();
-       a.getF().show();*/
+       affichageAnnonce a = new affichageAnnonce();
+       a.getF().show();
        
 
     }

@@ -43,24 +43,31 @@ public class AffichagePromenade
         theme = UIManager.initFirstTheme("/theme");
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
         PromenadeService ms=new PromenadeService();
-        ArrayList<Promenade> lis=ms.getAllPromenade();/*
+        ArrayList<Promenade> lis=ms.getAllPromenade();
         for (int i =0;i<lis.size();i++)
-            
-        {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-            SpanLabel lb = new SpanLabel("");
+         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+            Container c2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
+            Container c3 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+            Label lb = new Label();
             Button b =new Button("Cosulter Parc");
             //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
+            ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoPromenade()).scaled(100, 100));
+            Label t =new Label(lis.get(i).getLieuPromenade());
+            Label t1 =new Label(lis.get(i).getTypePromenade());
+            Promenade m = lis.get(i);
             
-            Label t =new Label(lis.get(i).getAdresseParc()+" "+lis.get(i).getVilleParc()+", "+lis.get(i).getCodePostaleParc());
-            Parc m = lis.get(i);
-            
-            
-            c.add(lb);
-            c.add(t);
+            c2.add(iv);
+            c3.add(lb);
+            c3.add(t1);
+            c3.add(t);
+            c2.add(c3);
+            c.add(c2);
             c.add(b);
-            f.add(c);    
-            lb.setText(lis.get(i).getNomParc());
-        }*/
+            
+            f.add(c);  
+            
+            lb.setText(lis.get(i).getNomPromenade());
+        }
     }
 
     public Form getF() {

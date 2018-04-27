@@ -11,11 +11,15 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
+import com.codename1.l10n.ParseException;
+import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.events.ActionListener;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  *
@@ -43,8 +47,9 @@ public class CommentaireService {
                     for (Map<String, Object> obj : list) {
                         Commentaires animal = new Commentaires();
                         int id=Integer.parseInt(obj.get("id").toString());
-                        //long date = Date.parse(obj.get("date").toString());
-                         
+                         SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
+                        Date  date= format.parse(obj.get("date").toString());
+                         animal.setDate(date);
                         animal.setRefuge(im);
                         animal.setId(id);
                         animal.setCin(obj.get("cin").toString());
@@ -55,6 +60,7 @@ public class CommentaireService {
 
                     }
                 } catch (IOException ex) {
+                } catch (ParseException ex) {
                 }
 
             }

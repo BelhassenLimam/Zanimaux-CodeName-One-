@@ -9,7 +9,9 @@ import com.mycompany.entities.Animal;
 import com.mycompany.entities.Commentaires;
 import com.mycompany.services.CommentaireService;
 import com.codename1.components.ImageViewer;
+import com.codename1.components.MultiButton;
 import com.codename1.components.SpanLabel;
+import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.Command;
 import static com.codename1.ui.Component.CENTER;
@@ -27,6 +29,8 @@ import com.codename1.ui.util.Resources;
 import com.mycompany.services.UserService;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import javafx.scene.chart.PieChart;
 
 
 /**
@@ -40,7 +44,7 @@ public class AffichageAnimaux {
     
      
     public AffichageAnimaux(ArrayList<Animal> liste) throws IOException {
-     
+     SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
         theme = UIManager.initFirstTheme("/theme");
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));
             Command cmd = new Command("Back",Image.createImage("/left-arrow.png")){
@@ -81,8 +85,8 @@ public class AffichageAnimaux {
          Button supAjout = new Button("",Image.createImage("/delete.png").scaled(100,100));
          Label nomComAjout=new Label();
          Container comentAjoute = new Container(new BoxLayout(BoxLayout.X_AXIS));
-         
-         
+         MultiButton com=new MultiButton();
+          format.applyPattern("dd/MM/yyyy");
            
           ajouter.addActionListener(new ActionListener() {
             @Override
@@ -90,13 +94,15 @@ public class AffichageAnimaux {
                 CommentaireService cs=new CommentaireService();
                 UserService us=new UserService();
                 Commentaires co=new Commentaires();
-                co.setCin(us.getUserBycin("07212632").getCin());
+                co.setCin(SignInForm.connectedUser.getCin());
                 co.setContenant(textcom.getText());
                 
                ComAjout.setText(textcom.getText()+"  ");
-                nomComAjout.setText(us.getUserBycin("07212632").getNom());
-               comentAjoute.add(ComAjout);
-               comentAjoute.add(nomComAjout);
+                nomComAjout.setText(us.getUserBycin(SignInForm.connectedUser.getCin()).getNom());
+               
+                 com.setTextLine1(textcom.getText());
+            com.setTextLine2(nomComAjout.getText()+"      "+"à l'instant");
+               comentAjoute.add(com);
               comentAjoute.add(supAjout);
              comentAjoute.add(editAjout);
              textcom.setText("");
@@ -112,8 +118,7 @@ public class AffichageAnimaux {
                  CommentaireService cs =new CommentaireService();
                     cs.deleteComByContent(textcom.getText());
                     System.out.println(".deeeleeetteeeactionPerformed()");
-                   comentAjoute.removeComponent(ComAjout);
-                   comentAjoute.removeComponent(nomComAjout);
+                   comentAjoute.removeComponent(com);
                    comentAjoute.removeComponent(supAjout);
                    comentAjoute.removeComponent(editAjout);
                    f.refreshTheme();
@@ -122,11 +127,10 @@ public class AffichageAnimaux {
           editAjout.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                comentAjoute.removeComponent(ComAjout);
-                comentAjoute.removeComponent(nomComAjout);
+                comentAjoute.removeComponent(com);
                 comentAjoute.removeComponent(supAjout);
                 comentAjoute.removeComponent(editAjout);
-                TextField text=new TextField(ComAjout.getText());
+                TextField text=new TextField(com.getTextLine1());
                 Button modifier=new Button("modifier");
                 comentAjoute.add(text);
                 comentAjoute.add(modifier);
@@ -137,11 +141,11 @@ public class AffichageAnimaux {
                    CommentaireService cs=new CommentaireService();
                 
                 cs.editComByContent(ComAjout.getText(), text.getText());
-                ComAjout.setText(text.getText()+"  ");
+                com.setTextLine1(text.getText());
                 comentAjoute.removeComponent(text);
                 comentAjoute.removeComponent(modifier);
-                 comentAjoute.add(ComAjout);
-               comentAjoute.add(nomComAjout);
+                 comentAjoute.add(com);
+              
               comentAjoute.add(supAjout);
              comentAjoute.add(editAjout);
                 f.refreshTheme();
@@ -173,9 +177,11 @@ public class AffichageAnimaux {
             Container c = new Container(new BoxLayout(BoxLayout.X_AXIS));
             
             UserService us= new UserService();
-            String nom= us.getUserBycin(listcom.get(i).getCin()).getPrenom();          
-            Label t =new Label(listcom.get(i).getContenant()+"  ");
-            Label n=new Label(nom);
+            String nom= us.getUserBycin(listcom.get(i).getCin()).getPrenom();  
+            MultiButton commentaire=new MultiButton(listcom.get(i).getContenant());
+            commentaire.setTextLine2(nom+"      "+format.format(listcom.get(i).getDate()));
+           // Label t =new Label(listcom.get(i).getContenant()+"  ");
+           // Label n=new Label(nom);
             // ImageViewer sup = new ImageViewer(theme.getImage("delete.png").scaled(24, 24));
              Button edit = new Button("",Image.createImage("/pencil.png").scaled(100,100));
            int id=listcom.get(i).getId();
@@ -185,9 +191,9 @@ public class AffichageAnimaux {
                 public void actionPerformed(ActionEvent evt) {
                     CommentaireService cs =new CommentaireService();
                     cs.deleteCom(id);
-                    System.out.println(".deeeleeetteeeactionPerformed()");
-                   c.removeComponent(t);
-                   c.removeComponent(n);
+                    
+                   c.removeComponent(commentaire);
+                  
                    c.removeComponent(sup);
                    c.removeComponent(edit);
                    f.refreshTheme();
@@ -199,11 +205,11 @@ public class AffichageAnimaux {
             edit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                c.removeComponent(t);
-                c.removeComponent(n);
+                c.removeComponent(commentaire);
+              
                 c.removeComponent(sup);
                 c.removeComponent(edit);
-                TextField text=new TextField(t.getText());
+                TextField text=new TextField(commentaire.getTextLine1());
                 Button modifier=new Button("modifier");
                 c.add(text);
                 c.add(modifier);
@@ -215,12 +221,13 @@ public class AffichageAnimaux {
                 Commentaires com=new Commentaires();
                 com.setContenant(text.getText());
                 com.setId(id);
+               
                 cs.editCom(com);
-                t.setText(text.getText()+"  ");
+                commentaire.setTextLine1(text.getText());
                 c.removeComponent(text);
                 c.removeComponent(modifier);
-                c.add(t);
-                c.add(n);
+                c.add(commentaire);
+               
                 c.add(sup);
                 c.add(edit);
                 f.refreshTheme();
@@ -231,10 +238,10 @@ public class AffichageAnimaux {
         });
       
         
-        c.add(t);
-        c.add(n);
-        c.add(sup);
-        c.add(edit);
+        c.add(commentaire);
+       if(  SignInForm.connectedUser.getCin().equals(listcom.get(i).getCin())) 
+       { c.add(sup);
+        c.add(edit);}
 
         f.add(c);    
           } catch (IOException ex) {

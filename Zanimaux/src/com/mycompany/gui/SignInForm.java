@@ -44,6 +44,8 @@ import java.io.Reader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**
@@ -178,12 +180,16 @@ gui_check.setSelected(true);
                 }
                 else{
                     
-                   UserService u = new UserService();
-                   connectedUser = u.getConnectedUser(str);
-        
-                   //System.out.println(connectedUser.getCin());
-                    AffichageMagasin form= new AffichageMagasin();
-                   form.getF().show();
+                    try {
+                        UserService u = new UserService();
+                        connectedUser = u.getConnectedUser(str);
+                        
+                        //System.out.println(connectedUser.getCin());
+                        AffichageMagasin form= new AffichageMagasin();
+                        form.getF().show();
+                    } catch (IOException ex) {
+                        Logger.getLogger(SignInForm.class.getName()).log(Level.SEVERE, null, ex);
+                    }
 
                 }
                 

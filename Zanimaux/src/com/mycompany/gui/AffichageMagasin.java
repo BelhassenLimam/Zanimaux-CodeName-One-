@@ -11,6 +11,7 @@ import com.mycompany.services.MagasinService;
 import com.mycompany.services.ProduitService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
+import com.codename1.io.Log;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Form;
@@ -19,6 +20,7 @@ import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import java.io.IOException;
@@ -35,9 +37,19 @@ public class AffichageMagasin
    
     
     
-    public AffichageMagasin() { 
+    public AffichageMagasin() throws IOException { 
         theme = UIManager.initFirstTheme("/theme");
-        f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
+        f = new Form(new BoxLayout(BoxLayout.Y_AXIS));  
+        
+            Image panier= Image.createImage("/panier.png").scaled(30, 30);
+            Image logo= Image.createImage("/logo.png").scaled(50, 50);
+       
+           
+        f.getToolbar().addCommandToRightBar("", panier, (e) -> Log.p("Clicked"));
+        f.getToolbar().addCommandToLeftBar("", logo, (e) -> Log.p("Clicked"));
+        f.getToolbar().setHeight(60);
+        Style stitle = f.getToolbar().getAllStyles();
+        stitle.setBgColor(0xff);
         MagasinService ms=new MagasinService();
         ArrayList<Magasin> lis=ms.getAllMagasin();
         for (int i =0;i<lis.size();i++)

@@ -28,7 +28,7 @@ public class MagasinService {
         public ArrayList<Magasin> getAllMagasin(){
         ArrayList<Magasin> listTasks = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/ZanimauxFinal%202/web/app_dev.php/api/afficheMagasin");
+        con.setUrl("http://localhost:8888/zanimauxWeb/web/app_dev.php/api/afficheMagasin");
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {

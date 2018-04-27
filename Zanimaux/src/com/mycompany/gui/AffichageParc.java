@@ -9,19 +9,29 @@ package com.mycompany.gui;
 import com.mycompany.entities.Parc;
 import com.mycompany.services.ParcService;
 import com.codename1.components.ImageViewer;
+import com.codename1.components.SliderBridge;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
+import com.codename1.ui.Font;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
+import com.codename1.ui.Slider;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.plaf.Border;
+import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import java.io.IOException;
 import java.util.ArrayList;
+import javafx.scene.control.TextField;
 
 /**
  *
@@ -42,23 +52,54 @@ public class AffichageParc
         for (int i =0;i<lis.size();i++)
             
         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+       c.getUnselectedStyle().setPadding(10, 5, 5, 5);
+       
             Container c2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
+           
             Container c3 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
             Label lb = new Label();
-            Button b =new Button("Cosulter Parc");
+            
             //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
             ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoParc()).scaled(100, 100));
             Label t =new Label(lis.get(i).getAdresseParc()+" "+lis.get(i).getVilleParc()+", "+lis.get(i).getCodePostaleParc());
             Parc m = lis.get(i);
+           Slider starRank = new Slider();
+    starRank.setEditable(true);
+    starRank.setMinValue(0);
+    starRank.setMaxValue(5);
+    Font fnt = Font.createTrueTypeFont("native:mainLight", "native:mainLight").
+            derive(Display.getInstance().convertToPixels(5, true), Font.STYLE_PLAIN);
+    Style s = new Style(0xffff33, 0, fnt, (byte)0);
+    Image fullStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+    s.setOpacity(100);
+    s.setFgColor(0);
+    Image emptyStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+    initStarRankStyle(starRank.getSliderEmptySelectedStyle(), emptyStar);
+    initStarRankStyle(starRank.getSliderEmptyUnselectedStyle(), emptyStar);
+    initStarRankStyle(starRank.getSliderFullSelectedStyle(), fullStar);
+    initStarRankStyle(starRank.getSliderFullUnselectedStyle(), fullStar);
+    starRank.setPreferredSize(new Dimension(fullStar.getWidth() * 5, fullStar.getHeight()));
+    Button b1 = new Button("Evaluer");
+    
+    b1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                System.out.println(starRank.getProgress());
+                System.out.println(m.getId());
+            }}); 
             
             c2.add(iv);
             c3.add(lb);
             c3.add(t);
             c2.add(c3);
             c.add(c2);
-            c.add(b);
             
-            f.add(c);  
+            c.add(FlowLayout.encloseCenter(starRank));
+            c.add(b1);
+            
+            
+            f.add(c); 
+            
             
             lb.setText(lis.get(i).getNomParc());
         }
@@ -71,5 +112,13 @@ public class AffichageParc
     public void setF(Form f) {
         this.f = f;
     }
+    
+private void initStarRankStyle(Style s, Image star) {
+    s.setBackgroundType(Style.BACKGROUND_IMAGE_TILE_BOTH);
+    s.setBorder(Border.createEmpty());
+    s.setBgImage(star);
+    s.setBgTransparency(0);
+}
+
 
 }

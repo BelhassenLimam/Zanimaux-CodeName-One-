@@ -63,4 +63,39 @@ public class CommentaireService {
         return listcom;
     }
 
+      public void editCom(Commentaires com){
+         ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost/Mobile/editCom.php?id="+com.getId()+"&contenant="+com.getContenant());
+        System.out.println("Services.CommentaireService.editCom()");
+         NetworkManager.getInstance().addToQueueAndWait(con);
+    }
+       public void editComByContent(String old,String content){
+         ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost/Mobile/editComByCont.php?old="+old+"&contenant="+content);
+        System.out.println("Services.CommentaireService.editCom()");
+         NetworkManager.getInstance().addToQueueAndWait(con);
+    }
+      public void deleteComByContent(String contenant){
+           ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost/Mobile/deleteComByContent.php?contenant="+contenant);
+        System.out.println("Services.CommentaireService.deleteCom()");
+         NetworkManager.getInstance().addToQueueAndWait(con);
+      }
+    public void deleteCom(int id){
+         ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost/Mobile/deleteCom.php?id="+id);
+        System.out.println("Services.CommentaireService.deleteCom()");
+         NetworkManager.getInstance().addToQueueAndWait(con);
+    }
+    public void ajoutCom(Commentaires com) {
+        ConnectionRequest con = new ConnectionRequest();
+        String Url = "http://localhost/Mobile/AddCom.php?cin="+com.getCin()
+        +"&contenant="+com.getContenant()+"&refuge="+com.getRefuge();
+        con.setUrl(Url);
+
+        System.out.println("tt");
+
+        
+        NetworkManager.getInstance().addToQueueAndWait(con);
+    }
 }

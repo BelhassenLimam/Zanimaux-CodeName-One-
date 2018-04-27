@@ -10,12 +10,18 @@ import com.mycompany.entities.Annonce;
 import com.mycompany.services.AnnonceService;
 import com.mycompany.services.EvenementService;
 import com.codename1.components.ImageViewer;
+import com.codename1.components.MultiButton;
+import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Container;
 import com.codename1.ui.Form;
+import com.codename1.ui.Image;
 import com.codename1.ui.Label;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.mycompany.entities.Evenement;
 import java.util.ArrayList;
 
 /**
@@ -32,31 +38,39 @@ public class affichageAnnonce {
     Container conth;
     
     
-      public affichageAnnonce(){ 
+        public affichageAnnonce(){ 
         theme = UIManager.initFirstTheme("/theme");
         f = new Form();
         contv = new Container(BoxLayout.y());
-        
-               
-        AnnonceService as=new AnnonceService ();
+                     
+        AnnonceService as=new AnnonceService();
         ArrayList<Annonce> lis=as.getAllAnnonce();
         System.out.println(lis.size());
+        
         for (int i =0;i<lis.size();i++)
         {
-            
             conth = new Container(BoxLayout.x());
-            ImageViewer img=new ImageViewer();
-           img.setImage(theme.getImage(lis.get(i).getPieceJointe()).scaled(150, 150));
-            lb = new Label("\n");
-            lb.setWidth(20);
-             lb.setText(lis.get(i).getTitre());
-            System.out.println(lis.get(i).getTitre());
+            ImageViewer imgv=new ImageViewer();
+            imgv.setImage(theme.getImage(lis.get(i).getPieceJointe()).scaled(300, 300));
+            Image img= imgv.getImage();
+          
+           MultiButton evt = new MultiButton(lis.get(i).getTitre());
+            Annonce a = lis.get(i);
+            evt.addActionListener(new ActionListener() {
+                
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                     AnnonceService ess=new AnnonceService();
+                 ArrayList<Annonce> lis= ess.getListAnnonceById(a.getIdAnnonce());
+                 
+                 detailsAnnonce de =new detailsAnnonce(lis);
+                 de.getF().show();
+                }
+            });
            
-            conth.add(img);
-            conth.add(lb);
-            contv.add(conth);
-            // f.add(img);
-        }
+          conth.add(evt);
+        contv.add(conth);
+          }
      
        f.add(contv);
         

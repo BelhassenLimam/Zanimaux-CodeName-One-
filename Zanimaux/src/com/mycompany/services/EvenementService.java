@@ -55,6 +55,7 @@ public class EvenementService {
                         
                        int id = Integer.parseInt(obj.get("idEvt").toString());
                         int nbp = Integer.parseInt(obj.get("nb_place").toString());
+                         int nbpp = Integer.parseInt(obj.get("nbParticipants").toString());
                         SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
                         Date  dateDb= format.parse(obj.get("dateDebut").toString());
                         
@@ -71,8 +72,8 @@ public class EvenementService {
                         e1.setDescription(obj.get("description").toString());
                        e1.setImageEvt(obj.get("image_evt").toString());
                       e1.setNbPlace(nbp);
-                        //System.out.println(e1.getLieu());
-                        System.out.println(obj.get("lieu").toString());
+                       e1.setNbParticipants(nbpp);
+                        
                   
                     listTasks.add(e1);
 
@@ -119,6 +120,7 @@ public class EvenementService {
                         Date  dateF= format.parse(obj.get("dateFin").toString());
                       
                         int nbp = Integer.parseInt(obj.get("nb_place").toString());
+                        int nbpp = Integer.parseInt(obj.get("nbParticipants").toString());
                         event.setIdEvt(id);
                         event.setCinUser(obj.get("cin").toString());
                         event.setLieu(obj.get("lieu").toString());
@@ -129,6 +131,7 @@ public class EvenementService {
                         event.setDescription(obj.get("description").toString());
                         event.setImageEvt(obj.get("image_evt").toString());
                          event.setNbPlace(nbp);
+                         event.setNbParticipants(nbpp);
                        
                   
                    

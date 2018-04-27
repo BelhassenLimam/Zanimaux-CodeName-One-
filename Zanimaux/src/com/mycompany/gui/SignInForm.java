@@ -44,8 +44,6 @@ import java.io.Reader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -165,7 +163,7 @@ gui_check.setSelected(true);
     public void onButton_2ActionEvent(com.codename1.ui.events.ActionEvent ev) {
             ConnectionRequest con;
         con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/MobileServiceWeb/loginW.php?username="+gui_Text_Field_2.getText()+"&pwd="+gui_Text_Field_1.getText()+"");
+        con.setUrl("http://localhost/WebServiceMobile/loginW.php?username="+gui_Text_Field_2.getText()+"&pwd="+gui_Text_Field_1.getText()+"");
         
     con.addResponseListener(new ActionListener<NetworkEvent>() {
            @Override
@@ -180,21 +178,22 @@ gui_check.setSelected(true);
                 }
                 else{
                     
-                    try {
+                    
                         UserService u = new UserService();
                         connectedUser = u.getConnectedUser(str);
                         
                         //System.out.println(connectedUser.getCin());
-                        AffichageMagasin form= new AffichageMagasin();
+                       /* afficherEvenement form= new afficherEvenement();
                         form.getF().show();
-                    } catch (IOException ex) {
-                        Logger.getLogger(SignInForm.class.getName()).log(Level.SEVERE, null, ex);
+                   */
+                       affichageAnnonce a = new affichageAnnonce();
+                       a.getF().show();
                     }
 
                 }
                 
 
-           }
+           
      });
 
         NetworkManager.getInstance().addToQueue(con);  

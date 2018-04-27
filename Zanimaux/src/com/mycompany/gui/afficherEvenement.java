@@ -51,10 +51,10 @@ public class afficherEvenement {
         EvenementService es=new EvenementService();
         ArrayList<Evenement> lis=es.getAllEvent();
         System.out.println(lis.size());
-        /*Label titreInterface= new Label("Liste des evenements");
+        Label titreInterface= new Label("Liste des evenements");
         FontImage.setMaterialIcon(titreInterface, FontImage.MATERIAL_EVENT);
         
-       contv.add(titreInterface);*/
+       contv.add(titreInterface);
         for (int i =0;i<lis.size();i++)
         {
             conth = new Container(BoxLayout.x());

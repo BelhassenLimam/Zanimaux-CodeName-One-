@@ -22,7 +22,9 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Evenement;
+import java.io.IOException;
 import java.util.ArrayList;
+
 
 /**
  *
@@ -72,8 +74,14 @@ public class affichageAnnonce {
                       AnnonceService ass=new AnnonceService();
                  ArrayList<Annonce> lis= ass.getListAnnonceById(a.getIdAnnonce());
                  
-                 detailsAnnonce de =new detailsAnnonce(lis);
-                 de.getF().show();
+                 detailsAnnonce de;
+                    try {
+                        de = new detailsAnnonce(lis);
+                         de.getF().show();
+                    } catch (IOException ex) {
+                        
+                    }
+                
                 }
             });
            

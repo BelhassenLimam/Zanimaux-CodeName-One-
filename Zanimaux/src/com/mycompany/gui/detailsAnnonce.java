@@ -11,9 +11,11 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.ui.Command;
 import com.codename1.ui.Container;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
+import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -22,6 +24,7 @@ import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Annonce;
 import static com.mycompany.gui.SignInForm.connectedUser;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -32,10 +35,18 @@ public class detailsAnnonce {
     
     private Resources theme;
     Form f;
-   public detailsAnnonce(ArrayList<Annonce> liste){
+   public detailsAnnonce(ArrayList<Annonce> liste) throws IOException{
         theme = UIManager.initFirstTheme("/theme");
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));  
         Container cButton = new Container(new BoxLayout(BoxLayout.X_AXIS));
+         Command cmd = new Command("Back",Image.createImage("/left-arrow.png")){
+             @Override
+             public void actionPerformed(ActionEvent evt) {
+                 affichageAnnonce ff=new affichageAnnonce();
+                 ff.getF().showBack();
+             }
+         };
+         f.getToolbar().addCommandToLeftBar(cmd);
         int id=liste.get(0).getIdAnnonce();
         Label like = new Label("");
         Label dislike = new Label("");

@@ -183,11 +183,11 @@ gui_check.setSelected(true);
                         connectedUser = u.getConnectedUser(str);
                         
                         //System.out.println(connectedUser.getCin());
-                       /* afficherEvenement form= new afficherEvenement();
+                        afficherEvenement form= new afficherEvenement();
                         form.getF().show();
-                   */
-                       affichageAnnonce a = new affichageAnnonce();
-                       a.getF().show();
+                   
+                      /* affichageAnnonce a = new affichageAnnonce();
+                       a.getF().show();*/
                     }
 
                 }

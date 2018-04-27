@@ -23,7 +23,9 @@ import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
 import java.util.ArrayList;
+
 import javafx.scene.control.ListView;
 
 /**
@@ -75,8 +77,14 @@ public class afficherEvenement {
                      EvenementService ess=new EvenementService();
                  ArrayList<Evenement> lis= ess.getListEvenetById(e.getIdEvt());
                  
-                 detailsEvent de =new detailsEvent(lis);
-                 de.getF().show();
+                  
+                    try {
+                        detailsEvent de = new detailsEvent(lis);
+                        de.getF().show();
+                    } catch (IOException ex) {
+                        
+                    }
+                 
                 }
             });
            

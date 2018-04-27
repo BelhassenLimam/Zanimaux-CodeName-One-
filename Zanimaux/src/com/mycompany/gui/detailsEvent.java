@@ -12,9 +12,11 @@ import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
+import com.codename1.ui.Command;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.Form;
+import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
@@ -25,6 +27,7 @@ import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Evenement;
 import static com.mycompany.gui.SignInForm.connectedUser;
 import com.mycompany.services.UserService;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -34,13 +37,22 @@ import java.util.ArrayList;
 public class detailsEvent {
    private Resources theme;
     Form f;
-   public detailsEvent(ArrayList<Evenement> liste){
+   public detailsEvent(ArrayList<Evenement> liste) throws IOException{
         theme = UIManager.initFirstTheme("/theme");
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
          Container cButton = new Container(new BoxLayout(BoxLayout.X_AXIS));
           SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
             Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
              int id=liste.get(0).getIdEvt();
+             
+              Command cmd = new Command("Back",Image.createImage("/left-arrow.png")){
+             @Override
+             public void actionPerformed(ActionEvent evt) {
+                 afficherEvenement ff=new afficherEvenement();
+                 ff.getF().showBack();
+             }
+         };
+         f.getToolbar().addCommandToLeftBar(cmd);
             
             SpanLabel lb = new SpanLabel("");
             Button participer = new Button("Participer");

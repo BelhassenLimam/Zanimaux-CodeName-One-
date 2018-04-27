@@ -18,7 +18,6 @@
  */
 package com.mycompany.gui;
 
-
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
@@ -36,6 +35,7 @@ import com.codename1.ui.FontImage;
 import com.codename1.ui.events.ActionListener;
 
 import com.mycompany.entities.User;
+import com.mycompany.gui.AffichageMagasin;
 import com.mycompany.services.UserService;
 import java.io.IOException;
 import java.io.InputStream;
@@ -53,7 +53,8 @@ import java.util.Map;
  */
 public class SignInForm extends com.codename1.ui.Form {
     StringBuffer str = new StringBuffer();
- int ch;
+    public static User connectedUser;
+    int ch;
     public SignInForm() {
         this(com.codename1.ui.util.Resources.getGlobalResources());   
    
@@ -178,9 +179,10 @@ gui_check.setSelected(true);
                 else{
                     
                    UserService u = new UserService();
-                   User a = u.getConnectedUser(str);
-                   System.out.println(a.getCin());
-                   AffichageMagasin form= new AffichageMagasin();
+                   connectedUser = u.getConnectedUser(str);
+        
+                   //System.out.println(connectedUser.getCin());
+                    AffichageMagasin form= new AffichageMagasin();
                    form.getF().show();
 
                 }

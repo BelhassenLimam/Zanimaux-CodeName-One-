@@ -57,10 +57,12 @@ public class AffichageProduit {
             f.add(t1);
             f.add(t2);
             f.add(b);
+            Produit p = list.get(i);
             b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 PanierService panSer= new PanierService();
+                panSer.ajoutAuPanier(p);
                 
             }
         });

@@ -36,40 +36,18 @@ public class MyApplication {
         // Log.bindCrashProtection(true);
     }
     
-    public void start() {
+    public void start() throws IOException {
         if(current != null){
             current.show();
             return;
         }
 
-        //AffichageMagasin a= new AffichageMagasin();
-        
-        //a.getF().show();
-       /* SignInForm loginForm = new SignInForm(theme);
-        // after splash
-        new java.util.Timer().schedule( 
-        new java.util.TimerTask() {
-            @Override
-            public void run() {
-               loginForm.show();
-            }
-        }, 
-        5000 
-);*/
-/*
         AffichageMagasin a= new AffichageMagasin();
-
-        AffichageParc a= new AffichageParc();
-
         
-        a.getF().show();*/
-     
-       afficherEvenement e = new afficherEvenement();
-       e.getF().show();
-      
-       /*affichageAnnonce a = new affichageAnnonce();
-       a.getF().show();*/
-       
+        a.getF().show();
+//        SignInForm loginForm = new SignInForm(theme);
+//        loginForm.show();
+
 
     }
 

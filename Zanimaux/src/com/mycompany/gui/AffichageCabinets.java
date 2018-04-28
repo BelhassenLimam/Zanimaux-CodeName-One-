@@ -20,8 +20,10 @@ import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Articles;
 import com.mycompany.entities.Cabinet;
+import com.mycompany.entities.Rendezvs;
 import com.mycompany.services.ArticleService;
 import com.mycompany.services.CabinetService;
+import com.mycompany.services.RendezvsService;
 import java.util.ArrayList;
 
 /**
@@ -44,6 +46,7 @@ public class AffichageCabinets {
         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
             SpanLabel lb = new SpanLabel("");
             Button b =new Button("Consulter Articles");
+            Button b2 =new Button("Prendre Rendezvs");
             //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
             ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotovet()).scaled(350, 200));
             Label t =new Label(lis.get(i).getAdresseCabinet()+" "+lis.get(i).getVilleCabinet()+", "+lis.get(i).getCodePostaleCabinet());
@@ -57,10 +60,21 @@ public class AffichageCabinets {
                 FormArticles.getF().show();
             }
         });
+               b2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent evt) {
+                            System.out.println(b2.getText());
+                            AjoutRendezvs resV = new AjoutRendezvs();
+                            AjoutRendezvs.cab = m;
+                            resV.start();
+                        }
+                    });
+            
             c.add(iv);
             c.add(lb);
             c.add(t);
             c.add(b);
+            c.add(b2);
             f.add(c);    
             lb.setText(lis.get(i).getVilleCabinet());
         }

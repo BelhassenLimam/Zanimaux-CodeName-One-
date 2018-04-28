@@ -6,6 +6,7 @@
 
 package com.mycompany.entities;
 
+/**
  *
  * @author Mariam
  */

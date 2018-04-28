@@ -23,7 +23,9 @@ import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
 import java.util.ArrayList;
+
 import javafx.scene.control.ListView;
 
 /**
@@ -51,10 +53,10 @@ public class afficherEvenement {
         EvenementService es=new EvenementService();
         ArrayList<Evenement> lis=es.getAllEvent();
         System.out.println(lis.size());
-        /*Label titreInterface= new Label("Liste des evenements");
+        Label titreInterface= new Label("Liste des evenements");
         FontImage.setMaterialIcon(titreInterface, FontImage.MATERIAL_EVENT);
         
-       contv.add(titreInterface);*/
+       contv.add(titreInterface);
         for (int i =0;i<lis.size();i++)
         {
             conth = new Container(BoxLayout.x());
@@ -75,8 +77,14 @@ public class afficherEvenement {
                      EvenementService ess=new EvenementService();
                  ArrayList<Evenement> lis= ess.getListEvenetById(e.getIdEvt());
                  
-                 detailsEvent de =new detailsEvent(lis);
-                 de.getF().show();
+                  
+                    try {
+                        detailsEvent de = new detailsEvent(lis);
+                        de.getF().show();
+                    } catch (IOException ex) {
+                        
+                    }
+                 
                 }
             });
            

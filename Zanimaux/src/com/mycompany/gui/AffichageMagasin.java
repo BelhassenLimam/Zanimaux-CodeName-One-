@@ -23,6 +23,8 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.mycompany.entities.Panier;
+import com.mycompany.services.PanierService;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -45,8 +47,13 @@ public class AffichageMagasin
             Image logo= Image.createImage("/logo.png").scaled(50, 50);
        
            
-        f.getToolbar().addCommandToRightBar("", panier, (e) -> Log.p("Clicked"));
-        f.getToolbar().addCommandToLeftBar("", logo, (e) -> Log.p("Clicked"));
+        f.getToolbar().addCommandToRightBar("", panier, (e) -> {AffichagePanier h=null;
+            try {
+                h = new AffichagePanier();
+            } catch (IOException ex) {
+            }
+          h.getF().show();});
+        f.getToolbar().addCommandToLeftBar("", logo, (e) ->Log.p("Clicked") ) ;
         f.getToolbar().setHeight(60);
         Style stitle = f.getToolbar().getAllStyles();
         stitle.setBgColor(0xff);

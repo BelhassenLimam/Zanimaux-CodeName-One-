@@ -5,10 +5,21 @@
  */
 package com.mycompany.services;
 
+import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
+import com.codename1.io.JSONParser;
+import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
+import com.codename1.ui.events.ActionListener;
+import com.mycompany.entities.ContenuPanier;
+import com.mycompany.entities.Magasin;
+import com.mycompany.entities.Panier;
 import com.mycompany.entities.Produit;
 import static com.mycompany.gui.SignInForm.connectedUser;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -30,5 +41,81 @@ public class PanierService {
 
         });
         NetworkManager.getInstance().addToQueueAndWait(con);
+    }
+    
+          public ArrayList<Panier> getPanier(){
+        ArrayList<Panier> listPanier = new ArrayList<>();
+        ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost:8888/zanimauxWeb/web/app_dev.php/api/affichePanier/"+connectedUser.getCin());
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+               
+                JSONParser jsonp = new JSONParser();
+                
+                try {
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> panier= jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
+                    System.out.println("roooooot:" +panier.get("root"));
+
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) panier.get("root");
+
+                    for (Map<String, Object> obj : list) {   
+                        float somme = Float.parseFloat(obj.get("somme").toString());
+                        Panier p = new Panier();
+                        p.setSomme((int)somme);
+                        p.setCin(connectedUser.getCin());
+                        p.setSommeCommande((int)0);
+                        listPanier.add(p);
+                    }
+                } catch (IOException ex) {
+                }
+
+            }
+        });
+        
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return listPanier;
+    }
+          
+          
+              
+          public ArrayList<ContenuPanier> getContenuPanier(){
+        ArrayList<ContenuPanier> listcontenuPanier = new ArrayList<>();
+        ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost:8888/MobileServiceWeb/afficheContenuPanier.php?cin="+connectedUser.getCin());
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+               
+                JSONParser jsonp = new JSONParser();
+                
+                try {
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> cpanier= jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
+                    System.out.println("roooooot:" +cpanier.get("root"));
+
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) cpanier.get("root");
+
+                    for (Map<String, Object> obj : list) { 
+                       float id=Float.parseFloat(obj.get("idProduit").toString());
+                        float qt = Float.parseFloat(obj.get("quantite").toString());
+                        //float cmd = Float.parseFloat(obj.get("commande").toString());
+                        ContenuPanier p = new ContenuPanier();
+                        p.setQuantite((int)qt);
+                        p.setIdProduit((int)id);
+                        
+//                        p.setCommande((int)cmd);
+//                        p.getDateCommande(list.get("dateCommande"))
+                        listcontenuPanier.add(p);
+                    }
+                } catch (IOException ex) {
+                }
+
+            }
+        });
+        
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return listcontenuPanier;
     }
 }

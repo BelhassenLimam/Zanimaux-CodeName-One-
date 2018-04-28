@@ -70,4 +70,48 @@ public class ProduitService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return listProduit;
     }
+  public ArrayList<Produit> getProduitById(int idProduit){
+        ArrayList<Produit> listProduit = new ArrayList<>();
+        ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost:8888/zanimauxWeb/web/app_dev.php/api/afficheProduit/" + idProduit);
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                //listTasks = getListTask(new String(con.getResponseData()));
+                JSONParser jsonp = new JSONParser();
+                
+                try {
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> produit = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
+                    System.out.println("roooooot:" +produit.get("root"));
+
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) produit.get("root");
+
+                    for (Map<String, Object> obj : list) {   
+                        float prix = Float.parseFloat(obj.get("prix").toString());
+                        float quantite = Float.parseFloat(obj.get("quantite").toString());
+                        Produit p = new Produit();
+                        p.setIdProduit(idProduit);
+                        p.setLibelle(obj.get("libelle").toString());
+//                        if(obj.get("description")==null){
+//                            p.setDescription("");
+//                        }
+//                        else{
+//                        p.setDescription(obj.get("description").toString());}
+                        p.setMarque(obj.get("marque").toString());
+                        p.setType(obj.get("type").toString());
+                        p.setPhotoProduit(obj.get("photoProduit").toString());
+                        p.setPrix(prix);
+                        p.setQuantite((int)quantite);
+                        listProduit.add(p);
+                    }
+                } catch (IOException ex) {
+                }
+
+            }
+        });
+        
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        return listProduit;
+    }
 }

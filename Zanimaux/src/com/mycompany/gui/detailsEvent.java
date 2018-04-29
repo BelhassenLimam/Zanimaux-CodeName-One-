@@ -6,6 +6,7 @@
 package com.mycompany.gui;
 
 import com.codename1.components.ImageViewer;
+import com.codename1.components.ShareButton;
 import com.codename1.components.SpanLabel;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.NetworkEvent;
@@ -57,7 +58,8 @@ public class detailsEvent {
             SpanLabel lb = new SpanLabel("");
             Button participer = new Button("Participer");
             Button annuler = new Button("Annuler");
-            
+             ShareButton b1= new ShareButton();
+             b1.setTextToShare("Bonjour");
             
             participer.addActionListener(new ActionListener() {
             @Override
@@ -171,7 +173,7 @@ public class detailsEvent {
 
         NetworkManager.getInstance().addToQueue(con);  
             }//else
-                  c.add(iv);
+             c.add(iv);
             c.add(lb);
             c.add(lbl);
             c.add(lb2);
@@ -179,6 +181,7 @@ public class detailsEvent {
             cButton.add(participer);
             cButton.add(annuler);
             cButton.add(plein);
+            c.add(b1);
             c.add(cButton);
             f.add(c);     
         

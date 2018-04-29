@@ -45,6 +45,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * GUI builder created Form
  *
@@ -162,7 +163,7 @@ gui_check.setSelected(true);
     public void onButton_2ActionEvent(com.codename1.ui.events.ActionEvent ev) {
             ConnectionRequest con;
         con = new ConnectionRequest();
-        con.setUrl("http://localhost/WebServiceMobile/loginW.php?username="+gui_Text_Field_2.getText()+"&pwd="+gui_Text_Field_1.getText()+"");
+        con.setUrl("http://localhost:8888/loginW.php?username="+gui_Text_Field_2.getText()+"&pwd="+gui_Text_Field_1.getText()+"");
         
     con.addResponseListener(new ActionListener<NetworkEvent>() {
            @Override
@@ -178,12 +179,16 @@ gui_check.setSelected(true);
                 else{
                     
                     
+                    try {
                         UserService u = new UserService();
                         connectedUser = u.getConnectedUser(str);
                         
                         //System.out.println(connectedUser.getCin());
-                        afficherEvenement form= new afficherEvenement();
-                        form.getF().show();
+                        Accueil2 form= new Accueil2();
+                        form.show();
+                    } catch (IOException ex) {
+                        
+                    }
 
                     }
 

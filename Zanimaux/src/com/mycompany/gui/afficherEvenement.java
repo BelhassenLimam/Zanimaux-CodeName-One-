@@ -26,7 +26,7 @@ import com.codename1.ui.util.Resources;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javafx.scene.control.ListView;
+
 
 /**
  *
@@ -40,25 +40,101 @@ public class afficherEvenement {
     Label lb2;
     Container contv;
     Container conth;
+     Container contPage;
+      Container contG;
+     int nbPages = 0;
+     int nbEl=3;
+     int IndexPages = 0;
     
     
       public afficherEvenement(){ 
         theme = UIManager.initFirstTheme("/theme");
         f = new Form();
         contv = new Container(BoxLayout.y());
+         contG = new Container(BoxLayout.y());
+        SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
        
-        
-         SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
                
         EvenementService es=new EvenementService();
         ArrayList<Evenement> lis=es.getAllEvent();
+        
+        
+        int nb = lis.size();
+        if ((nb % nbEl) == 0) {
+            nbPages = nb / nbEl;            
+        } else {
+            nbPages = ((nb / nbEl) + 1);            
+            
+        }
+        
+        contPage = new Container(BoxLayout.x());
+        
+        for(int i=1;i<=nbPages;i++){
+            Button nbP = new Button(Integer.toString(i));
+            nbP.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    
+            contv.removeAll();
+          IndexPages= Integer.parseInt (nbP.getText());
+          IndexPages=IndexPages-1;
+         for (int j= IndexPages * nbEl;j<lis.size();j++)
+            {
+                 if (j <= (IndexPages * nbEl + (nbEl - 1))){
+               
+            conth = new Container(BoxLayout.x());
+            ImageViewer imgv=new ImageViewer();
+            imgv.setImage(theme.getImage(lis.get(j).getImageEvt()).scaled(300, 300));
+            Image img= imgv.getImage();
+          
+            format.applyPattern("dd/MM/yyyy");
+            MultiButton evt1 = new MultiButton(lis.get(j).getTitre());
+            
+            evt1.setIcon(img);
+            evt1.setTextLine2(format.format(lis.get(j).getDateDebut())+" - "+ format.format(lis.get(j).getDateFin()));
+            Evenement e = lis.get(j);
+            evt1.addActionListener(new ActionListener() {
+                
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                     EvenementService ess=new EvenementService();
+                 ArrayList<Evenement> lis= ess.getListEvenetById(e.getIdEvt());
+                 
+                  
+                    try {
+                        detailsEvent de = new detailsEvent(lis);
+                        de.getF().show();
+                    } catch (IOException ex) {
+                        
+                    }
+                 
+                }
+            });
+          
+          conth.add(evt1);
+        
+        contv.add(conth);
+          }
+            }
+                    
+           f.refreshTheme();
+          }
+           
+            });
+           contPage.add(nbP);
+          //contG.add(contPage);
+        }
+        
+        //f.add(contG);
+        
         System.out.println(lis.size());
         Label titreInterface= new Label("Liste des evenements");
         FontImage.setMaterialIcon(titreInterface, FontImage.MATERIAL_EVENT);
         
-       contv.add(titreInterface);
+       contG.add(titreInterface);
         for (int i =0;i<lis.size();i++)
         {
+             if (i <= (0 * nbEl + (nbEl - 1))){
             conth = new Container(BoxLayout.x());
             ImageViewer imgv=new ImageViewer();
             imgv.setImage(theme.getImage(lis.get(i).getImageEvt()).scaled(300, 300));
@@ -87,14 +163,17 @@ public class afficherEvenement {
                  
                 }
             });
-           
+          
           conth.add(evt);
+         
         contv.add(conth);
-          }
-     
-       f.add(contv);
+          
+     }}
+        contG.add(contv);
+        contG.add(contPage);
+       f.add(contG);
         
-    }
+         }
 
     public Form getF() {
         return f;

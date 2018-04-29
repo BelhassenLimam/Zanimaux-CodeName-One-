@@ -164,6 +164,7 @@ gui_check.setSelected(true);
             ConnectionRequest con;
         con = new ConnectionRequest();
         con.setUrl("http://localhost:8888/MobileServiceWeb/loginW.php?username="+gui_Text_Field_2.getText()+"&pwd="+gui_Text_Field_1.getText()+"");
+
         
     con.addResponseListener(new ActionListener<NetworkEvent>() {
            @Override
@@ -179,10 +180,10 @@ gui_check.setSelected(true);
                 else{
                     
                     
+                   
                         UserService u = new UserService();
                         connectedUser = u.getConnectedUser(str);
-                        
-                        //System.out.println(connectedUser.getCin());
+
                         AffichageMagasin form=null;
                     try {
                         form = new AffichageMagasin();
@@ -190,7 +191,14 @@ gui_check.setSelected(true);
                     }
                         form.getF().show();
 
-                    }
+                       /* Accueil2 form= new Accueil2();
+                        form.show();
+                    } catch (IOException ex) {
+                        
+                    }*/
+
+
+                     }
 
                 }
                 

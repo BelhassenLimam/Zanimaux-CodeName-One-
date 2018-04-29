@@ -11,6 +11,7 @@ import com.mycompany.services.ParcService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SliderBridge;
 import com.codename1.components.SpanLabel;
+import com.codename1.io.ConnectionRequest;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
@@ -29,6 +30,11 @@ import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.mycompany.entities.Avis;
+import com.mycompany.entities.User;
+import static com.mycompany.gui.SignInForm.connectedUser;
+import com.mycompany.services.AvisService;
+import com.mycompany.services.UserService;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.control.TextField;
@@ -39,6 +45,8 @@ import javafx.scene.control.TextField;
  */
 public class AffichageParc 
 {
+    
+   String str;
     private Resources theme;
     Form f;
    
@@ -48,6 +56,9 @@ public class AffichageParc
         theme = UIManager.initFirstTheme("/theme");
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
         ParcService ms=new ParcService();
+         UserService u = new UserService();
+         str = SignInForm.connectedUser.getCin();
+         AvisService a = new AvisService();
         ArrayList<Parc> lis=ms.getAllParc();
         for (int i =0;i<lis.size();i++)
             
@@ -84,8 +95,12 @@ public class AffichageParc
     b1.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
+                 
                 System.out.println(starRank.getProgress());
                 System.out.println(m.getId());
+                System.out.println(str);
+                Avis a1 = new Avis(m.getId(),starRank.getProgress(),str);
+                a.addavis(a1);
             }}); 
             
             c2.add(iv);

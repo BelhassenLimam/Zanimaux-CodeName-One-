@@ -15,6 +15,7 @@ import com.mycompany.services.ProduitService;
 import com.mycompany.services.PromenadeService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
+import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Form;
@@ -54,11 +55,15 @@ public class AffichagePromenade
             ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoPromenade()).scaled(100, 100));
             Label t =new Label(lis.get(i).getLieuPromenade());
             Label t1 =new Label(lis.get(i).getTypePromenade());
+             SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
+            format.applyPattern("dd/MM/yyyy");
+            Label t2 =new Label(format.format(lis.get(i).getDatedebutPromenade())+"  "+format.format(lis.get(i).getDatefinPromenade()));
             Promenade m = lis.get(i);
             
             c2.add(iv);
             c3.add(lb);
             c3.add(t1);
+            c3.add(t2);
             c3.add(t);
             c2.add(c3);
             c.add(c2);

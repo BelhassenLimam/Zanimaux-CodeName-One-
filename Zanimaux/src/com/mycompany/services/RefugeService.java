@@ -137,6 +137,8 @@ public class RefugeService {
                        
                         user.setImmatriculation(obj.get("immatriculation").toString());
                         user.setNomRefuge(obj.get("nomRefuge").toString());
+                        user.setAdresseRefuge(obj.get("adresseRefuge").toString());
+                        user.setGouvernementRefuge(obj.get("gouvernementrefuge").toString());
                       
                   u=user;
                         

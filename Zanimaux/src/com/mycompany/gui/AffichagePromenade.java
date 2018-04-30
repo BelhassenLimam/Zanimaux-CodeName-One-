@@ -15,19 +15,36 @@ import com.mycompany.services.ProduitService;
 import com.mycompany.services.PromenadeService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
-import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.io.ConnectionRequest;
+import com.codename1.io.NetworkEvent;
+import com.codename1.io.NetworkManager;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
+import com.codename1.ui.Font;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
+import com.codename1.ui.Slider;
+import com.codename1.ui.Toolbar;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
+import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.plaf.Border;
+import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.mycompany.entities.Avis;
+import com.mycompany.services.AvisService;
+import com.mycompany.services.UserService;
 import java.io.IOException;
 import java.util.ArrayList;
+
+
 
 /**
  *
@@ -37,42 +54,135 @@ public class AffichagePromenade
 {
     private Resources theme;
     Form f;
-   
+   String str;
     
     
     public AffichagePromenade() { 
-        theme = UIManager.initFirstTheme("/theme");
-        f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
-        PromenadeService ms=new PromenadeService();
-        ArrayList<Promenade> lis=ms.getAllPromenade();
-        for (int i =0;i<lis.size();i++)
-         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-            Container c2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
-            Container c3 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-            Label lb = new Label();
-            Button b =new Button("Cosulter Parc");
-            //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
-            ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoPromenade()).scaled(100, 100));
-            Label t =new Label(lis.get(i).getLieuPromenade());
-            Label t1 =new Label(lis.get(i).getTypePromenade());
-             SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
-            format.applyPattern("dd/MM/yyyy");
-            Label t2 =new Label(format.format(lis.get(i).getDatedebutPromenade())+"  "+format.format(lis.get(i).getDatefinPromenade()));
-            Promenade m = lis.get(i);
+        try {
+            theme = UIManager.initFirstTheme("/theme");
+            f = new Form(new BoxLayout(BoxLayout.Y_AXIS));
+            Toolbar tb = f.getToolbar();
             
-            c2.add(iv);
-            c3.add(lb);
-            c3.add(t1);
-            c3.add(t2);
-            c3.add(t);
-            c2.add(c3);
-            c.add(c2);
-            c.add(b);
+            Container topBar = BorderLayout.centerAbsolute(new Label());
+            Label menu = new Label("Menu");
+            menu.getUnselectedStyle().setFgColor(0xffffff);
             
-            f.add(c);  
+            topBar.add(BorderLayout.CENTER, menu);
             
-            lb.setText(lis.get(i).getNomPromenade());
-        }
+            topBar.setUIID("SideCommand");
+            tb.addComponentToSideMenu(topBar);
+            tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {});
+            tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  AffichageParc FormProduit = new AffichageParc();
+            FormProduit.getF().show();});
+            tb.addCommandToSideMenu("Magasin", Image.createImage("/storeIcon.png").scaled(25,25), e -> {try {
+                AffichageMagasin FormProduit = new AffichageMagasin();
+                FormProduit.getF().show();
+            } catch (IOException ex) {
+                ;
+            }
+            });
+            tb.addCommandToSideMenu("Veterinaire", Image.createImage("/doctorIcon.png").scaled(25,25), e -> {AffichageCabinets FormProduit = new AffichageCabinets();
+            FormProduit.getF().show();});
+            tb.addCommandToSideMenu("PetSitter", Image.createImage("/petsitter.png").scaled(25,25), e -> {AffichagePromenade FormProduit = new AffichagePromenade();
+            FormProduit.getF().show();});
+            tb.addCommandToSideMenu("Refuge", Image.createImage("/shelter.png").scaled(25,25), e -> {AffichageRefuge FormProduit = new AffichageRefuge();
+            FormProduit.getF().show();});
+            tb.addCommandToSideMenu("Evenement", Image.createImage("/event.png").scaled(25,25), e -> {afficherEvenement FormProduit = new afficherEvenement();
+            FormProduit.getF().show();});
+            tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> {affichageAnnonce FormProduit = new affichageAnnonce();
+            FormProduit.getF().show();});
+            
+            PromenadeService ms=new PromenadeService();
+            UserService u = new UserService();
+            str = SignInForm.connectedUser.getCin();
+            AvisService a = new AvisService();
+            
+            ArrayList<Promenade> lis=ms.getAllPromenade();
+            for (int i =0;i<lis.size();i++)
+            {
+                Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+                
+                Container c2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
+                Container c3 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+                Label lb = new Label();
+                
+                //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
+                ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoPromenade()).scaled(100, 100));
+                Label ad = new Label("Lieu :");
+                ad.getUnselectedStyle().setFgColor(0xf64139);
+                Label t =new Label(lis.get(i).getLieuPromenade());
+                Label ad2 = new Label("Type :");
+                ad2.getUnselectedStyle().setFgColor(0xf64139);
+                Label t1 =new Label(lis.get(i).getTypePromenade());
+                
+                Promenade m = lis.get(i);
+                
+                ConnectionRequest con;
+                con = new ConnectionRequest();
+                con.setUrl("http://localhost:8888/VerifAvis.php?idParc=" +m.getId()+ "&cinUser=" +str+"");
+                NetworkManager.getInstance().addToQueue(con);
+                con.addResponseListener(new ActionListener<NetworkEvent>() {
+                    @Override
+                    public void actionPerformed(NetworkEvent evt) {
+                        
+                        String av2 = new String(con.getResponseData());
+                        System.out.println(av2);
+                        if(av2.equalsIgnoreCase("n existe pas")){
+                            
+                            Slider starRank = new Slider();
+                            starRank.setEditable(true);
+                            starRank.setMinValue(0);
+                            starRank.setMaxValue(5);
+                            Font fnt = Font.createTrueTypeFont("native:mainLight", "native:mainLight").
+                                    derive(Display.getInstance().convertToPixels(5, true), Font.STYLE_PLAIN);
+                            Style s = new Style(0xffff33, 0, fnt, (byte)0);
+                            Image fullStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+                            s.setOpacity(100);
+                            s.setFgColor(0);
+                            Image emptyStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
+                            initStarRankStyle(starRank.getSliderEmptySelectedStyle(), emptyStar);
+                            initStarRankStyle(starRank.getSliderEmptyUnselectedStyle(), emptyStar);
+                            initStarRankStyle(starRank.getSliderFullSelectedStyle(), fullStar);
+                            initStarRankStyle(starRank.getSliderFullUnselectedStyle(), fullStar);
+                            starRank.setPreferredSize(new Dimension(fullStar.getWidth() * 5, fullStar.getHeight()));
+                            Button b1 = new Button("Evaluer");
+                            
+                            b1.addActionListener(new ActionListener() {
+                                @Override
+                                public void actionPerformed(ActionEvent evt) {
+                                    
+                                    System.out.println(starRank.getProgress());
+                                    System.out.println(m.getId());
+                                    System.out.println(str);
+                                    Avis a1 = new Avis(m.getId(),starRank.getProgress(),str);
+                                    a.addavis(a1);
+                                    AffichagePromenade loginForm = new AffichagePromenade();
+                                    loginForm.getF().show();
+                                }});
+                            c.add(FlowLayout.encloseCenter(starRank));
+                            c.add(b1);
+                        };
+                        
+                    };
+                });
+                
+                c2.add(iv);
+                c3.add(lb);
+                c3.add(ad2);
+                c3.add(t1);
+                c3.add(ad);
+                c3.add(t);
+                c2.add(c3);
+                c.add(c2);
+                
+                
+                f.add(c);
+                
+                lb.setText(lis.get(i).getNomPromenade());
+                
+            }
+        } catch (IOException ex) {
+               }
     }
 
     public Form getF() {
@@ -82,5 +192,10 @@ public class AffichagePromenade
     public void setF(Form f) {
         this.f = f;
     }
-
+private void initStarRankStyle(Style s, Image star) {
+    s.setBackgroundType(Style.BACKGROUND_IMAGE_TILE_BOTH);
+    s.setBorder(Border.createEmpty());
+    s.setBgImage(star);
+    s.setBgTransparency(0);
+}
 }

@@ -12,8 +12,6 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
-import com.codename1.l10n.ParseException;
-import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionListener;
 import java.io.IOException;
@@ -21,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-
 
 /**
  *
@@ -54,19 +51,13 @@ public class PromenadeService {
                         m.setTypePromenade(obj.get("typePromenade").toString());
                         m.setLieuPromenade(obj.get("lieuPromenade").toString());
                         m.setDescriptionPromenade(obj.get("descriptionPromenade").toString());
-                         SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
-                        Date  datedb= format.parse(obj.get("datedebutPromenade").toString());
-                        Date  dateF= format.parse(obj.get("datefinPromenade").toString());
-                        m.setDatedebutPromenade(datedb);
-                        m.setDatefinPromenade(dateF);
                         /*m.setDateDebutPromenade(Date.);
                         m.setDateFinPromenade(Date.parse(df));*/
                         m.setPhotoPromenade(obj.get("photoPromenade").toString());
                         listTasks.add(m);
                     }
                 } catch (IOException ex) {
-                } catch (ParseException ex) {
-                    }
+                }
 
             }
         });

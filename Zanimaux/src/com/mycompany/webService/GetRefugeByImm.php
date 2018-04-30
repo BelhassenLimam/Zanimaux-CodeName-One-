@@ -3,7 +3,8 @@
     $connection = mysqli_connect("localhost","root","","zanimaux") or die("Error " . mysqli_error($connection));
 mysqli_set_charset($connection, "utf8");
     //fetch table rows from mysql db
-    $sql = "select * from evenement";
+$immatriculation= $_GET['immatriculation'];
+    $sql = "select immatriculation,nomRefuge,adresseRefuge,gouvernementrefuge from refuge where (immatriculation= '$immatriculation') ";
     $result = mysqli_query($connection, $sql) or die("Error in Selecting " . mysqli_error($connection));
 
     //create an array

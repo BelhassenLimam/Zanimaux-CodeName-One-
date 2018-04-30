@@ -126,6 +126,7 @@ public class afficherEvenement {
         }
         
         //f.add(contG);
+        //Marouaaaa
         
         System.out.println(lis.size());
         Label titreInterface= new Label("Liste des evenements");

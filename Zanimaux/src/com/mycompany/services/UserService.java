@@ -40,7 +40,6 @@ public class UserService {
                         
                         m = new User();
                         m.setCin(obj.get("cin").toString());
-                        m.setEmail(obj.get("email").toString());
                        
                     }
                 } catch (IOException ex) {

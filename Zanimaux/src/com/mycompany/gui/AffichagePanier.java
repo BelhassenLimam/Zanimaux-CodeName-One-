@@ -14,7 +14,6 @@ import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
-import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.geom.Dimension;
@@ -26,7 +25,6 @@ import com.mycompany.entities.ContenuPanier;
 import com.mycompany.entities.Magasin;
 import com.mycompany.entities.Panier;
 import com.mycompany.entities.Produit;
-import static com.mycompany.gui.SignInForm.connectedUser;
 import com.mycompany.services.MagasinService;
 import com.mycompany.services.PanierService;
 import com.mycompany.services.ProduitService;
@@ -61,8 +59,8 @@ public class AffichagePanier
         double somme = lis.get(0).getSomme();
         System.out.println(somme);
         Label l = new Label("PANIER");
-        f.add(l);
         for(int i =0;i<cp.size();i++)
+<<<<<<< HEAD
         {   Container cH= new Container(new BoxLayout(BoxLayout.X_AXIS));
             Container cV= new Container(new BoxLayout(BoxLayout.Y_AXIS));
             TextField quantite= new TextField(String.valueOf(cp.get(i).getQuantite()));
@@ -134,8 +132,7 @@ public class AffichagePanier
                 ms.passerCommande();
             }
         });
-       
-                
+
         
         }
     
@@ -149,5 +146,5 @@ public class AffichagePanier
         this.f = f;
     }
 
-    
+   
 }

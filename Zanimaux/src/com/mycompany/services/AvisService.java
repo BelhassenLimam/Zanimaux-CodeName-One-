@@ -44,50 +44,5 @@ public class AvisService {
         System.err.println("aaaaa");
     }
     
-        public static Rendezvs vf;
-    public Rendezvs findrdvByid (int id){
-       ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost/Mobile/ShowRdvdetail.php?idrdv="+id);
-    
-        con.addResponseListener(new ActionListener<NetworkEvent>() {
-            @Override
-            public void actionPerformed(NetworkEvent evt) {
-                //listTasks = getListTask(new String(con.getResponseData()));
-                JSONParser jsonp = new JSONParser();
-                
-                try {
-                    //renvoi une map avec clé = root et valeur le reste
-                    Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
-                    System.out.println("roooooot:" +tasks.get("root"));
-
-                    List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
-
-                    for (Map<String, Object> obj : list) {
-                        Rendezvs rdv = new Rendezvs();
-                        SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
-                        try {
-                            Date  heurerdv = format.parse(obj.get("Heurerdv").toString());
-                            rdv.setCin(obj.get("cin").toString());
-                       rdv.setImmatriculecabinet(obj.get("immatriculecabinet").toString());
-                       rdv.setHeurerdv(heurerdv);
-                       
-                       
-                       vf=rdv;
-                       
-                     } catch (ParseException ex) {
-                            System.out.println("   erreurdate");
-                     }
-                      
-                    }
-                } catch (IOException ex) {
-                }
-
-            }
-        });
-        NetworkManager.getInstance().addToQueueAndWait(con);
-        return vf;
- }
- 
-
-   
-}
+  
+} 

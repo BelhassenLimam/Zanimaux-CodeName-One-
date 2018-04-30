@@ -1,10 +1,10 @@
 <?php
    //open connection to mysql db
-    $connection = mysqli_connect("localhost","root","root","Zanimaux") or die("Error " . mysqli_error($connection));
+    $connection = mysqli_connect("localhost","root","","zanimaux") or die("Error " . mysqli_error($connection));
 mysqli_set_charset($connection, "utf8");
     //fetch table rows from mysql db
-$idProduit= $_GET['idProduit'];
-    $sql = "select  photoProduit, prix, libelle, marque, type, quantite from Produit where (idProduit = '$idProduit') ";
+$immatriculation= $_GET['immatriculation'];
+    $sql = "select * from animal where (refuge = '$immatriculation') ";
     $result = mysqli_query($connection, $sql) or die("Error in Selecting " . mysqli_error($connection));
 
     //create an array

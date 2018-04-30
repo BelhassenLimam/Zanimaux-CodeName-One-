@@ -44,20 +44,5 @@ public class AvisService {
         System.err.println("aaaaa");
     }
     
-    public void VerifAvis (String idParc, String cinUser){
-        ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/VerifAvis.php?idParc="+idParc+"cinUser="+cinUser);
-        
-        con.addResponseListener(new ActionListener<NetworkEvent>() {
-           @Override
-            public void actionPerformed(NetworkEvent evt) {
-                
-                String str = new String(con.getResponseData());
-                System.out.println(str);
-
-                };
- });
- NetworkManager.getInstance().addToQueueAndWait(con);
-
-}
+  
 } 

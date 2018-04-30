@@ -117,8 +117,8 @@ public class AffichageRefuge {
 //                double distance = loc.getDistanceTo(locRef);
 //                System.out.println(distance/1000);
 //                Dialog.show("Distancein kilometers", String.valueOf(distance/1000), "OK", null);
-Geofence gf = new Geofence("test", locRef, 100, 100000);
-LocationManager.getLocationManager().addGeoFencing(GeofenceListenerImpl.class, gf);
+//Geofence gf = new Geofence("test", locRef, 100, 100000);
+//LocationManager.getLocationManager().addGeoFencing(GeofenceListenerImpl.class, gf);
             }
         });
             b.addActionListener(new ActionListener() {

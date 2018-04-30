@@ -10,6 +10,8 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
+import com.codename1.messaging.Message;
+import com.codename1.ui.Display;
 import com.codename1.ui.events.ActionListener;
 import com.mycompany.entities.ContenuPanier;
 import com.mycompany.entities.Magasin;
@@ -99,12 +101,13 @@ public class PanierService {
 
                     for (Map<String, Object> obj : list) { 
                        float id=Float.parseFloat(obj.get("idProduit").toString());
+                       float idC=Float.parseFloat(obj.get("idContenuPanier").toString());
                         float qt = Float.parseFloat(obj.get("quantite").toString());
                         //float cmd = Float.parseFloat(obj.get("commande").toString());
                         ContenuPanier p = new ContenuPanier();
                         p.setQuantite((int)qt);
                         p.setIdProduit((int)id);
-                        
+                        p.setIdContenuPanier((int)idC);
 //                        p.setCommande((int)cmd);
 //                        p.getDateCommande(list.get("dateCommande"))
                         listcontenuPanier.add(p);
@@ -118,4 +121,38 @@ public class PanierService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return listcontenuPanier;
     }
+
+
+    public void modifierQuantite(int idCP, int idP, int i, double prix,String cin) {
+        
+             ConnectionRequest con = new ConnectionRequest();
+             con.setUrl("http://localhost:8888/MobileServiceWeb/modifQuantitePanier.php?idP="+idP+"&idCP="+idCP+"&quantite="+i+"&prix="+prix+"&cin="+cin);
+             con.addResponseListener(new ActionListener<NetworkEvent>() {
+           @Override
+            public void actionPerformed(NetworkEvent evt) {
+                
+                String str = new String(con.getResponseData());
+                System.out.println(str);
+
+                }
+                
+
+           
+     });
+              NetworkManager.getInstance().addToQueueAndWait(con);
+    }
+    public void passerCommande() {
+        
+             ConnectionRequest con = new ConnectionRequest();
+             String Url = "http://localhost:8888/zanimauxWeb/web/app_dev.php/api/passeCommande?cin=" +connectedUser.getCin();
+             con.setUrl(Url);
+              NetworkManager.getInstance().addToQueueAndWait(con);
+              Message m = new Message("Body of message");
+              
+              //boolean success = m.sendMessageViaCloudSync("zanimo.esprit@gmail.com",  connectedUser.getEmail(), "", "Message Subject",
+                          //  "Check out Codename One at https://www.codenameone.com/");
+              Display.getInstance().sendMessage(new String[] {connectedUser.getEmail()}, "Subject of message", m);
+             // System.out.println(success);
+    }
+    
 }

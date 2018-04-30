@@ -14,6 +14,7 @@ import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.codename1.io.Log;
 import com.codename1.ui.Toolbar;
+import com.mycompany.gui.AffichageCabinets;
 import com.mycompany.gui.AffichagePromenade;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -47,6 +48,7 @@ public class MyApplication {
                SignInForm loginForm = new SignInForm(theme);
   
                loginForm.show();
+                
   
 
 

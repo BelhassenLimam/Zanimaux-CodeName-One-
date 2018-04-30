@@ -22,7 +22,9 @@ import com.codename1.ui.util.Resources;
 import com.codename1.ui.util.UIBuilder;
 import com.mycompany.entities.Cabinet;
 import com.mycompany.entities.Rendezvs;
+import static com.mycompany.gui.SignInForm.connectedUser;
 import com.mycompany.services.RendezvsService;
+import com.mycompany.services.UserService;
 import java.util.Date;
 
 
@@ -97,9 +99,12 @@ f.setScrollable(false);
          public void actionPerformed(ActionEvent evt) {
               //java.util.Date Heurerdv = new Date(dateTimePicker.getDate().getTime());
       
-      
-         Rendezvs rdv =new Rendezvs("11201120","1145", dateTimePicker.getDate());
-         
+      UserService us=new UserService();
+       System.out.println(SignInForm.connectedUser.getCin());
+             System.out.println(cab.getImmatriculeCabinet());
+
+         Rendezvs rdv =new Rendezvs(SignInForm.connectedUser.getCin(),cab.getImmatriculeCabinet(), dateTimePicker.getDate());
+            
           RendezvsService rdvs= new  RendezvsService();
           rdvs.addrdv(rdv);
                   

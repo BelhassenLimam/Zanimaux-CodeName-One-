@@ -22,7 +22,9 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Evenement;
+import java.io.IOException;
 import java.util.ArrayList;
+
 
 /**
  *
@@ -42,11 +44,16 @@ public class affichageAnnonce {
         theme = UIManager.initFirstTheme("/theme");
         f = new Form();
         contv = new Container(BoxLayout.y());
-                     
+       
+        
+               
         AnnonceService as=new AnnonceService();
         ArrayList<Annonce> lis=as.getAllAnnonce();
         System.out.println(lis.size());
+        /*Label titreInterface= new Label("Liste des evenements");
+        FontImage.setMaterialIcon(titreInterface, FontImage.MATERIAL_EVENT);
         
+       contv.add(titreInterface);*/
         for (int i =0;i<lis.size();i++)
         {
             conth = new Container(BoxLayout.x());
@@ -54,21 +61,31 @@ public class affichageAnnonce {
             imgv.setImage(theme.getImage(lis.get(i).getPieceJointe()).scaled(300, 300));
             Image img= imgv.getImage();
           
-           MultiButton evt = new MultiButton(lis.get(i).getTitre());
+            
+            MultiButton ann = new MultiButton(lis.get(i).getTitre());
+            
+            ann.setIcon(img);
+            ann.setTextLine2(lis.get(i).getType());
             Annonce a = lis.get(i);
-            evt.addActionListener(new ActionListener() {
+            ann.addActionListener(new ActionListener() {
                 
                 @Override
                 public void actionPerformed(ActionEvent evt) {
-                     AnnonceService ess=new AnnonceService();
-                 ArrayList<Annonce> lis= ess.getListAnnonceById(a.getIdAnnonce());
+                      AnnonceService ass=new AnnonceService();
+                 ArrayList<Annonce> lis= ass.getListAnnonceById(a.getIdAnnonce());
                  
-                 detailsAnnonce de =new detailsAnnonce(lis);
-                 de.getF().show();
+                 detailsAnnonce de;
+                    try {
+                        de = new detailsAnnonce(lis);
+                         de.getF().show();
+                    } catch (IOException ex) {
+                        
+                    }
+                
                 }
             });
            
-          conth.add(evt);
+          conth.add(ann);
         contv.add(conth);
           }
      
@@ -83,5 +100,6 @@ public class affichageAnnonce {
     public void setF(Form f) {
         this.f = f;
     }
+
     
 }

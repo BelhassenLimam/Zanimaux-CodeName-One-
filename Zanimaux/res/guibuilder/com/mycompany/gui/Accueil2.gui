@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component type="Form" layout="FlowLayout" flowLayoutFillRows="false" flowLayoutAlign="4" flowLayoutValign="4"  title="Accueil" name="Accueil">
+  <component type="Container" layout="BoxLayout" boxLayoutAxis="Y"  name="Container_1">
+    <component type="Container" layout="BoxLayout" boxLayoutAxis="X"  name="Container_4">
+      <component type="Button" name="dres">
+      </component>
+      <component type="Button" name="mag">
+      </component>
+    </component>
+    <component type="Container" layout="BoxLayout" boxLayoutAxis="X"  name="Container_3">
+      <component type="Button" name="doc">
+      </component>
+      <component type="Button" name="pet">
+      </component>
+    </component>
+    <component type="Container" layout="BoxLayout" boxLayoutAxis="X"  name="Container_2">
+      <component type="Button" name="ref">
+      </component>
+      <component type="Button" name="ev">
+      </component>
+    </component>
+  </component>
+</component>

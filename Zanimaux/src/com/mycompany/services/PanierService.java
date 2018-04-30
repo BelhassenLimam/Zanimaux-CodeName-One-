@@ -17,11 +17,13 @@ import com.mycompany.entities.ContenuPanier;
 import com.mycompany.entities.Magasin;
 import com.mycompany.entities.Panier;
 import com.mycompany.entities.Produit;
+import com.mycompany.gui.AffichagePanier;
 import static com.mycompany.gui.SignInForm.connectedUser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  *
@@ -141,9 +143,23 @@ public class PanierService {
      });
               NetworkManager.getInstance().addToQueueAndWait(con);
     }
+    public void suprimerProduitPanier(int idCP, int quantite, double prix)
+    {
+        ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost:8888/zanimauxWeb/web/app_dev.php/api/suppProdPanier/" +connectedUser.getCin()+"/"+idCP+"/"+prix+"/"+quantite);
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        
+        AffichagePanier p=null;
+        try {
+            p = new AffichagePanier();
+        } catch (IOException ex) {
+        }
+        p.getF().show();
+        
+    }
     public void passerCommande() {
         
-             ConnectionRequest con = new ConnectionRequest();
+             ConnectionRequest con = new ConnectionRequest();   
              String Url = "http://localhost:8888/zanimauxWeb/web/app_dev.php/api/passeCommande?cin=" +connectedUser.getCin();
              con.setUrl(Url);
               NetworkManager.getInstance().addToQueueAndWait(con);
@@ -153,6 +169,7 @@ public class PanierService {
                           //  "Check out Codename One at https://www.codenameone.com/");
               Display.getInstance().sendMessage(new String[] {connectedUser.getEmail()}, "Subject of message", m);
              // System.out.println(success);
+             
     }
     
 }

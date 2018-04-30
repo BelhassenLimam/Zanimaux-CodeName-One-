@@ -10,12 +10,14 @@ import com.codename1.components.SpanLabel;
 import com.codename1.io.Log;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
@@ -64,13 +66,20 @@ public class AffichagePanier
         {   Container cH= new Container(new BoxLayout(BoxLayout.X_AXIS));
             Container cV= new Container(new BoxLayout(BoxLayout.Y_AXIS));
             TextField quantite= new TextField(String.valueOf(cp.get(i).getQuantite()));
-            quantite.setWidth(50);
+            Style s = quantite.getAllStyles();
+            Dimension d = new Dimension(40, 20);
+            quantite.setPreferredSize(d);
             Button plus= new Button("+");
             Button minus= new Button("-");
+            Label suppr = new Label("");
+            FontImage.setMaterialIcon(suppr, FontImage.MATERIAL_DELETE);
+            Button sup = new Button("",Image.createImage("/delete.png").scaled(100,100));
             Container qt= new Container(new BoxLayout(BoxLayout.X_AXIS));
             qt.add(minus);
             qt.add(quantite);
             qt.add(plus);
+            qt.add(suppr);
+                    
             if(cp.get(i).getQuantite()==0){
                 minus.setEnabled(false);
             }
@@ -107,7 +116,15 @@ public class AffichagePanier
                 ms.modifierQuantite(idCP,idP,-1,px,connectedUser.getCin());
                 }
             }
-        });            
+        });    
+            suppr.addPointerPressedListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+            ms.suprimerProduitPanier(idCP, Integer.parseInt(quantite.getText()), px);
+
+                
+            }
+        });
         }
         Button passerCommande= new Button("passer commande");
         f.add(passerCommande);
@@ -117,6 +134,8 @@ public class AffichagePanier
                 ms.passerCommande();
             }
         });
+       
+                
         
         }
     

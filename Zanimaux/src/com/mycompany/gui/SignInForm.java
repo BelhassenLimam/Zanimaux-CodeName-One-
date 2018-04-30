@@ -78,7 +78,6 @@ public class SignInForm extends com.codename1.ui.Form {
     private com.codename1.ui.TextField gui_Text_Field_1 = new com.codename1.ui.TextField();
     private com.codename1.ui.Button gui_Button_2 = new com.codename1.ui.Button();
     private com.codename1.ui.Button gui_Button_3 = new com.codename1.ui.Button();
-    private com.codename1.ui.Button gui_Button_1 = new com.codename1.ui.Button();
     private CheckBox gui_check = new CheckBox();
 
 // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
@@ -151,12 +150,9 @@ gui_check.setSelected(true);
         gui_Button_3.setText("Forgot Your Password");
         gui_Button_3.setUIID("CenterLabelSmall");
         gui_Button_3.setName("Button_3");
-        addComponent(com.codename1.ui.layouts.BorderLayout.SOUTH, gui_Button_1);
         gui_Container_1.setScrollableY(true);
         gui_Container_1.setName("Container_1");
-        gui_Button_1.setText("Create New Account");
-        gui_Button_1.setUIID("CenterLabel");
-        gui_Button_1.setName("Button_1");
+          
     }// </editor-fold>
 
 //-- DON'T EDIT ABOVE THIS LINE!!!

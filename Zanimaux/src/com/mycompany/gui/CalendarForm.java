@@ -11,14 +11,12 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
-import com.codename1.io.Storage;
-import com.codename1.io.Util;
+import com.codename1.l10n.ParseException;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.FontImage;
-
 import com.codename1.ui.Form;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
@@ -28,19 +26,22 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
+import com.mycompany.entities.Cabinet;
 import com.mycompany.entities.Rendezvs;
 import com.mycompany.entities.User;
 import static com.mycompany.gui.SignInForm.connectedUser;
+import com.mycompany.services.CabinetService;
 import com.mycompany.services.RendezvsService;
+import com.mycompany.services.UserService;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 
 
 /**
@@ -50,9 +51,10 @@ import java.util.Map;
 public class CalendarForm extends Form {
     StringBuffer str = new StringBuffer();
     int ch;
+    
     public CalendarForm() {
         this(com.codename1.ui.util.Resources.getGlobalResources());
-    }
+        this.setScrollable(true);  }
     
     public CalendarForm(com.codename1.ui.util.Resources resourceObjectInstance) {
             Label notiflabel =new Label(" ");
@@ -71,6 +73,7 @@ public class CalendarForm extends Form {
              
             }
             notiflabel.setVisible(true); 
+         add(notiflabel);
         
         initGuiBuilderComponents(resourceObjectInstance);
         setLayout(BoxLayout.y());
@@ -78,6 +81,7 @@ public class CalendarForm extends Form {
         getContentPane().setScrollVisible(false);
         getToolbar().setUIID("Container");
         Button b = new Button(" ");
+      
         b.setUIID("Container");
         getToolbar().setTitleComponent(b);
         getTitleArea().setUIID("Container");
@@ -106,47 +110,95 @@ public class CalendarForm extends Form {
         Component combos = bl.getNorth();
         gui_Calendar_1.replace(combos, cnt, null);
           ConnectionRequest con = new ConnectionRequest();
-          String immatriculecabinet = "1145";
-        con.setUrl("http://localhost/Mobile/ShowRDV.php?immatriculecabinet="+immatriculecabinet);
+        
+           UserService us = new UserService(); 
+ 
+        CabinetService cs = new CabinetService();
+        User u = SignInForm.connectedUser;
+        Cabinet c = cs.getCabinetByCin(u.getCin());
+        
+     
+        con.setUrl("http://localhost/Mobile/ShowRDV.php?immatriculecabinet="+c.getImmatriculeCabinet());
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
                              ArrayList<Rendezvs> data = getListRDV(new String(con.getResponseData()));
-                for (Rendezvs e : data) {
+                           
+                             for (Rendezvs e : data) {
                     
-                    
-                       Util.register("user", User.class);
-                    User uc = (User) Storage.getInstance().readObject("user");
-                    if (uc != null) {
-                        if (uc.getCin() == e.getCin()) {
-                           // particip.setText("You're the owner");
-                     //       refreshTheme();
-                        ConnectionRequest cnx1 = new ConnectionRequest("http://localhost/Mobile/ShowrRdvdetail.php?idrdv="+e.getIdrdv()) {
+                        ConnectionRequest cnx1 = new ConnectionRequest("http://localhost/Mobile/ShowRdvdetail.php?idrdv="+e.getIdrdv()) {
                         @Override
                         protected void readResponse(InputStream input) throws IOException {
-
-                          Rendezvs rdv = new Rendezvs();
-                          add(createEntry(resourceObjectInstance, false, e.getHeurerdv(), e.getImmatriculecabinet()));
+                           Rendezvs r = new Rendezvs();
+                            r = findR(input);
+                            UserService U = new UserService();
+                            User client =  U.getUserBycin(r.getCin());
+                            System.out.println(r.getHeurerdv());
+                          add(createEntry(resourceObjectInstance,false ,r.getHeurerdv(),r.getImmatriculecabinet(),client.getNom(),client.getPrenom(),client.getTelephone()));
                     refreshTheme();
+                    
                             
                        
                         }
 
                         };
                     NetworkManager.getInstance().addToQueue(cnx1);
-                      
-                     
-                        }}}
-       }});
+                     }
+            }});
          NetworkManager.getInstance().addToQueue(con);}
+                      
+//                     
+//                        
+//       
+//              ConnectionRequest  con1 = new ConnectionRequest() {
+//                                @Override
+//                                protected void postResponse() {
+//                                    System.out.println(str.toString());
+//
+//                                   if (str.toString().trim().equals("OK")) {
+//                                          str = new StringBuffer();
+//                                          
+//                                     ConnectionRequest cnx1 = new ConnectionRequest("http://localhost/Mobile/ShowRdvdetail.php?idrdv="+e.getIdrdv())  {
+//                        @Override
+//                        protected void readResponse(InputStream input) throws IOException {
+//                      
+//                          add(createEntry(resourceObjectInstance, false, e.getHeurerdv(), e.getImmatriculecabinet()));
+//                    refreshTheme();
+//                        }
+//
+//                    };
+//                    NetworkManager.getInstance().addToQueue(cnx1);
+//                                        
+//                                    }
+//                                }
+//
+//                                @Override
+//                                protected void readResponse(InputStream input) throws IOException {
+//                                    int i=0;
+//                                
+//                                    while ((ch = input.read()) != (-1)) {
+//                                  
+//                                        str.append((char) ch);
+//                                        
+//                                    }
+//                             
+//                                }
+//
+//                            };
+                           
+                            
 
     
     
         
-    private Container createEntry(Resources res, boolean selected, Date Heurerdv, String immatriculecabinet) {
-        String temps= Heurerdv.toString();
+    private Container createEntry(Resources res, boolean selected, Date Heurerdv,String immatriculecabinet, String nom, String prenom,  String telephone) {
+        
+         SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
+        format.applyPattern("dd/MM/yyyy");
+        String temps= format.format(Heurerdv);
+        System.out.println(temps);
         Component time = new Label(temps, "CalendarHourUnselected");
-        if(selected) {
+         if(selected) {
             time.setUIID("CalendarHourSelected");
         }
         
@@ -156,30 +208,34 @@ public class CalendarForm extends Form {
         );
         
         Container cnt = new Container(BoxLayout.x());
-   
+//        for(String att : images) {
+//            cnt.add(res.getImage(att));
+//        }
         Container mainContent = BoxLayout.encloseY(
-                BoxLayout.encloseY(
-                        new Label(immatriculecabinet, "SmallLabel"),
-                        new Label(temps, "SmallThinLabel")),
-                       cnt
-              
+                BoxLayout.encloseX(
+                       new Label(immatriculecabinet, "SmallLabel"),
+                         new Label(telephone.toString(), "SmallLabel"), 
+                       new Label(temps, "SmallLabel"), 
+                        new Label("-", "SmallThinLabel"), 
+                        new Label(nom, "SmallThinLabel"), 
+                        new Label("-", "SmallThinLabel"),
+                        new Label(prenom, "SmallThinLabel")),
+                        cnt
+        
+                
+         
+                
         );
         
-//        Label redLabel = new Label("", "RedLabelRight");
-//        FontImage.setMaterialIcon(redLabel, FontImage.MATERIAL_LOCATION_ON);
-//        Container loc = BoxLayout.encloseX(
-//                redLabel,
-//                new Label("Location:", "TinyThinLabelRight"),
-//                new Label(location, "TinyBoldLabel")
-//        );
+        
         
         mainContent= BorderLayout.center(mainContent).
                 add(BorderLayout.WEST, circleBox);
         
         return BorderLayout.center(mainContent).
-                add(BorderLayout.WEST, FlowLayout.encloseCenter(time)).
-//                add(BorderLayout.SOUTH, loc).
-        add(BorderLayout.NORTH,new Label("     ", "Separator"));
+                add(BorderLayout.WEST, FlowLayout.encloseCenter(time));
+             
+        
     }
     
 //-- DON'T EDIT BELOW THIS LINE!!!
@@ -197,9 +253,8 @@ public class CalendarForm extends Form {
 
 //-- DON'T EDIT ABOVE THIS LINE!!!
 
-    protected boolean isCurrentCalendar() {
-        return true;
-    }
+   
+  
 
     @Override
     protected void initGlobalToolbar() {
@@ -218,14 +273,21 @@ public class CalendarForm extends Form {
 
             System.out.println();
             List<Map<String, Object>> list = (List<Map<String, Object>>) lie.get("root");
-
+  SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
             for (Map<String, Object> obj : list) {
                Rendezvs e = new Rendezvs();//id, json, status);
                 e.setIdrdv((int) Integer.parseInt(obj.get("idrdv").toString()));
                 e.setCin((obj.get("cin").toString()));
                 e.setImmatriculecabinet(obj.get("immatriculecabinet").toString());
-               
-               // e.setHeurerdv(obj.valu);
+                
+                Date  heurerdv;
+                try {
+                    heurerdv = format.parse(obj.get("heurerdv").toString());
+                    e.setHeurerdv(heurerdv);
+                } catch (ParseException ex) {
+                    
+                }
+            
                 //e.setLieu(obj.get("lieu").toString());
                
 
@@ -239,6 +301,44 @@ public class CalendarForm extends Form {
         return liste;
 
     }
+      
+      
+      public Rendezvs findR (InputStream in) {
+
+        //    System.out.println("JSON***********\n"+json);
+        Rendezvs e = new Rendezvs();
+        try {
+            JSONParser j = new JSONParser();
+            Reader reader = new InputStreamReader(in, "UTF-8");
+            Map<String, Object> data = j.parseJSON(reader);
+
+//            Map<String, Object> task = j.parseJSON(new CharArrayReader(json.toCharArray()));
+            System.out.println("*********:" + data);
+            List<Map<String, Object>> d = (List<Map<String, Object>>) data.get("root");
+           SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
+            for (Map<String, Object> obj : d) {
+             float id = Float.parseFloat(obj.get("idrdv").toString());
+                e.setIdrdv((int)id);
+                e.setImmatriculecabinet((obj.get("immatriculecabinet").toString()));
+                e.setCin(obj.get("cin").toString());
+                
+               
+                try {
+                    Date heurerdv = format.parse(obj.get("heurerdv").toString());
+                    e.setHeurerdv(heurerdv);
+                   
+                     } catch (ParseException ex) {
+                            System.out.println("   erreurdate");
+                     }
+                      
+                    }
+                } catch (IOException ex) {
+                }
+
+        return e;
+
+    }
+
         }
 
 

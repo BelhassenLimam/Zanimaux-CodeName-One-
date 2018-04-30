@@ -100,10 +100,10 @@ f.setScrollable(false);
               //java.util.Date Heurerdv = new Date(dateTimePicker.getDate().getTime());
       
       UserService us=new UserService();
-       //System.out.println(connectedUser.getCin());
+       System.out.println(SignInForm.connectedUser.getCin());
              System.out.println(cab.getImmatriculeCabinet());
 
-         Rendezvs rdv =new Rendezvs("11201120",cab.getImmatriculeCabinet(), dateTimePicker.getDate());
+         Rendezvs rdv =new Rendezvs(SignInForm.connectedUser.getCin(),cab.getImmatriculeCabinet(), dateTimePicker.getDate());
             
           RendezvsService rdvs= new  RendezvsService();
           rdvs.addrdv(rdv);

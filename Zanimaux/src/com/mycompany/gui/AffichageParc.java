@@ -59,10 +59,15 @@ public class AffichageParc
          UserService u = new UserService();
          str = SignInForm.connectedUser.getCin();
          AvisService a = new AvisService();
+         
         ArrayList<Parc> lis=ms.getAllParc();
+        
         for (int i =0;i<lis.size();i++)
             
-        {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+        {  
+             
+        
+            Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
        c.getUnselectedStyle().setPadding(10, 5, 5, 5);
        
             Container c2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
@@ -74,6 +79,7 @@ public class AffichageParc
             ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoParc()).scaled(100, 100));
             Label t =new Label(lis.get(i).getAdresseParc()+" "+lis.get(i).getVilleParc()+", "+lis.get(i).getCodePostaleParc());
             Parc m = lis.get(i);
+            
            Slider starRank = new Slider();
     starRank.setEditable(true);
     starRank.setMinValue(0);
@@ -102,21 +108,25 @@ public class AffichageParc
                 Avis a1 = new Avis(m.getId(),starRank.getProgress(),str);
                 a.addavis(a1);
             }}); 
+           
+            
             
             c2.add(iv);
             c3.add(lb);
             c3.add(t);
             c2.add(c3);
             c.add(c2);
-            
-            c.add(FlowLayout.encloseCenter(starRank));
+             c.add(FlowLayout.encloseCenter(starRank));
             c.add(b1);
+            
             
             
             f.add(c); 
             
-            
+        
             lb.setText(lis.get(i).getNomParc());
+        
+        
         }
     }
 

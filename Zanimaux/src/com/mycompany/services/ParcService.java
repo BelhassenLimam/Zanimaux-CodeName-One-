@@ -53,6 +53,7 @@ public class ParcService {
                         m.setVilleParc(obj.get("villeParc").toString());
                         m.setCodePostaleParc((int)cdp);
                         m.setPhotoParc(obj.get("photoParc").toString());
+                        m.setCinDresseur(obj.get("cinDresseur").toString());
                         listTasks.add(m);
                     }
                 } catch (IOException ex) {
@@ -64,5 +65,51 @@ public class ParcService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return listTasks;
     }
+        
+         public ArrayList<Parc>  getParcByCin(String cin){
+             ArrayList<Parc> listTasks = new ArrayList<>();
+       ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost:8888/WebServiceMobile/GetParcByCin.php?cinDresseur="+cin);
+    
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                //listTasks = getListTask(new String(con.getResponseData()));
+                JSONParser jsonp = new JSONParser();
+                
+                try {
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
+                    System.out.println("roooooot:" +tasks.get("root"));
+
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
+
+                    for (Map<String, Object> obj : list) {
+                        float cdp = Float.parseFloat(obj.get("codePostaleParc").toString());
+                       
+                        Parc parc = new Parc();
+                        
+                       
+                        parc.setId(obj.get("id").toString());
+                         parc.setNomParc(obj.get("nomParc").toString());
+                        parc.setCategorieDressage(obj.get("CategorieDressage").toString());
+                        parc.setAdresseParc(obj.get("adresseParc").toString());
+                        parc.setVilleParc(obj.get("villeParc").toString());
+                        parc.setCodePostaleParc((int)cdp);
+                        parc.setPhotoParc(obj.get("photoParc").toString());
+                        parc.setCinDresseur(obj.get("cinDresseur").toString());
+                      listTasks.add(parc);
+                
+                        
+
+                    }
+                } catch (IOException ex) {
+                }
+
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(con);
+          return listTasks;
+ }
     
 }

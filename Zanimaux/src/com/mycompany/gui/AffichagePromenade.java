@@ -119,7 +119,7 @@ public class AffichagePromenade
                 
                 ConnectionRequest con;
                 con = new ConnectionRequest();
-                con.setUrl("http://localhost:8888/VerifAvis.php?idParc=" +m.getId()+ "&cinUser=" +str+"");
+                con.setUrl("http://localhost:8888/WebServiceMobile/VerifAvis.php?idParc=" +m.getId()+ "&cinUser=" +str+"");
                 NetworkManager.getInstance().addToQueue(con);
                 con.addResponseListener(new ActionListener<NetworkEvent>() {
                     @Override

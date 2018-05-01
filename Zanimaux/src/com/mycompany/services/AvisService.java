@@ -38,11 +38,13 @@ public class AvisService {
         ConnectionRequest con = new ConnectionRequest();
         
         con.setPost(false);
-       con.setUrl("http://localhost:8888/AjoutAvis.php?idParc="+m.getIdParc()
+       con.setUrl("http://localhost:8888/WebServiceMobile/AjoutAvis.php?idParc="+m.getIdParc()
         +"&avis="+m.getAvis()+"&cinUser="+m.getCinUser());
         NetworkManager.getInstance().addToQueue(con);
         System.err.println("aaaaa");
     }
+    
+    
     
   
 } 

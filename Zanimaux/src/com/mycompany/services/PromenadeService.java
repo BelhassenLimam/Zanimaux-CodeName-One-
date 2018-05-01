@@ -65,5 +65,52 @@ public class PromenadeService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return listTasks;
    }
+        
+              public ArrayList<Promenade>  getPromenadeByCin(String cin){
+             ArrayList<Promenade> listTasks = new ArrayList<>();
+       ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost:8888/WebServiceMobile/GetPromenadeByCin.php?cinPetsitter="+cin);
+    
+        con.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                //listTasks = getListTask(new String(con.getResponseData()));
+                JSONParser jsonp = new JSONParser();
+                
+                try {
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
+                    System.out.println("roooooot:" +tasks.get("root"));
+
+                    List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
+
+                    for (Map<String, Object> obj : list) {
+                        
+                        Promenade promenade = new Promenade();
+                        
+                       
+                        promenade.setId(obj.get("id").toString());
+                        promenade.setNomPromenade(obj.get("nomPromenade").toString());
+                        promenade.setTypePromenade(obj.get("typePromenade").toString());
+                        promenade.setLieuPromenade(obj.get("lieuPromenade").toString());
+                        promenade.setDescriptionPromenade(obj.get("descriptionPromenade").toString());
+                        /*m.setDateDebutPromenade(Date.);
+                        m.setDateFinPromenade(Date.parse(df));*/
+                        promenade.setPhotoPromenade(obj.get("photoPromenade").toString());
+                        promenade.setCinPetsitter(obj.get("cinPetsitter").toString());
+                        
+                      listTasks.add(promenade);
+                
+                        
+
+                    }
+                } catch (IOException ex) {
+                }
+
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(con);
+          return listTasks;
+ }
     
 }

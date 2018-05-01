@@ -95,6 +95,59 @@ public class AffichagePromenade
             PromenadeService ms=new PromenadeService();
             UserService u = new UserService();
             str = SignInForm.connectedUser.getCin();
+             tb.addCommandToOverflowMenu("Mes parcs",Image.createImage("/event.png").scaled(25,25),e->{
+               
+               
+            Form f2 = new Form(new BoxLayout(BoxLayout.Y_AXIS));   
+           ms.getPromenadeByCin(str);
+           Toolbar tb2 = f2.getToolbar();
+           tb2.addMaterialCommandToLeftBar("Retour",FontImage.MATERIAL_ARROW_BACK, e1->{
+                        f.showBack();
+                    });
+            ArrayList<Promenade> lis2=ms.getPromenadeByCin(str);
+            
+            for (int i =0;i<lis2.size();i++)
+               
+           {
+               Container co = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+               co.getUnselectedStyle().setPadding(10, 5, 5, 5);
+               
+               Container cp2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
+               
+               Container cp3 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+               Label lbo = new Label();
+               
+               //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
+               ImageViewer iv = new ImageViewer(theme.getImage(lis2.get(i).getPhotoPromenade()).scaled(100, 100));
+                Label ad = new Label("Lieu :");
+                ad.getUnselectedStyle().setFgColor(0xf64139);
+                Label t =new Label(lis2.get(i).getLieuPromenade());
+                Label ad2 = new Label("Type :");
+                ad2.getUnselectedStyle().setFgColor(0xf64139);
+                Label t1 =new Label(lis2.get(i).getTypePromenade());
+               
+                cp2.add(iv);
+                cp3.add(lbo);
+                cp3.add(ad2);
+                cp3.add(t1);
+                cp3.add(ad);
+                cp3.add(t);
+                cp2.add(cp3);
+                co.add(cp2);
+                
+                
+                f.add(co);
+                
+                lbo.setText(lis2.get(i).getNomPromenade());
+                
+           }
+            f2.show();
+              
+               
+           
+              
+           });
+            
             AvisService a = new AvisService();
             
             ArrayList<Promenade> lis=ms.getAllPromenade();

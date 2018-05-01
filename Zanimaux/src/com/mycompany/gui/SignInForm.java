@@ -18,6 +18,8 @@
  */
 package com.mycompany.gui;
 
+import com.codename1.db.Cursor;
+import com.codename1.db.Database;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
@@ -31,6 +33,7 @@ import com.codename1.location.LocationManager;
 import com.codename1.ui.CheckBox;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.FontImage;
+import com.codename1.ui.Label;
 
 import com.codename1.ui.events.ActionListener;
 
@@ -54,6 +57,7 @@ import java.util.Map;
 public class SignInForm extends com.codename1.ui.Form {
     StringBuffer str = new StringBuffer();
     public static User connectedUser;
+    Database db;
     int ch;
     public SignInForm() {
         this(com.codename1.ui.util.Resources.getGlobalResources());   
@@ -78,8 +82,8 @@ public class SignInForm extends com.codename1.ui.Form {
     private com.codename1.ui.TextField gui_Text_Field_1 = new com.codename1.ui.TextField();
     private com.codename1.ui.Button gui_Button_2 = new com.codename1.ui.Button();
     private com.codename1.ui.Button gui_Button_3 = new com.codename1.ui.Button();
-    private com.codename1.ui.Button gui_Button_1 = new com.codename1.ui.Button();
     private CheckBox gui_check = new CheckBox();
+   
 
 // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void guiBuilderBindComponentListeners() {
@@ -151,19 +155,16 @@ gui_check.setSelected(true);
         gui_Button_3.setText("Forgot Your Password");
         gui_Button_3.setUIID("CenterLabelSmall");
         gui_Button_3.setName("Button_3");
-        addComponent(com.codename1.ui.layouts.BorderLayout.SOUTH, gui_Button_1);
         gui_Container_1.setScrollableY(true);
         gui_Container_1.setName("Container_1");
-        gui_Button_1.setText("Create New Account");
-        gui_Button_1.setUIID("CenterLabel");
-        gui_Button_1.setName("Button_1");
+          
     }// </editor-fold>
 
 //-- DON'T EDIT ABOVE THIS LINE!!!
     public void onButton_2ActionEvent(com.codename1.ui.events.ActionEvent ev) {
-            ConnectionRequest con;
+        ConnectionRequest con;
         con = new ConnectionRequest();
-        con.setUrl("http://localhost/WebServiceMobile/loginW.php?username="+gui_Text_Field_2.getText()+"&pwd="+gui_Text_Field_1.getText()+"");
+        con.setUrl("http://localhost:8888/MobileServiceWeb/loginW.php?username="+gui_Text_Field_2.getText()+"&pwd="+gui_Text_Field_1.getText()+"");
         
     con.addResponseListener(new ActionListener<NetworkEvent>() {
            @Override
@@ -182,7 +183,29 @@ gui_check.setSelected(true);
                     try {
                         UserService u = new UserService();
                         connectedUser = u.getConnectedUser(str);
-                        
+                        if(gui_check.isSelected())
+                        {
+                             try {
+                             db = Database.openOrCreate("pidev");
+                             db.execute("Create table if not exists user (username TEXT, password TEXT)");
+                             } catch (IOException ex) {
+                             }
+                             boolean exist=false;
+                             Cursor c = db.executeQuery("Select * from user");
+                                while((c.next())&& (!exist)){
+                                    if(c.getRow().getString(0)==gui_Text_Field_2.getText())
+                                    {
+                                        System.out.println(c.getRow().getString(0));
+                                        exist=true;
+                                    }
+                            }
+                                if(!exist)
+                                {
+                                    db.execute("Insert into user(username,password) values('"+gui_Text_Field_2.getText()+"','"+gui_Text_Field_1.getText()+"')");
+
+                                }
+                            
+                        }
                         //System.out.println(connectedUser.getCin());
                         Accueil2 form= new Accueil2();
                         form.show();

@@ -17,11 +17,13 @@ import com.mycompany.entities.ContenuPanier;
 import com.mycompany.entities.Magasin;
 import com.mycompany.entities.Panier;
 import com.mycompany.entities.Produit;
+import com.mycompany.gui.AffichagePanier;
 import static com.mycompany.gui.SignInForm.connectedUser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  *
@@ -120,11 +122,51 @@ public class PanierService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return listcontenuPanier;
     }
+<<<<<<< HEAD
           
           public void passerCommande() {
         
              ConnectionRequest con = new ConnectionRequest();   
              String Url = "http://localhost/zanimauxFinal/web/app_dev.php/api/passeCommande?cin=" +connectedUser.getCin();
+=======
+
+    public void modifierQuantite(int idCP, int idP, int i, double prix,String cin) {
+        
+             ConnectionRequest con = new ConnectionRequest();
+             con.setUrl("http://localhost:8888/MobileServiceWeb/modifQuantitePanier.php?idP="+idP+"&idCP="+idCP+"&quantite="+i+"&prix="+prix+"&cin="+cin);
+             con.addResponseListener(new ActionListener<NetworkEvent>() {
+           @Override
+            public void actionPerformed(NetworkEvent evt) {
+                
+                String str = new String(con.getResponseData());
+                System.out.println(str);
+
+                }
+                
+
+           
+     });
+              NetworkManager.getInstance().addToQueueAndWait(con);
+    }
+    public void suprimerProduitPanier(int idCP, int quantite, double prix)
+    {
+        ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost:8888/zanimauxWeb/web/app_dev.php/api/suppProdPanier/" +connectedUser.getCin()+"/"+idCP+"/"+prix+"/"+quantite);
+        NetworkManager.getInstance().addToQueueAndWait(con);
+        
+        AffichagePanier p=null;
+        try {
+            p = new AffichagePanier();
+        } catch (IOException ex) {
+        }
+        p.getF().show();
+        
+    }
+    public void passerCommande() {
+        
+             ConnectionRequest con = new ConnectionRequest();   
+             String Url = "http://localhost:8888/zanimauxWeb/web/app_dev.php/api/passeCommande?cin=" +connectedUser.getCin();
+>>>>>>> d59cd808943947669b3da74949c241863a9fa9ec
              con.setUrl(Url);
               NetworkManager.getInstance().addToQueueAndWait(con);
               Message m = new Message("Body of message");
@@ -135,6 +177,11 @@ public class PanierService {
              // System.out.println(success);
              
     }
+<<<<<<< HEAD
           
           
+=======
+    
+
+>>>>>>> d59cd808943947669b3da74949c241863a9fa9ec
 }

@@ -34,10 +34,11 @@ public class CommentaireService {
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
-                //listTasks = getListTask(new String(con.getResponseData()));
-                JSONParser jsonp = new JSONParser();
-                
                 try {
+                    //listTasks = getListTask(new String(con.getResponseData()));
+                    JSONParser jsonp = new JSONParser();
+                    
+                    
                     //renvoi une map avec clé = root et valeur le reste
                     Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con.getResponseData()).toCharArray()));
                     System.out.println("roooooot:" +tasks.get("root"));
@@ -47,21 +48,25 @@ public class CommentaireService {
                     for (Map<String, Object> obj : list) {
                         Commentaires animal = new Commentaires();
                         int id=Integer.parseInt(obj.get("id").toString());
-                         SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
-                        Date  date= format.parse(obj.get("date").toString());
-                         animal.setDate(date);
+                        SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
+                        Date  date = null;
+                        try {
+                            date = format.parse(obj.get("date").toString());
+                        } catch (ParseException ex) {
+                        }
+                        animal.setDate(date);
                         animal.setRefuge(im);
                         animal.setId(id);
                         animal.setCin(obj.get("cin").toString());
                         animal.setContenant(obj.get("contenant").toString());
-                       
-                   
+                        
+                        
                         listcom.add(animal);
 
                     }
                 } catch (IOException ex) {
-                } catch (ParseException ex) {
                 }
+               
 
             }
         });

@@ -122,14 +122,14 @@ public class PanierService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return listcontenuPanier;
     }
-<<<<<<< HEAD
+
           
-          public void passerCommande() {
+         /* public void passerCommande() {
         
              ConnectionRequest con = new ConnectionRequest();   
              String Url = "http://localhost/zanimauxFinal/web/app_dev.php/api/passeCommande?cin=" +connectedUser.getCin();
-=======
-
+          }
+*/
     public void modifierQuantite(int idCP, int idP, int i, double prix,String cin) {
         
              ConnectionRequest con = new ConnectionRequest();
@@ -166,7 +166,7 @@ public class PanierService {
         
              ConnectionRequest con = new ConnectionRequest();   
              String Url = "http://localhost:8888/zanimauxWeb/web/app_dev.php/api/passeCommande?cin=" +connectedUser.getCin();
->>>>>>> d59cd808943947669b3da74949c241863a9fa9ec
+
              con.setUrl(Url);
               NetworkManager.getInstance().addToQueueAndWait(con);
               Message m = new Message("Body of message");
@@ -177,11 +177,5 @@ public class PanierService {
              // System.out.println(success);
              
     }
-<<<<<<< HEAD
-          
-          
-=======
-    
 
->>>>>>> d59cd808943947669b3da74949c241863a9fa9ec
 }

@@ -170,7 +170,6 @@ public class connexion {
                                     db.execute("Insert into user(username,password) values('"+username.getText()+"','"+password.getText()+"')");
 
                                 }
-                            
                         }
                         //System.out.println(connectedUser.getCin());
                         Accueil2 form= new Accueil2();
@@ -178,13 +177,10 @@ public class connexion {
                     } catch (IOException ex) {
                         
                     }
-
                     }
 
                 }
                 
-
-           
      });
 
         NetworkManager.getInstance().addToQueue(con);  

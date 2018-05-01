@@ -1,6 +1,6 @@
 <?php
    //open connection to mysql db
-    $connection = mysqli_connect("localhost","root","","zanimaux") or die("Error " . mysqli_error($connection));
+    $connection = mysqli_connect("localhost","root","root","zanimauxfinal") or die("Error " . mysqli_error($connection));
 mysqli_set_charset($connection, "utf8");
     //fetch table rows from mysql db
 $cinDresseur= $_GET['cinDresseur'];

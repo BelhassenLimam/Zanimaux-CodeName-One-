@@ -34,16 +34,14 @@ import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
-<<<<<<< HEAD
-=======
 import com.mycompany.entities.Avis;
 import com.mycompany.entities.User;
 import static com.mycompany.gui.SignInForm.connectedUser;
->>>>>>> d59cd808943947669b3da74949c241863a9fa9ec
 import com.mycompany.services.AvisService;
 import com.mycompany.services.UserService;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javafx.scene.control.TextField;
 
 /**
@@ -60,94 +58,6 @@ public class AffichageParc
     
     
     public AffichageParc() { 
-<<<<<<< HEAD
-        theme = UIManager.initFirstTheme("/theme");
-        f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
-        ParcService ms=new ParcService();
-
-         UserService u = new UserService();
-         String str = SignInForm.connectedUser.getCin();
-         AvisService a = new AvisService();
-         
-
-        ArrayList<Parc> lis=ms.getAllParc();
-       
-        for (int i =0;i<lis.size();i++)
-            
-        {  
-             
-        
-            Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-       c.getUnselectedStyle().setPadding(10, 5, 5, 5);
-       
-            Container c2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
-           
-            Container c3 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-            Label lb = new Label();
-            
-            //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
-            ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoParc()).scaled(100, 100));
-            Label t =new Label(lis.get(i).getAdresseParc()+" "+lis.get(i).getVilleParc()+", "+lis.get(i).getCodePostaleParc());
-            Parc m = lis.get(i);
-       
-         
-      ConnectionRequest con;
-        con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/VerifAvis.php?idParc=" +m.getId()+ "&cinUser=" +str+"");
-        NetworkManager.getInstance().addToQueue(con);
-    con.addResponseListener(new ActionListener<NetworkEvent>() {
-           @Override
-            public void actionPerformed(NetworkEvent evt) {
-                
-                String av2 = new String(con.getResponseData());
-                System.out.println(av2);
-                if(av2.equalsIgnoreCase("n existe pas")){   
-                    
-    Slider starRank = new Slider();
-    starRank.setEditable(true);
-    starRank.setMinValue(0);
-    starRank.setMaxValue(5);
-    Font fnt = Font.createTrueTypeFont("native:mainLight", "native:mainLight").
-            derive(Display.getInstance().convertToPixels(5, true), Font.STYLE_PLAIN);
-    Style s = new Style(0xffff33, 0, fnt, (byte)0);
-    Image fullStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
-    s.setOpacity(100);
-    s.setFgColor(0);
-    Image emptyStar = FontImage.createMaterial(FontImage.MATERIAL_STAR, s).toImage();
-    initStarRankStyle(starRank.getSliderEmptySelectedStyle(), emptyStar);
-    initStarRankStyle(starRank.getSliderEmptyUnselectedStyle(), emptyStar);
-    initStarRankStyle(starRank.getSliderFullSelectedStyle(), fullStar);
-    initStarRankStyle(starRank.getSliderFullUnselectedStyle(), fullStar);
-    starRank.setPreferredSize(new Dimension(fullStar.getWidth() * 5, fullStar.getHeight()));
-    Button b1 = new Button("Evaluer");
-    
-    b1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                System.out.println(starRank.getProgress());
-                System.out.println(m.getId());
-
-                System.out.println(str);
-                /*Avis a1 = new Avis(m.getId(),starRank.getProgress(),str);
-                a.addavis(a1);*/
-                AffichageParc loginForm = new AffichageParc();
-                loginForm.getF().show();
-
-            }}); 
-                c.add(FlowLayout.encloseCenter(starRank));
-                c.add(b1);
-                };
-               
-            };
-    });
-            
-
-            c2.add(iv);
-            c3.add(lb);
-            c3.add(t);
-            c2.add(c3);
-            c.add(c2);
-=======
        try {
            theme = UIManager.initFirstTheme("/theme");
            f = new Form(new BoxLayout(BoxLayout.Y_AXIS));
@@ -157,7 +67,6 @@ public class AffichageParc
            Container topBar = BorderLayout.centerAbsolute(new Label());
            Label menu = new Label("Menu");
            menu.getUnselectedStyle().setFgColor(0xffffff);
->>>>>>> d59cd808943947669b3da74949c241863a9fa9ec
            
            topBar.add(BorderLayout.CENTER, menu);
            
@@ -179,10 +88,18 @@ public class AffichageParc
            FormProduit.getF().show();});
            tb.addCommandToSideMenu("Refuge", Image.createImage("/shelter.png").scaled(25,25), e -> {AffichageRefuge FormProduit = new AffichageRefuge();
            FormProduit.getF().show();});
-           tb.addCommandToSideMenu("Evenement", Image.createImage("/event.png").scaled(25,25), e -> {afficherEvenement FormProduit = new afficherEvenement();
-           FormProduit.getF().show();});
-           tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> {affichageAnnonce FormProduit = new affichageAnnonce();
-           FormProduit.getF().show();});
+           tb.addCommandToSideMenu("Evenement", Image.createImage("/event.png").scaled(25,25), e -> {try {
+               afficherEvenement FormProduit = new afficherEvenement();
+               FormProduit.getF().show();
+               } catch (IOException ex) {
+                    }
+});
+           tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> {try {
+               affichageAnnonce FormProduit = new affichageAnnonce();
+               FormProduit.getF().show();
+               } catch (IOException ex) {
+                 }
+});
            tb.addCommandToOverflowMenu("Mes parcs",Image.createImage("/event.png").scaled(25,25),e->{
                
                

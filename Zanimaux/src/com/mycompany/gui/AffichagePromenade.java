@@ -46,6 +46,7 @@ import java.util.ArrayList;
 
 
 
+
 /**
  *
  * @author macbookpro
@@ -87,10 +88,18 @@ public class AffichagePromenade
             FormProduit.getF().show();});
             tb.addCommandToSideMenu("Refuge", Image.createImage("/shelter.png").scaled(25,25), e -> {AffichageRefuge FormProduit = new AffichageRefuge();
             FormProduit.getF().show();});
-            tb.addCommandToSideMenu("Evenement", Image.createImage("/event.png").scaled(25,25), e -> {afficherEvenement FormProduit = new afficherEvenement();
-            FormProduit.getF().show();});
-            tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> {affichageAnnonce FormProduit = new affichageAnnonce();
-            FormProduit.getF().show();});
+            tb.addCommandToSideMenu("Evenement", Image.createImage("/event.png").scaled(25,25), e -> {try {
+                afficherEvenement FormProduit = new afficherEvenement();
+                FormProduit.getF().show();
+                } catch (IOException ex) {
+                   }
+});
+            tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> {try {
+                affichageAnnonce FormProduit = new affichageAnnonce();
+                FormProduit.getF().show();
+                } catch (IOException ex) {
+                    }
+});
             
             PromenadeService ms=new PromenadeService();
             UserService u = new UserService();

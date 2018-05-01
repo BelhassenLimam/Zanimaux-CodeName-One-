@@ -90,7 +90,7 @@ public class PromenadeService {
                         
                        
                         promenade.setId(obj.get("id").toString());
-                        promenade.setNomPromenade(obj.get("nomPromenade").toString());
+                        promenade.setNomPromenade(obj.get("nompromenade").toString());
                         promenade.setTypePromenade(obj.get("typePromenade").toString());
                         promenade.setLieuPromenade(obj.get("lieuPromenade").toString());
                         promenade.setDescriptionPromenade(obj.get("descriptionPromenade").toString());

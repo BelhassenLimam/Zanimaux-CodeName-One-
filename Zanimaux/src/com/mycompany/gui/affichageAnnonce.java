@@ -12,6 +12,7 @@ import com.mycompany.services.EvenementService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.MultiButton;
 import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.ui.Command;
 import com.codename1.ui.Container;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
@@ -40,12 +41,25 @@ public class affichageAnnonce {
     Container conth;
     
     
-        public affichageAnnonce(){ 
+        public affichageAnnonce() throws IOException{ 
         theme = UIManager.initFirstTheme("/theme");
         f = new Form();
         contv = new Container(BoxLayout.y());
        
-        
+         Command cmd = new Command("Back",Image.createImage("/left-arrow.png")){
+             @Override
+             public void actionPerformed(ActionEvent evt) {
+                 
+                 try {
+                     Accueil2 ff = new Accueil2();
+                     ff.showBack();
+                 } catch (IOException ex) {
+                     
+                 }
+                 
+             }
+         };
+         f.getToolbar().addCommandToLeftBar(cmd);
                
         AnnonceService as=new AnnonceService();
         ArrayList<Annonce> lis=as.getAllAnnonce();

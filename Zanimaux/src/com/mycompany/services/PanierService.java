@@ -10,6 +10,8 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
+import com.codename1.messaging.Message;
+import com.codename1.ui.Display;
 import com.codename1.ui.events.ActionListener;
 import com.mycompany.entities.ContenuPanier;
 import com.mycompany.entities.Magasin;
@@ -29,7 +31,7 @@ public class PanierService {
     
     public void ajoutAuPanier(Produit p) {
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost:8888/zanimauxWeb/web/app_dev.php/api/ajoutProdPanier?cin=" +connectedUser.getCin()+ "&idProduit=" + p.getIdProduit()+"";
+        String Url = "http://localhost/zanimauxFinal/web/app_dev.php/api/ajoutProdPanier?cin=" +connectedUser.getCin()+ "&idProduit=" + p.getIdProduit()+"";
         con.setUrl(Url);
 
         
@@ -46,7 +48,7 @@ public class PanierService {
           public ArrayList<Panier> getPanier(){
         ArrayList<Panier> listPanier = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/zanimauxWeb/web/app_dev.php/api/affichePanier/"+connectedUser.getCin());
+        con.setUrl("http://localhost/zanimauxFinal/web/app_dev.php/api/affichePanier/"+connectedUser.getCin());
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -83,7 +85,7 @@ public class PanierService {
           public ArrayList<ContenuPanier> getContenuPanier(){
         ArrayList<ContenuPanier> listcontenuPanier = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/MobileServiceWeb/afficheContenuPanier.php?cin="+connectedUser.getCin());
+        con.setUrl("http://localhost/WebServiceMobile/afficheContenuPanier.php?cin="+connectedUser.getCin());
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -118,4 +120,21 @@ public class PanierService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return listcontenuPanier;
     }
+          
+          public void passerCommande() {
+        
+             ConnectionRequest con = new ConnectionRequest();   
+             String Url = "http://localhost/zanimauxFinal/web/app_dev.php/api/passeCommande?cin=" +connectedUser.getCin();
+             con.setUrl(Url);
+              NetworkManager.getInstance().addToQueueAndWait(con);
+              Message m = new Message("Body of message");
+              
+              //boolean success = m.sendMessageViaCloudSync("zanimo.esprit@gmail.com",  connectedUser.getEmail(), "", "Message Subject",
+                          //  "Check out Codename One at https://www.codenameone.com/");
+              Display.getInstance().sendMessage(new String[] {connectedUser.getEmail()}, "Subject of message", m);
+             // System.out.println(success);
+             
+    }
+          
+          
 }

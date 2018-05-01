@@ -51,31 +51,33 @@ public class EvenementService {
                     for (Map<String, Object> obj : list) {
                         
                  
-                        Evenement e1 = new Evenement();
+                        Evenement event = new Evenement();
                         
                        int id = Integer.parseInt(obj.get("idEvt").toString());
                         int nbp = Integer.parseInt(obj.get("nb_place").toString());
                          int nbpp = Integer.parseInt(obj.get("nbParticipants").toString());
-                        SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
-                        Date  dateDb= format.parse(obj.get("dateDebut").toString());
-                        
+                         SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
+                      Date  dateDb= format.parse(obj.get("dateDebut").toString());
+                       System.out.println(dateDb);
                         Date  dateF= format.parse(obj.get("dateFin").toString());
-                     
-                    
-                       e1.setIdEvt(id);
-                        e1.setCinUser(obj.get("cin").toString());
-                        e1.setLieu(obj.get("lieu").toString());
-                        e1.setDateDebut(dateDb);
-                       e1.setDateDebut(dateF);
-                        e1.setType(obj.get("type").toString());
-                        e1.setTitre(obj.get("titre").toString());
-                        e1.setDescription(obj.get("description").toString());
-                       e1.setImageEvt(obj.get("image_evt").toString());
-                      e1.setNbPlace(nbp);
-                       e1.setNbParticipants(nbpp);
+                      System.out.println(dateF);
+                        
+                        event.setIdEvt(id);
+                        event.setCinUser(obj.get("cin").toString());
+                        event.setLieu(obj.get("lieu").toString());
+                        event.setDateDebut(dateDb);
+                        event.setDateFin(dateF);
+                       event.setType(obj.get("type").toString());
+                        event.setTitre(obj.get("titre").toString());
+                        event.setDescription(obj.get("description").toString());
+                        event.setImageEvt(obj.get("image_evt").toString());
+                         event.setNbPlace(nbp);
+                         event.setNbParticipants(nbpp);
+                       
+
                         
                   
-                    listTasks.add(e1);
+                    listTasks.add(event);
 
                     }
                 } catch (IOException ex) {
@@ -114,11 +116,10 @@ public class EvenementService {
                     for (Map<String, Object> obj : list) {
                         Evenement event = new Evenement();
                          SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
-                       System.out.println(obj.get("dateDebut").toString());
                       Date  dateDb= format.parse(obj.get("dateDebut").toString());
                        System.out.println(dateDb);
                         Date  dateF= format.parse(obj.get("dateFin").toString());
-                      
+                      System.out.println(dateF);
                         int nbp = Integer.parseInt(obj.get("nb_place").toString());
                         int nbpp = Integer.parseInt(obj.get("nbParticipants").toString());
                         event.setIdEvt(id);

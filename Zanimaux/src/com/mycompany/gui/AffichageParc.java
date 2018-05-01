@@ -11,12 +11,9 @@ import com.mycompany.services.ParcService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SliderBridge;
 import com.codename1.components.SpanLabel;
-<<<<<<< HEAD
-=======
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
->>>>>>> fc591e646f896febc419af6176f26a30df34e3e4
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
@@ -35,6 +32,8 @@ import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.mycompany.services.AvisService;
+import com.mycompany.services.UserService;
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.control.TextField;
@@ -54,13 +53,12 @@ public class AffichageParc
         theme = UIManager.initFirstTheme("/theme");
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
         ParcService ms=new ParcService();
-<<<<<<< HEAD
-=======
+
          UserService u = new UserService();
-         str = SignInForm.connectedUser.getCin();
+         String str = SignInForm.connectedUser.getCin();
          AvisService a = new AvisService();
          
->>>>>>> fc591e646f896febc419af6176f26a30df34e3e4
+
         ArrayList<Parc> lis=ms.getAllParc();
        
         for (int i =0;i<lis.size();i++)
@@ -117,14 +115,13 @@ public class AffichageParc
             public void actionPerformed(ActionEvent evt) {
                 System.out.println(starRank.getProgress());
                 System.out.println(m.getId());
-<<<<<<< HEAD
-=======
+
                 System.out.println(str);
-                Avis a1 = new Avis(m.getId(),starRank.getProgress(),str);
-                a.addavis(a1);
+                /*Avis a1 = new Avis(m.getId(),starRank.getProgress(),str);
+                a.addavis(a1);*/
                 AffichageParc loginForm = new AffichageParc();
                 loginForm.getF().show();
->>>>>>> fc591e646f896febc419af6176f26a30df34e3e4
+
             }}); 
                 c.add(FlowLayout.encloseCenter(starRank));
                 c.add(b1);

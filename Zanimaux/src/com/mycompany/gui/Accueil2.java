@@ -21,6 +21,8 @@ import java.io.IOException;
 
 
 
+
+
 /**
  * GUI builder created Form
  *
@@ -76,8 +78,14 @@ public class Accueil2 extends com.codename1.ui.Form {
          gui_ev.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                 afficherEvenement FormProduit = new afficherEvenement();
-                FormProduit.getF().show();
+                 
+                try {
+                   afficherEvenement FormProduit = new afficherEvenement();
+                     FormProduit.getF().show();
+                } catch (IOException ex) {
+                    
+                }
+               
             }}); 
          Toolbar tb = getToolbar();
          
@@ -105,10 +113,22 @@ t.getUnselectedStyle().setFgColor(0xffffff);
                 FormProduit.getF().show();});
          tb.addCommandToSideMenu("Refuge", Image.createImage("/shelter.png").scaled(25,25), e -> {AffichageRefuge FormProduit = new AffichageRefuge();
                 FormProduit.getF().show();});
-         tb.addCommandToSideMenu("Evenement", Image.createImage("/event.png").scaled(25,25), e -> {afficherEvenement FormProduit = new afficherEvenement();
-                FormProduit.getF().show();});
-         tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> {affichageAnnonce FormProduit = new affichageAnnonce();
-                FormProduit.getF().show();});
+         tb.addCommandToSideMenu("Evenement", Image.createImage("/event.png").scaled(25,25), e -> { 
+            try {
+               afficherEvenement FormProduit = new afficherEvenement();
+                FormProduit.getF().show();
+            } catch (IOException ex) {
+                
+            }
+                });
+         tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> { 
+            try {
+               affichageAnnonce FormProduit = new affichageAnnonce();
+                FormProduit.getF().show();
+            } catch (IOException ex) {
+                
+            }
+                });
     }
     
     public Accueil2(com.codename1.ui.util.Resources resourceObjectInstance) {

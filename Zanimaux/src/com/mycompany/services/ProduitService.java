@@ -27,7 +27,7 @@ public class ProduitService {
         public ArrayList<Produit> getAllProduit(int idMagasin){
         ArrayList<Produit> listProduit = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/zanimauxWeb/web/app_dev.php/api/afficheProduit/" + idMagasin);
+        con.setUrl("http://localhost/zanimauxFinal/web/app_dev.php/api/afficheProduit/" + idMagasin);
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -73,7 +73,7 @@ public class ProduitService {
   public ArrayList<Produit> getProduitById(int idProduit){
         ArrayList<Produit> listProduit = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost:8888/zanimauxWeb/web/app_dev.php/api/afficheProduit/" + idProduit);
+        con.setUrl("http://localhost/WebServiceMobile/getProduitById.php?idProduit=" + idProduit);
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {

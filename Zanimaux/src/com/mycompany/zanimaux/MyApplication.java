@@ -16,6 +16,7 @@ import com.codename1.io.Log;
 import com.codename1.ui.Toolbar;
 import com.mycompany.gui.AffichageCabinets;
 import com.mycompany.gui.AffichagePromenade;
+import com.mycompany.gui.connexion;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -45,9 +46,9 @@ public class MyApplication {
         }
 
 
-               SignInForm loginForm = new SignInForm(theme);
+               connexion loginForm = new connexion();
   
-               loginForm.show();
+               loginForm.getF().show();
                 
   
 

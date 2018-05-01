@@ -6,6 +6,8 @@
 
 package com.mycompany.gui;
 
+import com.codename1.components.ImageViewer;
+import com.codename1.components.ScaleImageLabel;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
@@ -16,14 +18,19 @@ import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
+import com.codename1.ui.EncodedImage;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
+import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.URLImage;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.plaf.Style;
+import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Cabinet;
@@ -44,6 +51,7 @@ import java.util.Map;
 
 
 
+
 /**
  *
  * @author Mariam
@@ -52,11 +60,16 @@ public class CalendarForm extends Form {
     StringBuffer str = new StringBuffer();
     int ch;
     
-    public CalendarForm() {
+    public CalendarForm() throws IOException {
         this(com.codename1.ui.util.Resources.getGlobalResources());
-        this.setScrollable(true);  }
+        this.setScrollable(true);
+       
+//     ImageViewer img = new ImageViewer(Image.createImage("/calendar-background.jpg"));
+//    add(img);
+    }
     
-    public CalendarForm(com.codename1.ui.util.Resources resourceObjectInstance) {
+    public CalendarForm(com.codename1.ui.util.Resources resourceObjectInstance) throws IOException {
+           
             Label notiflabel =new Label(" ");
             notiflabel.setVisible(false);
         ArrayList<User> userNotifList =new RendezvsService().getUserNotifNotVu();
@@ -74,6 +87,7 @@ public class CalendarForm extends Form {
             }
             notiflabel.setVisible(true); 
          add(notiflabel);
+       
         
         initGuiBuilderComponents(resourceObjectInstance);
         setLayout(BoxLayout.y());
@@ -101,24 +115,29 @@ public class CalendarForm extends Form {
         p.setFormatter(new SimpleDateFormat("MMMM"));
         p.setDate(new Date());
         p.setUIID("CalendarDateTitle");
+        p.setAlignment(CENTER);
         Container cnt = BoxLayout.encloseY(
                 p,
-                new Label(resourceObjectInstance.getImage("calendar-separator.png"), "CenterLabel")
+                new Label(Image.createImage("/calendar-separator.png"), "CenterLabel")
         );
         
         BorderLayout bl = (BorderLayout)gui_Calendar_1.getLayout();
         Component combos = bl.getNorth();
         gui_Calendar_1.replace(combos, cnt, null);
           ConnectionRequest con = new ConnectionRequest();
-        
+//        
            UserService us = new UserService(); 
  
-        CabinetService cs = new CabinetService();
-        User u = SignInForm.connectedUser;
-        Cabinet c = cs.getCabinetByCin(u.getCin());
-        
+//        CabinetService cs = new CabinetService();
+//        User u = SignInForm.connectedUser;
+//        System.out.println(u.getCin());
+//        System.out.println(u);
+//        Cabinet c= new Cabinet();
+//        c = cs.getCabinetByCin(u.getCin());
      
-        con.setUrl("http://localhost/Mobile/ShowRDV.php?immatriculecabinet="+c.getImmatriculeCabinet());
+        //User client;
+     String imm="1145";
+        con.setUrl("http://localhost/Mobile/ShowRDV.php?immatriculecabinet="+imm);
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -126,26 +145,32 @@ public class CalendarForm extends Form {
                            
                              for (Rendezvs e : data) {
                     
-                        ConnectionRequest cnx1 = new ConnectionRequest("http://localhost/Mobile/ShowRdvdetail.php?idrdv="+e.getIdrdv()) {
-                        @Override
-                        protected void readResponse(InputStream input) throws IOException {
-                           Rendezvs r = new Rendezvs();
-                            r = findR(input);
-                            UserService U = new UserService();
-                            User client =  U.getUserBycin(r.getCin());
-                            System.out.println(r.getHeurerdv());
-                          add(createEntry(resourceObjectInstance,false ,r.getHeurerdv(),r.getImmatriculecabinet(),client.getNom(),client.getPrenom(),client.getTelephone()));
+//                        ConnectionRequest cnx1 = new ConnectionRequest("http://localhost/Mobile/ShowRdvdetail.php?idrdv="+e.getIdrdv()) {
+//                        @Override
+//                        protected void readResponse(InputStream input) throws IOException {
+//                           Rendezvs r = new Rendezvs();
+//                            r = findR(input);
+//                            
+                             User client= us.getUserBycin(e.getCin());
+                             System.out.println(client);
+                            System.out.println(e.getHeurerdv());
+                                 try {
+                                     add(createEntry(resourceObjectInstance,false ,e.getHeurerdv(),e.getImmatriculecabinet(),client.getNom(),client.getPrenom(),client.getTelephone()));
+                                 } catch (IOException ex) {
+                                    
+                                 }
                     refreshTheme();
                     
                             
                        
-                        }
-
-                        };
-                    NetworkManager.getInstance().addToQueue(cnx1);
+//                        }
+//
+//                        };
+//                    NetworkManager.getInstance().addToQueue(cnx1);
                      }
             }});
-         NetworkManager.getInstance().addToQueue(con);}
+         NetworkManager.getInstance().addToQueue(con);
+    }
                       
 //                     
 //                        
@@ -191,7 +216,7 @@ public class CalendarForm extends Form {
     
     
         
-    private Container createEntry(Resources res, boolean selected, Date Heurerdv,String immatriculecabinet, String nom, String prenom,  String telephone) {
+    private Container createEntry(Resources res, boolean selected, Date Heurerdv,String immatriculecabinet, String nom, String prenom,  String telephone) throws IOException {
         
          SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
         format.applyPattern("dd/MM/yyyy");
@@ -202,20 +227,24 @@ public class CalendarForm extends Form {
             time.setUIID("CalendarHourSelected");
         }
         
-        Container circleBox = BoxLayout.encloseY(new Label(res.getImage("label_round-selected.png")),
-                new Label("-", "OrangeLine"),
-                new Label("-", "OrangeLine")
-        );
+        Container circleBox;
+      
+            circleBox = BoxLayout.encloseY(new Label( Image.createImage("/label_round-selected.png")),
+                    new Label("-", "OrangeLine"),
+                    new Label("-", "OrangeLine")
+            );
         
+       
         Container cnt = new Container(BoxLayout.x());
 //        for(String att : images) {
 //            cnt.add(res.getImage(att));
 //        }
+        
         Container mainContent = BoxLayout.encloseY(
                 BoxLayout.encloseX(
-                       new Label(immatriculecabinet, "SmallLabel"),
-                         new Label(telephone.toString(), "SmallLabel"), 
-                       new Label(temps, "SmallLabel"), 
+                        new Label(immatriculecabinet,"SmallLabel"),
+                        new Label(telephone, "SmallLabel"), 
+                        new Label(temps, "SmallLabel"), 
                         new Label("-", "SmallThinLabel"), 
                         new Label(nom, "SmallThinLabel"), 
                         new Label("-", "SmallThinLabel"),
@@ -232,9 +261,9 @@ public class CalendarForm extends Form {
         mainContent= BorderLayout.center(mainContent).
                 add(BorderLayout.WEST, circleBox);
         
-        return BorderLayout.center(mainContent).
+      
+           return BorderLayout.center(mainContent).
                 add(BorderLayout.WEST, FlowLayout.encloseCenter(time));
-             
         
     }
     

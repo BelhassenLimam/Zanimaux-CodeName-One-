@@ -91,6 +91,53 @@ public class AffichageParc
            FormProduit.getF().show();});
            tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> {affichageAnnonce FormProduit = new affichageAnnonce();
            FormProduit.getF().show();});
+           tb.addCommandToOverflowMenu("Mes parcs",Image.createImage("/event.png").scaled(25,25),e->{
+               
+               
+            Form f2 = new Form(new BoxLayout(BoxLayout.Y_AXIS));   
+           ms.getParcByCin(str);
+           Toolbar tb2 = f2.getToolbar();
+           tb2.addMaterialCommandToLeftBar("Retour",FontImage.MATERIAL_ARROW_BACK, e1->{
+                        f.showBack();
+                    });
+            ArrayList<Parc> lis2=ms.getParcByCin(str);
+            
+            for (int i =0;i<lis2.size();i++)
+               
+           {
+               Container co = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+               co.getUnselectedStyle().setPadding(10, 5, 5, 5);
+               
+               Container cp2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
+               
+               Container cp3 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+               Label lbo = new Label();
+               
+               //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
+               ImageViewer ivo = new ImageViewer(theme.getImage(lis2.get(i).getPhotoParc()).scaled(100, 100));
+               Label ado = new Label("Adresse :");
+               ado.getUnselectedStyle().setFgColor(0xf64139);
+               Label to =new Label(lis2.get(i).getAdresseParc()+" "+lis2.get(i).getVilleParc()+", "+lis2.get(i).getCodePostaleParc());
+               Parc m = lis2.get(i);
+               
+                cp2.add(ivo);
+               cp3.add(lbo);
+               cp3.add(ado);
+               cp3.add(to);
+               cp2.add(cp3);
+               co.add(cp2);
+              
+               
+               f2.add(co);
+                lbo.setText(lis2.get(i).getNomParc());
+           
+           }
+            f2.show();
+              
+               
+           
+              
+           });
            UserService u = new UserService();
            str = SignInForm.connectedUser.getCin();
            AvisService a = new AvisService();
@@ -120,7 +167,7 @@ public class AffichageParc
                
                ConnectionRequest con;
                con = new ConnectionRequest();
-               con.setUrl("http://localhost:8888/VerifAvis.php?idParc=" +m.getId()+ "&cinUser=" +str+"");
+               con.setUrl("http://localhost:8888/WebServiceMobile/VerifAvis.php?idParc=" +m.getId()+ "&cinUser=" +str+"");
                NetworkManager.getInstance().addToQueue(con);
                con.addResponseListener(new ActionListener<NetworkEvent>() {
                    @Override

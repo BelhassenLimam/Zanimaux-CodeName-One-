@@ -35,13 +35,46 @@ import java.util.Map;
 public class RendezvsService {
     public void addrdv(Rendezvs m){
         ConnectionRequest con = new ConnectionRequest();
-        
+        System.out.println(m.getIdrdv());
         con.setPost(false);
        con.setUrl("http://localhost/Mobile/insertrdv.php?cin="+m.getCin()
         +"&immatriculecabinet="+m.getImmatriculecabinet()+"&heurerdv="+m.getHeurerdv());
         NetworkManager.getInstance().addToQueue(con);
+        ////////////////////
+         ConnectionRequest con1 = new ConnectionRequest();
+        con1.setUrl("http://localhost/Mobile/ShowRdv2.php?cin="+m.getCin());
+      //ArrayList<notification_rdv> listan = new ArrayList<>();
+        con1.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                //listTasks = getListTask(new String(con.getResponseData()));
+                JSONParser jsonp = new JSONParser();
+                
+           
+                    //renvoi une map avec clé = root et valeur le reste
+                    Map<String, Object> tasks;
+                try {
+                    tasks = jsonp.parseJSON(new CharArrayReader(new String(con1.getResponseData()).toCharArray()));
+                    System.out.println("roooooot:" +tasks.get("root"));
+
+                    List<Map<String, Object>> list3 = (List<Map<String, Object>>) tasks.get("root");
+              int id=0;
+                    for (Map<String, Object> obj : list3) {
+              
+                     
+                       id =Integer.parseInt(obj.get("idrdv").toString());
+                       m.setIdrdv(id);
+                      // listan.add(m);
+                    
+                    }
+                       } catch (IOException ex) {
+                    System.out.println(" exception ");
+                }
+               
+            }});
+        NetworkManager.getInstance().addToQueueAndWait(con1);
          RendezvsService service= new RendezvsService();
-        
+        System.out.println(m.getIdrdv());
             service.createNotificationRdv(m.getIdrdv());
         
         System.err.println("aaaaa");
@@ -69,7 +102,7 @@ public class RendezvsService {
                         Rendezvs rdv = new Rendezvs();
                         SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
                         try {
-                            Date  heurerdv = format.parse(obj.get("Heurerdv").toString());
+                            Date  heurerdv = format.parse(obj.get("heurerdv").toString());
                             rdv.setCin(obj.get("cin").toString());
                        rdv.setImmatriculecabinet(obj.get("immatriculecabinet").toString());
                        rdv.setHeurerdv(heurerdv);
@@ -96,15 +129,16 @@ public class RendezvsService {
          ConnectionRequest con = new ConnectionRequest();
         
         con.setPost(false);
-       con.setUrl("http://localhost/Mobile/createnotif.php?idrdv="+id
-        +"&vu="+0);
+       con.setUrl("http://localhost/Mobile/createnotif.php?idrdv="+id +"&vu="+0);
+            System.out.println("notif 1 crée");
+       
         NetworkManager.getInstance().addToQueue(con);
         System.err.println("aaaaa");
         /////////////////////////////////////////////////////////////
         //ArrayList<notification_rdv> listnotif = new ArrayList<>();
         ConnectionRequest con1 = new ConnectionRequest();
         con1.setUrl("http://localhost/Mobile/SelectNotif.php");
-    
+      ArrayList<notification_rdv> listan = new ArrayList<>();
         con1.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -118,45 +152,57 @@ public class RendezvsService {
                     tasks = jsonp.parseJSON(new CharArrayReader(new String(con1.getResponseData()).toCharArray()));
                     System.out.println("roooooot:" +tasks.get("root"));
 
-                    List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
-             int idNotif=0;
-                    for (Map<String, Object> obj : list) {
+                    List<Map<String, Object>> list3 = (List<Map<String, Object>>) tasks.get("root");
+              int idNotif=0;
+                    for (Map<String, Object> obj : list3) {
                        notification_rdv n = new notification_rdv();
                        
-                       idNotif =Integer.parseInt(obj.get("id").toString());}
+                       idNotif =Integer.parseInt(obj.get("id").toString());
+                       n.setId(idNotif);
+                       listan.add(n);
+                    
+                    }
+                       } catch (IOException ex) {
+                    System.out.println(" exception ");
+                }
                
-                     NetworkManager.getInstance().addToQueueAndWait(con);
-                         System.out.println("Notification rdv Ajoutee");
-        RendezvsService service = new RendezvsService();
+            }});
+        NetworkManager.getInstance().addToQueueAndWait(con1);
+               
+                      RendezvsService service = new RendezvsService();
         ArrayList<Rendezvs> listr = new ArrayList<Rendezvs>();
         UserService us = new UserService(); 
         Rendezvs v = service.findrdvByid(id);
         CabinetService cs = new CabinetService();
-        Cabinet c = cs.getCabinetByImm(v.getImmatriculecabinet());
+        String imm = v.getImmatriculecabinet();
+        Cabinet c = cs.getCabinetByImm(imm);
         
         User u = us.getUserBycin(c.getCin());
                         
+            ConnectionRequest con2 = new ConnectionRequest();
+         for(notification_rdv notif2 : listan){
+                    System.out.println(notif2.getId());
+                    System.out.println(u.getCin());
+        
+       con2.setUrl("http://localhost/Mobile/createnotif2.php?cin="+u.getCin()
+        +"&id_notif="+notif2.getId()+"&vu="+0);
+          NetworkManager.getInstance().addToQueue(con2);
+                    System.out.println("notif2 crée");
+                         System.out.println("Notification rdv Ajoutee");
+                         
        
+     
+      
        
     
         ////////////////////////////////////////////////
-        
-            ConnectionRequest con2 = new ConnectionRequest();
-        
-        con2.setPost(false);
-        
-       con2.setUrl("http://localhost/Mobile/createnotif2.php?cin="+u.getCin()
-        +"&id_notif="+idNotif+"&vu="+0);
-        NetworkManager.getInstance().addToQueue(con);
-        System.err.println("aaaaa");
-     } catch (IOException ex) {
-                    System.out.println(" exception ");
-                }}});
+       
+    
                     
         
     
             
-        }
+        }}
         
     public ArrayList<User> getUserNotifNotVu(){
         ArrayList<notification_rdv> listn = new ArrayList<>();
@@ -174,9 +220,9 @@ public class RendezvsService {
                     Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con4.getResponseData()).toCharArray()));
                     System.out.println("roooooot:" +tasks.get("root"));
 
-                    List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
+                    List<Map<String, Object>> list1 = (List<Map<String, Object>>) tasks.get("root");
 
-                    for (Map<String, Object> obj : list) {
+                    for (Map<String, Object> obj : list1) {
                         notification_rdv n = new notification_rdv();
                         int Id= Integer.parseInt(obj.get("id").toString());
                         int idrdv = Integer.parseInt(obj.get("idrdv").toString());
@@ -206,32 +252,40 @@ public class RendezvsService {
             @Override
             public void actionPerformed(NetworkEvent evt) {
                 //listTasks = getListTask(new String(con.getResponseData()));
-                JSONParser jsonp = new JSONParser();
+               
                 
-                try {
+          
                     //renvoi une map avec clé = root et valeur le reste
-                    Map<String, Object> tasks = jsonp.parseJSON(new CharArrayReader(new String(con3.getResponseData()).toCharArray()));
-                    System.out.println("roooooot:" +tasks.get("root"));
+                  
+                try {
+                     JSONParser jsonp = new JSONParser();
+                      Map<String, Object> tasks;
+                    tasks = jsonp.parseJSON(new CharArrayReader(new String(con3.getResponseData()).toCharArray()));
+                     System.out.println("roooooot:" +tasks.get("root"));
 
-                    List<Map<String, Object>> list = (List<Map<String, Object>>) tasks.get("root");
+                    List<Map<String, Object>> list2 = (List<Map<String, Object>>) tasks.get("root");
 
-                    for (Map<String, Object> obj : list) {
+                    for (Map<String, Object> obj : list2) {
                         UserService u = new UserService();
-                    User user=new User();
+                  
                     //String immatriculecabinet= obj.get("immatricule")
-                    user= u.getUserBycin(obj.get("cin").toString());
+                    User user= u.getUserBycin(obj.get("cin").toString());
                     userList.add(user);
                         
+                    }} catch (IOException ex) {
+                   
+                }
+                   
                        
                     
                       
-                    }
-                } catch (IOException ex) {
-                }
+                    
+              
 
             }
-        });}
-        NetworkManager.getInstance().addToQueueAndWait(con3);
+        });
+             NetworkManager.getInstance().addToQueueAndWait(con3);}
+       
      
         return userList;
     }
@@ -245,6 +299,12 @@ public class RendezvsService {
          NetworkManager.getInstance().addToQueueAndWait(con6);
  
        
+    }
+     public void deleteRdv(int id){
+         ConnectionRequest con = new ConnectionRequest();
+        con.setUrl("http://localhost/Mobile/deleteRdv.php?id="+id);
+   
+         NetworkManager.getInstance().addToQueueAndWait(con);
     }
 
    

@@ -149,9 +149,10 @@ f.setScrollable(true);
               
             }
                 else{
-                Rendezvs rdv =new Rendezvs(SignInForm.connectedUser.getCin(),cab.getImmatriculeCabinet(), dateTimePicker.getDate());
+                Rendezvs rdv = new Rendezvs(SignInForm.connectedUser.getCin(),cab.getImmatriculeCabinet(), dateTimePicker.getDate());
              
           RendezvsService rdvs= new  RendezvsService();
+                    System.out.println(rdv.getIdrdv());
           rdvs.addrdv(rdv);
           Dialog.show("Success", "Votre demande est envoyé", "OK", null);
           ok.setVisible(false);

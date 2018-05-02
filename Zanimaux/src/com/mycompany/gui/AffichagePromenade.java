@@ -56,12 +56,15 @@ public class AffichagePromenade
     private Resources theme;
     Form f;
    String str;
-    
+    String str2;
     
     public AffichagePromenade() { 
         try {
             theme = UIManager.initFirstTheme("/theme");
             f = new Form(new BoxLayout(BoxLayout.Y_AXIS));
+             UserService u = new UserService();
+            str = SignInForm.connectedUser.getCin();
+            str2=SignInForm.connectedUser.getRoles();
             Toolbar tb = f.getToolbar();
             
             Container topBar = BorderLayout.centerAbsolute(new Label());
@@ -72,9 +75,22 @@ public class AffichagePromenade
             
             topBar.setUIID("SideCommand");
             tb.addComponentToSideMenu(topBar);
-            tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {});
-            tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  AffichageParc FormProduit = new AffichageParc();
-            FormProduit.getF().show();});
+           tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {try {
+               Accueil2 FormProduit = new Accueil2();
+               FormProduit.show();
+               } catch (IOException ex) {
+                    }
+});
+           tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  if(str2.equals("a:1:{i:0;s:13:\"ROLE_DRESSEUR\";}")){
+                 try {
+                     Dresseur formp = new Dresseur();
+                     formp.show();
+                 } catch (IOException ex) {
+                      }
+             }else{
+             AffichageParc FormProduit = new AffichageParc();
+                FormProduit.getF().show();
+             }});
             tb.addCommandToSideMenu("Magasin", Image.createImage("/storeIcon.png").scaled(25,25), e -> {try {
                 AffichageMagasin FormProduit = new AffichageMagasin();
                 FormProduit.getF().show();
@@ -102,8 +118,7 @@ public class AffichagePromenade
 });
             
             PromenadeService ms=new PromenadeService();
-            UserService u = new UserService();
-            str = SignInForm.connectedUser.getCin();
+           
              tb.addCommandToOverflowMenu("Mes parcs",Image.createImage("/event.png").scaled(25,25),e->{
                
                
@@ -134,7 +149,7 @@ public class AffichagePromenade
                 Label ad2 = new Label("Type :");
                 ad2.getUnselectedStyle().setFgColor(0xf64139);
                 Label t1 =new Label(lis2.get(i).getTypePromenade());
-               
+                Label l2 = new Label("====================================================");
                 cp2.add(iv);
                 cp3.add(lbo);
                 cp3.add(ad2);
@@ -143,7 +158,8 @@ public class AffichagePromenade
                 cp3.add(t);
                 cp2.add(cp3);
                 co.add(cp2);
-                
+                co.add(l2);
+               
                 
                 f.add(co);
                 
@@ -176,6 +192,7 @@ public class AffichagePromenade
                 Label ad2 = new Label("Type :");
                 ad2.getUnselectedStyle().setFgColor(0xf64139);
                 Label t1 =new Label(lis.get(i).getTypePromenade());
+                
                 
                 Promenade m = lis.get(i);
                 
@@ -224,9 +241,11 @@ public class AffichagePromenade
                             c.add(FlowLayout.encloseCenter(starRank));
                             c.add(b1);
                         };
-                        
+                        Label l2 = new Label("====================================================");
+                        c.add(l2);
                     };
                 });
+                
                 
                 c2.add(iv);
                 c3.add(lb);
@@ -238,8 +257,9 @@ public class AffichagePromenade
                 c.add(c2);
                 
                 
-                f.add(c);
                 
+                f.add(c);
+               
                 lb.setText(lis.get(i).getNomPromenade());
                 
             }

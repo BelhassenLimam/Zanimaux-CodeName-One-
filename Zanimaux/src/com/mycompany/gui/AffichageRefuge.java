@@ -12,6 +12,8 @@ import com.codename1.ui.Form;
 import java.util.ArrayList;
 import com.mycompany.entities.Refuge;
 import com.codename1.components.ImageViewer;
+import com.codename1.components.ScaleImageLabel;
+import com.codename1.gif.GifImage;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.JSONParser;
 import com.codename1.io.NetworkManager;
@@ -20,21 +22,31 @@ import com.codename1.location.Location;
 import com.codename1.location.LocationManager;
 import com.codename1.maps.Coord;
 import com.codename1.ui.Button;
+import static com.codename1.ui.CN.getResourceAsStream;
+import com.codename1.ui.Command;
 import static com.codename1.ui.Component.CENTER;
 import com.codename1.ui.Container;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.Font;
+import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
+import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import com.mycompany.entities.User;
+import com.mycompany.services.UserService;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
+
 
 
 /**
@@ -44,7 +56,8 @@ import java.util.Map;
 public class AffichageRefuge {
     private Resources theme;
     Form f;
-   
+   public static String RefugePlusProche;
+   public static String NomRefProche;
     public static Coord getCoords(String address) {
         Coord ret = null;
         try {
@@ -67,60 +80,103 @@ public class AffichageRefuge {
         return ret;
     }
     public String adresse;
+    public double distance;
+    public double min;
+    public Location locRef=new Location();
     public AffichageRefuge() { 
         theme = UIManager.initFirstTheme("/theme");
         
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));  
         f.setTitle("Nos refuges");
+        try {
+            Container gif=new Container(new BorderLayout());
+            gif.add(CENTER, new ScaleImageLabel(GifImage.decode(getResourceAsStream("/nearYou.gif"), 1177720)));
+     
+            f.add(gif);
+            
+        } catch (IOException ex) {
+        }
+        Command cmd;
+        try {
+            cmd = new Command("Back",Image.createImage("/left-arrow(1).png")){
+                @Override
+                public void actionPerformed(ActionEvent evt) {
+                    Accueil2 ff;
+                    try {
+                        ff = new Accueil2();
+                          ff.show();
+                    } catch (IOException ex) {
+                    }
+                  
+                }
+            };
+             f.getToolbar().addCommandToLeftBar(cmd);
+        } catch (IOException ex) {
+        }
+        
+       Label rpp=new Label("Le plus proche de chez vous");
+       rpp.animate();
+       rpp.getAllStyles().setFgColor(0x000080);
+       rpp.getAllStyles().setAlignment(CENTER);
+       rpp.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_UNDERLINED, Font.SIZE_LARGE));
+       rpp.addPointerPressedListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                RefPlusProche rp=new RefPlusProche();
+                     rp.getF().show();
+            }
+        });
+       f.add(rpp);
+        ArrayList<Double> listeDist=new ArrayList<>();
+        ArrayList<String> listeAdr=new ArrayList<>();
+        ArrayList<String> listeNomRef=new ArrayList<>();
         RefugeService ms=new RefugeService();
+        
         ArrayList<Refuge> lis=ms.getListRefuges();
         for (int i =0;i<lis.size();i++)
             
         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-            Container west= new Container(new FlowLayout(CENTER,CENTER));
-            Container info = new Container(new BoxLayout(BoxLayout.Y_AXIS));
-            Container bout = new Container(new BoxLayout(BoxLayout.X_AXIS));
-
-            SpanLabel lb = new SpanLabel("");
+            Label lb = new Label("");
+            lb.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_LARGE));
+             lb.getAllStyles().setFgColor(0x808080);
+            lb.getAllStyles().setAlignment(CENTER);
             Button b =new Button("Cosulter Refuge");
-            Button bb =new Button("geo");
-            //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
+            b.setPreferredSize(new Dimension(90,50));
             ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotoRefuge()).scaled(350, 200));
             Label t =new Label("Adresse: "+lis.get(i).getAdresseRefuge()+" "+lis.get(i).getGouvernementRefuge()+", "+lis.get(i).getCodePostaleRefuge());
             t.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_MEDIUM));
-            t.getAllStyles().setFgColor(0x808080);
+            t.getAllStyles().setFgColor(0xC0C0C0);
+            t.getAllStyles().setAlignment(CENTER);
             adresse=lis.get(i).getAdresseRefuge()+" "+lis.get(i).getGouvernementRefuge();
             Refuge m = lis.get(i);
-            info.add(lb);
-            info.add(t); 
-            west.add(info);
+            
+            c.add(lb);
             c.add(iv);            
-            c.add(west);
+            c.add(t);
             c.add(b);
-            //bout.add(b);
-            //bout.add(bb);
-            //c.add(bout);
+            
           
             f.add(c);    
-            lb.setText("Nom: "+lis.get(i).getNomRefuge());
-            lb.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_LARGE));
-            bb.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                Location locRef=new Location();
+            lb.setText(lis.get(i).getNomRefuge());
                 locRef.setLatitude(getCoords(adresse).getLatitude());
                 locRef.setLongitude(getCoords(adresse).getLongitude());
-//                Location loc=new Location();
-//                String adrUser=SignInForm.connectedUser.getAdresse()+" "+SignInForm.connectedUser.getVille();                
-//                loc.setLatitude(getCoords(adrUser).getLatitude());
-//                loc.setLongitude(getCoords(adrUser).getLongitude());
-//                double distance = loc.getDistanceTo(locRef);
-//                System.out.println(distance/1000);
-//                Dialog.show("Distancein kilometers", String.valueOf(distance/1000), "OK", null);
-//Geofence gf = new Geofence("test", locRef, 100, 100000);
-//LocationManager.getLocationManager().addGeoFencing(GeofenceListenerImpl.class, gf);
-            }
-        });
+                Location loc=new Location();
+                UserService us=new UserService();
+                User user=us.getUserBycin(SignInForm.connectedUser.getCin());
+                String adrUser=user.getAdresse()+" "+user.getVille();                
+                loc.setLatitude(getCoords(adrUser).getLatitude());
+                loc.setLongitude(getCoords(adrUser).getLongitude());
+                listeAdr.add(adresse);
+                listeNomRef.add(lis.get(i).getNomRefuge());
+                distance = loc.getDistanceTo(locRef);
+                 listeDist.add(distance);
+                
+                
+         
+                
+                
+               
+            
             b.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
@@ -135,6 +191,16 @@ public class AffichageRefuge {
             }
         });
         }
+         min = listeDist.get(0);
+        for(int j=1;j<listeDist.size();j++){
+            if(listeDist.get(j)<min){
+             min=listeDist.get(j);
+            }
+            
+                      }
+            RefugePlusProche = listeAdr.get(listeDist.indexOf(min));
+        NomRefProche=listeNomRef.get(listeDist.indexOf(min));
+      
     }
 
     public Form getF() {

@@ -111,5 +111,5 @@ public class ParcService {
         NetworkManager.getInstance().addToQueueAndWait(con);
           return listTasks;
  }
-    
+     
 }

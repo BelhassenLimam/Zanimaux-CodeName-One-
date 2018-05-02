@@ -52,6 +52,7 @@ public class AffichageParc
 {
     
    String str;
+   String str2;
     private Resources theme;
     Form f;
    
@@ -72,9 +73,22 @@ public class AffichageParc
            
            topBar.setUIID("SideCommand");
            tb.addComponentToSideMenu(topBar);
-           tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {});
-           tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  AffichageParc FormProduit = new AffichageParc();
-           FormProduit.getF().show();});
+           tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {try {
+               Accueil2 FormProduit = new Accueil2();
+               FormProduit.show();
+               } catch (IOException ex) {
+                    }
+});
+           tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  if(str2.equals("a:1:{i:0;s:13:\"ROLE_DRESSEUR\";}")){
+                 try {
+                     Dresseur formp = new Dresseur();
+                     formp.show();
+                 } catch (IOException ex) {
+                      }
+             }else{
+             AffichageParc FormProduit = new AffichageParc();
+                FormProduit.getF().show();
+             }});
            tb.addCommandToSideMenu("Magasin", Image.createImage("/storeIcon.png").scaled(25,25), e -> {try {
                AffichageMagasin FormProduit = new AffichageMagasin();
                FormProduit.getF().show();
@@ -127,6 +141,8 @@ public class AffichageParc
                Label ado = new Label("Adresse :");
                ado.getUnselectedStyle().setFgColor(0xf64139);
                Label to =new Label(lis2.get(i).getAdresseParc()+" "+lis2.get(i).getVilleParc()+", "+lis2.get(i).getCodePostaleParc());
+               Label l2 = new Label("====================================================");
+               
                Parc m = lis2.get(i);
                
                 cp2.add(ivo);
@@ -135,6 +151,7 @@ public class AffichageParc
                cp3.add(to);
                cp2.add(cp3);
                co.add(cp2);
+               co.add(l2);
               
                
                f2.add(co);
@@ -149,6 +166,7 @@ public class AffichageParc
            });
            UserService u = new UserService();
            str = SignInForm.connectedUser.getCin();
+            str2=SignInForm.connectedUser.getRoles();
            AvisService a = new AvisService();
            
            ArrayList<Parc> lis=ms.getAllParc();
@@ -219,8 +237,10 @@ public class AffichageParc
                            c.add(FlowLayout.encloseCenter(starRank));
                            c.add(b1);
                        };
-                       
+                       Label l2 = new Label("====================================================");
+               c.add(l2);
                    };
+                   
                });
                
                

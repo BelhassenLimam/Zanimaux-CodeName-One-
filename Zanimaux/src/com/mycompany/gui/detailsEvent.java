@@ -6,7 +6,6 @@
 package com.mycompany.gui;
 
 import com.codename1.components.ImageViewer;
-import com.codename1.components.ShareButton;
 import com.codename1.components.SpanLabel;
 import com.codename1.io.ConnectionRequest;
 import com.codename1.io.NetworkEvent;
@@ -30,6 +29,13 @@ import static com.mycompany.gui.SignInForm.connectedUser;
 import com.mycompany.services.UserService;
 import java.io.IOException;
 import java.util.ArrayList;
+import com.codename1.ui.FontImage;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.FacebookClient;
+import com.restfb.Parameter;
+import com.restfb.types.FacebookType;
+
+
 
 /**
  *
@@ -43,14 +49,24 @@ public class detailsEvent {
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
          Container cButton = new Container(new BoxLayout(BoxLayout.X_AXIS));
           SimpleDateFormat format= new SimpleDateFormat("yyyy/MM/dd");
+             format.applyPattern("dd-MM-yyyy");
+            Label lbl = new Label(format.format(liste.get(0).getDateDebut())); 
+            Label lb2 = new Label(format.format(liste.get(0).getDateFin()));
+           
             Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
              int id=liste.get(0).getIdEvt();
              
               Command cmd = new Command("Back",Image.createImage("/left-arrow.png")){
              @Override
              public void actionPerformed(ActionEvent evt) {
-                 afficherEvenement ff=new afficherEvenement();
-                 ff.getF().showBack();
+                 
+                 try {
+                     afficherEvenement ff = new afficherEvenement();
+                     ff.getF().showBack();
+                 } catch (IOException ex) {
+                     
+                 }
+                 
              }
          };
          f.getToolbar().addCommandToLeftBar(cmd);
@@ -58,8 +74,19 @@ public class detailsEvent {
             SpanLabel lb = new SpanLabel("");
             Button participer = new Button("Participer");
             Button annuler = new Button("Annuler");
-             ShareButton b1= new ShareButton();
-             b1.setTextToShare("Bonjour");
+            Label partage = new Label("");
+            
+            FontImage.setMaterialIcon(partage, FontImage.MATERIAL_SHARE);
+            partage.addPointerPressedListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                    
+       String token = "EAACEdEose0cBANx9EJr0CLsNtlWuoCtOkCI3clc8Sli7jhR0B6coZBKunWzamNw4ftp7BDwbBy2ZCuHCZBhYaC7nMiVMoSyORRTpSd9b2uY4iZBl6sunTGrhKTLx4Qug2rKp41kjBowTCNaxjFRJ2oFdLeZA7ZC1ZCXJbyl1IiOz9lFatFHImqxPGKQmZAf03jHFNopnRJvvNT03pGWIJf4kR8gtcyTWA84ZD";
+               FacebookClient fb = new DefaultFacebookClient(token);
+                FacebookType  r = fb.publish("me/feed", FacebookType.class, Parameter.with("message","Evenement "+"\n"+"Type : "+liste.get(0).getType() +"\n"+ "Titre : " + liste.get(0).getTitre()+"\n"+ " aura lieu le " + lbl.getText()+"\n" + " jusqu'au " + lb2.getText() +"\n"+" A : "+ liste.get(0).getLieu()+"\n"+"Qui porte sur :  "+ liste.get(0).getDescription()));
+                   
+            }
+        });
             
             participer.addActionListener(new ActionListener() {
             @Override
@@ -121,11 +148,8 @@ public class detailsEvent {
             
          
             ImageViewer iv = new ImageViewer(theme.getImage(liste.get(0).getImageEvt()).scaled(350, 200));
-            Label t =new Label(liste.get(0).getType()+"\n"+liste.get(0).getLieu()+" "+liste.get(0).getDescription());
-            format.applyPattern("dd-MM-yyyy");
-            Label lbl = new Label(format.format(liste.get(0).getDateDebut())); 
-            Label lb2 = new Label(format.format(liste.get(0).getDateFin()));
-           
+            SpanLabel t =new SpanLabel("Type : "+liste.get(0).getType()+"\n"+"Lieu : "+liste.get(0).getLieu()+"\n"+"Description :"+liste.get(0).getDescription());
+         
            int nbPlace=liste.get(0).getNbPlace();
            int nbParticipants=liste.get(0).getNbParticipants();
            
@@ -137,7 +161,7 @@ public class detailsEvent {
            
     System.out.println(nbPlace);
     System.out.println(nbParticipants);
-            lb.setText("Nom: "+liste.get(0).getTitre());
+            lb.setText("Titre : "+liste.get(0).getTitre());
             if (nbPlace == nbParticipants){
                 
                     plein.setVisible(true);
@@ -178,10 +202,11 @@ public class detailsEvent {
             c.add(lbl);
             c.add(lb2);
             c.add(t);
+            c.add(partage);
             cButton.add(participer);
             cButton.add(annuler);
             cButton.add(plein);
-            c.add(b1);
+           
             c.add(cButton);
             f.add(c);     
         

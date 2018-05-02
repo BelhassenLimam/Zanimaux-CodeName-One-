@@ -46,6 +46,7 @@ import java.util.ArrayList;
 
 
 
+
 /**
  *
  * @author macbookpro
@@ -55,12 +56,15 @@ public class AffichagePromenade
     private Resources theme;
     Form f;
    String str;
-    
+    String str2;
     
     public AffichagePromenade() { 
         try {
             theme = UIManager.initFirstTheme("/theme");
             f = new Form(new BoxLayout(BoxLayout.Y_AXIS));
+             UserService u = new UserService();
+            str = SignInForm.connectedUser.getCin();
+            str2=SignInForm.connectedUser.getRoles();
             Toolbar tb = f.getToolbar();
             
             Container topBar = BorderLayout.centerAbsolute(new Label());
@@ -71,9 +75,22 @@ public class AffichagePromenade
             
             topBar.setUIID("SideCommand");
             tb.addComponentToSideMenu(topBar);
-            tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {});
-            tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  AffichageParc FormProduit = new AffichageParc();
-            FormProduit.getF().show();});
+           tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {try {
+               Accueil2 FormProduit = new Accueil2();
+               FormProduit.show();
+               } catch (IOException ex) {
+                    }
+});
+           tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  if(str2.equals("a:1:{i:0;s:13:\"ROLE_DRESSEUR\";}")){
+                 try {
+                     Dresseur formp = new Dresseur();
+                     formp.show();
+                 } catch (IOException ex) {
+                      }
+             }else{
+             AffichageParc FormProduit = new AffichageParc();
+                FormProduit.getF().show();
+             }});
             tb.addCommandToSideMenu("Magasin", Image.createImage("/storeIcon.png").scaled(25,25), e -> {try {
                 AffichageMagasin FormProduit = new AffichageMagasin();
                 FormProduit.getF().show();
@@ -87,14 +104,75 @@ public class AffichagePromenade
             FormProduit.getF().show();});
             tb.addCommandToSideMenu("Refuge", Image.createImage("/shelter.png").scaled(25,25), e -> {AffichageRefuge FormProduit = new AffichageRefuge();
             FormProduit.getF().show();});
-            tb.addCommandToSideMenu("Evenement", Image.createImage("/event.png").scaled(25,25), e -> {afficherEvenement FormProduit = new afficherEvenement();
-            FormProduit.getF().show();});
-            tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> {affichageAnnonce FormProduit = new affichageAnnonce();
-            FormProduit.getF().show();});
+            tb.addCommandToSideMenu("Evenement", Image.createImage("/event.png").scaled(25,25), e -> {try {
+                afficherEvenement FormProduit = new afficherEvenement();
+                FormProduit.getF().show();
+                } catch (IOException ex) {
+                   }
+});
+            tb.addCommandToSideMenu("Annonce", Image.createImage("/annonce.png").scaled(25,25), e -> {try {
+                affichageAnnonce FormProduit = new affichageAnnonce();
+                FormProduit.getF().show();
+                } catch (IOException ex) {
+                    }
+});
             
             PromenadeService ms=new PromenadeService();
-            UserService u = new UserService();
-            str = SignInForm.connectedUser.getCin();
+           
+             tb.addCommandToOverflowMenu("Mes parcs",Image.createImage("/event.png").scaled(25,25),e->{
+               
+               
+            Form f2 = new Form(new BoxLayout(BoxLayout.Y_AXIS));   
+           ms.getPromenadeByCin(str);
+           Toolbar tb2 = f2.getToolbar();
+           tb2.addMaterialCommandToLeftBar("Retour",FontImage.MATERIAL_ARROW_BACK, e1->{
+                        f.showBack();
+                    });
+            ArrayList<Promenade> lis2=ms.getPromenadeByCin(str);
+            
+            for (int i =0;i<lis2.size();i++)
+               
+           {
+               Container co = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+               co.getUnselectedStyle().setPadding(10, 5, 5, 5);
+               
+               Container cp2 = new Container(new BoxLayout(BoxLayout.X_AXIS));
+               
+               Container cp3 = new Container(new BoxLayout(BoxLayout.Y_AXIS));
+               Label lbo = new Label();
+               
+               //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
+               ImageViewer iv = new ImageViewer(theme.getImage(lis2.get(i).getPhotoPromenade()).scaled(100, 100));
+                Label ad = new Label("Lieu :");
+                ad.getUnselectedStyle().setFgColor(0xf64139);
+                Label t =new Label(lis2.get(i).getLieuPromenade());
+                Label ad2 = new Label("Type :");
+                ad2.getUnselectedStyle().setFgColor(0xf64139);
+                Label t1 =new Label(lis2.get(i).getTypePromenade());
+                Label l2 = new Label("====================================================");
+                cp2.add(iv);
+                cp3.add(lbo);
+                cp3.add(ad2);
+                cp3.add(t1);
+                cp3.add(ad);
+                cp3.add(t);
+                cp2.add(cp3);
+                co.add(cp2);
+                co.add(l2);
+               
+                
+                f.add(co);
+                
+                lbo.setText(lis2.get(i).getNomPromenade());
+                
+           }
+            f2.show();
+              
+               
+           
+              
+           });
+            
             AvisService a = new AvisService();
             
             ArrayList<Promenade> lis=ms.getAllPromenade();
@@ -115,11 +193,12 @@ public class AffichagePromenade
                 ad2.getUnselectedStyle().setFgColor(0xf64139);
                 Label t1 =new Label(lis.get(i).getTypePromenade());
                 
+                
                 Promenade m = lis.get(i);
                 
                 ConnectionRequest con;
                 con = new ConnectionRequest();
-                con.setUrl("http://localhost:8888/VerifAvis.php?idParc=" +m.getId()+ "&cinUser=" +str+"");
+                con.setUrl("http://localhost:8888/WebServiceMobile/VerifAvis.php?idParc=" +m.getId()+ "&cinUser=" +str+"");
                 NetworkManager.getInstance().addToQueue(con);
                 con.addResponseListener(new ActionListener<NetworkEvent>() {
                     @Override
@@ -162,9 +241,11 @@ public class AffichagePromenade
                             c.add(FlowLayout.encloseCenter(starRank));
                             c.add(b1);
                         };
-                        
+                        Label l2 = new Label("====================================================");
+                        c.add(l2);
                     };
                 });
+                
                 
                 c2.add(iv);
                 c3.add(lb);
@@ -176,8 +257,9 @@ public class AffichagePromenade
                 c.add(c2);
                 
                 
-                f.add(c);
                 
+                f.add(c);
+               
                 lb.setText(lis.get(i).getNomPromenade());
                 
             }

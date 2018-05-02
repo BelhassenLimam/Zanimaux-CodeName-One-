@@ -23,6 +23,7 @@ import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.UIManager;
@@ -85,11 +86,14 @@ public class AffichageAnimaux {
          Label ComAjout=new Label();
           
           TextField textcom= new TextField("","Ajouter un commentaire..");
-          textcom.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL));
+          textcom.setPreferredSize(new Dimension(120,40));
+         // textcom.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_SMALL));
           Button ajouter=new Button("Ajouter");
-          
+          ajouter.setPreferredSize(new Dimension(120,40));
          Button editAjout = new Button("",Image.createImage("/pencil16.png").scaled(16,16));
          Button supAjout = new Button("",Image.createImage("/delete16.png").scaled(16,16));
+         editAjout.setPreferredSize(new Dimension(50,20));
+         supAjout.setPreferredSize(new Dimension(50,20));
          Label nomComAjout=new Label();
          Container comentAjoute = new Container(new BoxLayout(BoxLayout.X_AXIS));
          Container kom=new Container(new BoxLayout(BoxLayout.Y_AXIS));
@@ -208,9 +212,11 @@ public class AffichageAnimaux {
             nn.getAllStyles().setFgColor(0x0000FF);
             nn.getAllStyles().setFont(Font.createSystemFont(Font.FACE_SYSTEM, Font.STYLE_BOLD, Font.SIZE_MEDIUM));
             // ImageViewer sup = new ImageViewer(theme.getImage("delete.png").scaled(24, 24));
-            Button edit = new Button("",Image.createImage("/pencil16.png").scaled(16,16));
+            Button edit = new Button(Image.createImage("/pencil16.png").scaled(16,16));
+            edit.setPreferredSize(new Dimension(50,20));
             int id=listcom.get(i).getId();
-            Button sup = new Button("",Image.createImage("/delete16.png").scaled(16,16));
+            Button sup = new Button(Image.createImage("/delete16.png").scaled(16,16));
+            sup.setPreferredSize(new Dimension(50,20));
             sup.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent evt) {
@@ -276,6 +282,7 @@ public class AffichageAnimaux {
         
         }
          Button b=new Button("Voir sur carte",Image.createImage("/maps.png").scaled(16,16));
+         b.setPreferredSize(new Dimension(90,50));
          b.addActionListener(new ActionListener() {
          @Override
          public void actionPerformed(ActionEvent evt) {

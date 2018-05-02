@@ -11,8 +11,10 @@ import com.codename1.io.ConnectionRequest;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.l10n.SimpleDateFormat;
+import com.codename1.messaging.Message;
 import com.codename1.ui.Command;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
@@ -26,6 +28,7 @@ import com.mycompany.entities.Annonce;
 import static com.mycompany.gui.SignInForm.connectedUser;
 import java.io.IOException;
 import java.util.ArrayList;
+
 
 /**
  *
@@ -42,8 +45,14 @@ public class detailsAnnonce {
          Command cmd = new Command("Back",Image.createImage("/left-arrow.png")){
              @Override
              public void actionPerformed(ActionEvent evt) {
-                 affichageAnnonce ff=new affichageAnnonce();
-                 ff.getF().showBack();
+                  
+                 try {
+                   affichageAnnonce  ff = new affichageAnnonce();
+                       ff.getF().showBack();
+                 } catch (IOException ex) {
+                   
+                 }
+               
              }
          };
          f.getToolbar().addCommandToLeftBar(cmd);
@@ -95,6 +104,11 @@ public class detailsAnnonce {
             public void actionPerformed(NetworkEvent evt) {
                 
                 String str = new String(con.getResponseData());
+                  Message m = new Message("Body of message");
+              
+              //boolean success = m.sendMessageViaCloudSync("zanimo.esprit@gmail.com",  connectedUser.getEmail(), "", "Message Subject",
+                          //  "Check out Codename One at https://www.codenameone.com/");
+              Display.getInstance().sendMessage(new String[] {connectedUser.getEmail()}, "Subject of message", m);
                 System.out.println(str);
                 dislike.setVisible(false);
                 like.setVisible(true);
@@ -116,7 +130,7 @@ public class detailsAnnonce {
         Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
             SpanLabel lb = new SpanLabel("");
             ImageViewer iv = new ImageViewer(theme.getImage(liste.get(0).getPieceJointe()).scaled(350, 200));
-            Label t =new Label(liste.get(0).getType()+"\n"+liste.get(0).getType()+" "+liste.get(0).getDescription());
+            SpanLabel t =new SpanLabel("Titre: "+liste.get(0).getTitre()+"\n"+"Type :"+liste.get(0).getType()+"\n"+"Description : "+liste.get(0).getDescription());
             
              ConnectionRequest con;
         con = new ConnectionRequest();
@@ -145,10 +159,10 @@ public class detailsAnnonce {
 
         NetworkManager.getInstance().addToQueue(con);  
 
-           lb.setText("Nom: "+liste.get(0).getTitre());
+          
             
             c.add(iv);
-            c.add(lb);
+           
             c.add(t);
              cButton.add(like);
             cButton.add(dislike);

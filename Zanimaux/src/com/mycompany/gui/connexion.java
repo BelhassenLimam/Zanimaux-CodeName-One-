@@ -174,12 +174,35 @@ public class connexion {
 
                                 }
                         }
-                        //System.out.println(connectedUser.getCin());
-                        Accueil2 form= new Accueil2();
+                       
+                        UserService ur = new UserService();
+                        connectedUser = ur.getConnectedUser(str);
+                    
+                       String r = connectedUser.getRoles();
+                        
+                         System.out.println(r);
+        String vet= "a:1:{i:0;s:16:\"ROLE_VETERINAIRE\";}";
+                        
+                        if (r.equals(vet))
+                        {
+                            CalendarForm f = new CalendarForm();
+                        f.show();
+                        }
+                        else{
+                            System.out.println(connectedUser.getCin());
+                       Accueil2 form= new Accueil2();
                         form.show();
+                        }
+//                        
+//                        
+////                        
+                       
                     } catch (IOException ex) {
                         
                     }
+
+
+                  
                     }
 
                 }

@@ -6,7 +6,7 @@ mysqli_set_charset($connection, "utf8");
 $vu= $_GET['vu'];
 $id_notif= $_GET['id_notif'];
 
-    $sql = "SELECT cin FROM notif_user_rdv WHERE (vu = '$vu') AND  (id_notif = '$id_notif')";
+    $sql = "select * from notif_user_rdv where (vu='$vu' and id_notif='$id_notif')";
     $result = mysqli_query($connection, $sql) or die("Error in Selecting " . mysqli_error($connection));
 
     //create an array

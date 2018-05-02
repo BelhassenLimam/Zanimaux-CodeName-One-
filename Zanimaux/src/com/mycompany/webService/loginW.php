@@ -1,11 +1,11 @@
 <?php
    //open connection to mysql db
-    $connection = mysqli_connect("localhost","root","root","Zanimaux") or die("Error " . mysqli_error($connection));
+    $connection = mysqli_connect("localhost","root","","nouvelle") or die("Error " . mysqli_error($connection));
 mysqli_set_charset($connection, "utf8");
     //fetch table rows from mysql db
     $user=$_GET["username"] ;
     $pwd=$_GET["pwd"];
-    $sql = "select cin,username, username_canonical, email, email_canonical, enabled, password, last_login from fos_user  where (username ='$user')";
+    $sql = "select cin,username, username_canonical, email, email_canonical, enabled, password, last_login, roles from fos_user  where (username ='$user')";
     $result = mysqli_query($connection, $sql) or die("Error in Selecting " . mysqli_error($connection));
 
     //create an array

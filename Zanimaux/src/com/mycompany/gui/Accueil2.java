@@ -16,7 +16,9 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import static com.mycompany.gui.SignInForm.connectedUser;
+import com.mycompany.services.UserService;
 import java.io.IOException;
+
 
 
 
@@ -30,19 +32,29 @@ import java.io.IOException;
  * @author BelhassenLimam
  */
 public class Accueil2 extends com.codename1.ui.Form {
-
+ String str;
     private Resources theme;
 
     public Accueil2() throws IOException {
         this(com.codename1.ui.util.Resources.getGlobalResources());
          theme = UIManager.initFirstTheme("/theme");
+         UserService u = new UserService();
+           str = SignInForm.connectedUser.getRoles();
          
          gui_dres.setIcon(Image.createImage("/dressage.png").scaled(70,70));
           gui_dres.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                 AffichageParc FormProduit = new AffichageParc();
+                 if(str.equals("a:1:{i:0;s:13:\"ROLE_DRESSEUR\";}")){
+                 try {
+                     Dresseur formp = new Dresseur();
+                     formp.show();
+                 } catch (IOException ex) {
+                      }
+             }else{
+             AffichageParc FormProduit = new AffichageParc();
                 FormProduit.getF().show();
+             }
             }}); 
          gui_mag.setIcon(Image.createImage("/storeIcon.png").scaled(70,70));
          gui_mag.addActionListener(new ActionListener() {
@@ -102,6 +114,17 @@ public class Accueil2 extends com.codename1.ui.Form {
          tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {}); 
          tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  AffichageParc FormProduit = new AffichageParc();
          FormProduit.getF().show();});
+         tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  
+             if(str.equals("a:1:{i:0;s:13:\"ROLE_DRESSEUR\";}")){
+                 try {
+                     Dresseur formp = new Dresseur();
+                     formp.show();
+                 } catch (IOException ex) {
+                      }
+             }else{
+             AffichageParc FormProduit = new AffichageParc();
+                FormProduit.getF().show();
+             }});
          tb.addCommandToSideMenu("Magasin", Image.createImage("/storeIcon.png").scaled(25,25), e -> {try {
              AffichageMagasin FormProduit = new AffichageMagasin();
              FormProduit.getF().show();

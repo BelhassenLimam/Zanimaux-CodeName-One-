@@ -1,10 +1,10 @@
 <?php
    //open connection to mysql db
-    $connection = mysqli_connect("localhost","root","","zanimaux") or die("Error " . mysqli_error($connection));
+    $connection = mysqli_connect("localhost","root","","nouvelle") or die("Error " . mysqli_error($connection));
 mysqli_set_charset($connection, "utf8");
     //fetch table rows from mysql db
 $cin= $_GET['cin'];
-    $sql = "select cin,username,email,nom,prenom,adresse,ville,codePostale,roles from fos_user where (cin = '$cin') ";
+    $sql = "select * from fos_user where (cin = '$cin') ";
     $result = mysqli_query($connection, $sql) or die("Error in Selecting " . mysqli_error($connection));
 
     //create an array

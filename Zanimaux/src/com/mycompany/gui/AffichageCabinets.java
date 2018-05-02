@@ -16,6 +16,7 @@ import com.codename1.ui.Label;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
 import com.mycompany.entities.Articles;
@@ -41,14 +42,15 @@ public class AffichageCabinets {
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));       
         CabinetService ms=new CabinetService();
         ArrayList<Cabinet> lis=ms.getAllCabinet();
+        Container c1=new Container(new GridLayout(2, 2));
         for (int i =0;i<lis.size();i++)
             
         {   Container c = new Container(new BoxLayout(BoxLayout.Y_AXIS));
             SpanLabel lb = new SpanLabel("");
             Button b =new Button("Consulter Articles");
             Button b2 =new Button("Prendre Rendezvs");
-            //ImageViewer iv = new ImageViewer(theme.getImage("key.png").scaled(20, 20));
-            ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotovet()).scaled(350, 200));
+            ImageViewer iv = new ImageViewer(theme.getImage("photovet1.png").scaled(20, 20));
+            //ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getPhotovet()).scaled(20,20));
             Label t =new Label(lis.get(i).getAdresseCabinet()+" "+lis.get(i).getVilleCabinet()+", "+lis.get(i).getCodePostaleCabinet());
             Cabinet m = lis.get(i);
             b.addActionListener(new ActionListener() {
@@ -75,9 +77,12 @@ public class AffichageCabinets {
             c.add(t);
             c.add(b);
             c.add(b2);
-            f.add(c);    
+            //f.add(c);    
             lb.setText(lis.get(i).getVilleCabinet());
+            c1.add(c);
         }
+        
+        f.add(c1);
     }
 
     public Form getF() {

@@ -41,14 +41,9 @@ public class UserService {
                         m = new User();
                         m.setCin(obj.get("cin").toString());
                         m.setRoles(obj.get("roles").toString());
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
+
                         m.setTelephone(obj.get("telephone").toString());
->>>>>>> cfafbb049851fa1a6c15d5a97d9dc6089743e1f5
-=======
-                        m.setTelephone(obj.get("telephone").toString());
->>>>>>> cfafbb049851fa1a6c15d5a97d9dc6089743e1f5
+
                        
                     }
                 } catch (IOException ex) {

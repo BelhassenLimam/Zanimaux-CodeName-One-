@@ -40,6 +40,8 @@ public class UserService {
                         
                         m = new User();
                         m.setCin(obj.get("cin").toString());
+                        m.setRoles(obj.get("roles").toString());
+                        m.setTelephone(obj.get("telephone").toString());
                        
                     }
                 } catch (IOException ex) {

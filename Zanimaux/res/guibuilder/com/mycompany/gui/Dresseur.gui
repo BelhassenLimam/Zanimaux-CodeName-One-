@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component type="Form" layout="FlowLayout" flowLayoutFillRows="false" flowLayoutAlign="4" flowLayoutValign="4"  title="Dresseur" name="Dresseur">
+  <component type="Container" layout="BoxLayout" boxLayoutAxis="Y"  name="Container_1">
+    <component type="Container" layout="BoxLayout" boxLayoutAxis="X"  name="Container_2">
+      <component type="Button" text="" name="Button_2">
+      </component>
+      <component type="Button" text="" name="Button_1">
+      </component>
+    </component>
+  </component>
+</component>

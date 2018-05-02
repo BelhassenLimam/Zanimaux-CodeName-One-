@@ -40,6 +40,11 @@ public class UserService {
                         
                         m = new User();
                         m.setCin(obj.get("cin").toString());
+                        m.setRoles(obj.get("roles").toString());
+<<<<<<< HEAD
+=======
+                        m.setTelephone(obj.get("telephone").toString());
+>>>>>>> cfafbb049851fa1a6c15d5a97d9dc6089743e1f5
                        
                     }
                 } catch (IOException ex) {
@@ -79,6 +84,8 @@ public class UserService {
                         user.setPrenom(obj.get("prenom").toString());
                         user.setVille(obj.get("ville").toString());
                         user.setCodePostale(cp);
+                        user.setTelephone(obj.get("telephone").toString());
+                        user.setRoles(obj.get("roles").toString());
                   u=user;
                         
 
@@ -91,5 +98,6 @@ public class UserService {
         NetworkManager.getInstance().addToQueueAndWait(con);
         return u;
     }
+    
     
 }

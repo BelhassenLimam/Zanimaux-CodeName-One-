@@ -30,7 +30,7 @@ public Resources themes;
 SpanLabel sp;
     //private Resources theme;
 
-    public sendSms(Resources theme) {
+    public sendSms() {
   
         
   
@@ -40,12 +40,13 @@ SpanLabel sp;
        // hi.add(accueil);
        //this.add(hi);
      
-     envoyer=new Button("Envoyer");message=new TextField();
+     envoyer=new Button("Envoyer");
+     message=new TextField();
 //     f.add(envoyer);f.add(message);
      message.addActionListener(new ActionListener() {
              @Override
              public void actionPerformed(ActionEvent evt) {
-                    sendSms ms = new sendSms(theme);
+                    sendSms ms = new sendSms();
        
                 ms.sendMessageCode("27424929",message.getText());
                sendMessageCode("27424929",message.getText());
@@ -58,8 +59,8 @@ SpanLabel sp;
     public String sendMessageCode(String to,String codeTele) {
         
   
-      String myURL="https://rest.nexmo.com/sms/json?api_key=c99cb56c&api_secret=Ay7Lh9i4HWA6G2HR&to=216"+
-                to+"&from=55087305&text="+codeTele;
+      String myURL="https://rest.nexmo.com/sms/json?api_key=c99cb56c&api_secret=Ay7Lh9i4HWA6G2HR&to="+
+                codeTele+"&from=55087305&text="+"test";
      
         System.out.println(myURL);
         StringBuilder sb = new StringBuilder();

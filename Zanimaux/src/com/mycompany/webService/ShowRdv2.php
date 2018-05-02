@@ -4,7 +4,8 @@
 mysqli_set_charset($connection, "utf8");
     //fetch table rows from mysql db
 $cin= $_GET['cin'];
-    $sql = "select * from fos_user where (cin = '$cin') ";
+
+    $sql = "select * from rendezvs where (cin = '$cin') ";
     $result = mysqli_query($connection, $sql) or die("Error in Selecting " . mysqli_error($connection));
 
     //create an array

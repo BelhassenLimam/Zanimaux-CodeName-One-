@@ -18,6 +18,7 @@ import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
@@ -25,10 +26,12 @@ import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
+import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
+import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.spinner.Picker;
@@ -40,14 +43,20 @@ import static com.mycompany.gui.SignInForm.connectedUser;
 import com.mycompany.services.CabinetService;
 import com.mycompany.services.RendezvsService;
 import com.mycompany.services.UserService;
+import com.twilio.Twilio;
+import com.twilio.converter.Promoter;
+import com.twilio.rest.api.v2010.account.Message;
+import com.twilio.type.PhoneNumber;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 
 
 
@@ -59,6 +68,9 @@ import java.util.Map;
 public class CalendarForm extends Form {
     StringBuffer str = new StringBuffer();
     int ch;
+     public static final String ACCOUNT_SID = "AC83a1a39c5940e6bb0a4620cf5621b425";
+    public static final String AUTH_TOKEN = "39a52e46e690910077dab842310515b0";
+  public Resources theme;   
     
     public CalendarForm() throws IOException {
         this(com.codename1.ui.util.Resources.getGlobalResources());
@@ -69,28 +81,32 @@ public class CalendarForm extends Form {
     }
     
     public CalendarForm(com.codename1.ui.util.Resources resourceObjectInstance) throws IOException {
-           
+           Container c=new Container();
             Label notiflabel =new Label(" ");
-            notiflabel.setVisible(false);
+                theme = UIManager.initFirstTheme("/theme");
+           
         ArrayList<User> userNotifList =new RendezvsService().getUserNotifNotVu();
             for(User u : userNotifList){
-                
-                if(u.getCin().equals(connectedUser.getCin())){
-                    System.out.println(u.getCin());
-                    notiflabel.setText("Un rendezvs est ajouté");
-                  }
+                String s1 =  connectedUser.getCin();
+                String s2 = u.getCin();
+                if(s1.equals(s2)){
+                    System.out.println(s2);
+                    notiflabel.setText("Un rendezvs est ajouté");}
              
                
-                    new RendezvsService().setUserNotifVu(connectedUser.getCin());
+                    new RendezvsService().setUserNotifVu(s1);
                 
              
             }
             notiflabel.setVisible(true); 
+            notiflabel.setAlignment(RIGHT);
          add(notiflabel);
        
         
         initGuiBuilderComponents(resourceObjectInstance);
         setLayout(BoxLayout.y());
+        setPreferredH(getHeight()/2);
+        setPreferredW(getWidth()/2);
         setScrollableY(true);
         getContentPane().setScrollVisible(false);
         getToolbar().setUIID("Container");
@@ -151,7 +167,8 @@ public class CalendarForm extends Form {
 //                           Rendezvs r = new Rendezvs();
 //                            r = findR(input);
 //                            
-                             User client= us.getUserBycin(e.getCin());
+                             Container c2=new Container( new GridLayout(2, 2));
+                                 User client= us.getUserBycin(e.getCin());
                              System.out.println(client);
                             System.out.println(e.getHeurerdv());
                                  try {
@@ -160,7 +177,54 @@ public class CalendarForm extends Form {
                                     
                                  }
                     refreshTheme();
-                    
+                      Button btnApp = new Button("Approuver");
+                        Button btnApp2 = new Button("refuser");
+                         btnApp.setWidth(20);
+                     c2.add(btnApp);
+                     String text="Accepted!"+client.getPrenom()+"Venez à"+e.getHeurerdv(); 
+                       btnApp.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent evt)  {
+//                             Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+//        Message message = Message.creator(
+//                new PhoneNumber("+21627424929"),
+//                new PhoneNumber("+18435074554"),
+//                text)
+//            .create();
+          RendezvsService rs = new RendezvsService();
+                       rs.deleteRdv(e.getIdrdv());
+                       btnApp.setVisible(false);
+                        btnApp2.setVisible(false);
+
+        //System.out.println(message.getSid());
+                        }
+                    });
+                      
+                        btnApp2.setWidth(20);
+                     c2.add(btnApp2);
+                     String text2="rendez vs refusé"; 
+                       btnApp2.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent evt)  {
+                             Twilio.init(ACCOUNT_SID, AUTH_TOKEN);
+        Message message = Message.creator(
+                new PhoneNumber("+21627424929"),
+                new PhoneNumber("+18435074554"),
+                text2)
+            .create();
+        RendezvsService rs = new RendezvsService();
+                       rs.deleteRdv(e.getIdrdv());
+                       btnApp2.setVisible(false);
+                       btnApp.setVisible(false);
+
+        System.out.println(message.getSid());
+                        }
+                          
+                    }
+                             
+                       );
+                       
+                   add(c2);  
                             
                        
 //                        }
@@ -229,9 +293,8 @@ public class CalendarForm extends Form {
         
         Container circleBox;
       
-            circleBox = BoxLayout.encloseY(new Label( Image.createImage("/label_round-selected.png")),
-                    new Label("-", "OrangeLine"),
-                    new Label("-", "OrangeLine")
+            circleBox = BoxLayout.encloseY(new Label( Image.createImage("/label_round-selected.png"))
+                   
             );
         
        
@@ -244,7 +307,7 @@ public class CalendarForm extends Form {
                 BoxLayout.encloseX(
                         new Label(immatriculecabinet,"SmallLabel"),
                         new Label(telephone, "SmallLabel"), 
-                        new Label(temps, "SmallLabel"), 
+                       //
                         new Label("-", "SmallThinLabel"), 
                         new Label(nom, "SmallThinLabel"), 
                         new Label("-", "SmallThinLabel"),
@@ -266,21 +329,20 @@ public class CalendarForm extends Form {
                 add(BorderLayout.WEST, FlowLayout.encloseCenter(time));
         
     }
-    
-//-- DON'T EDIT BELOW THIS LINE!!!
+
     private com.codename1.ui.Calendar gui_Calendar_1 = new com.codename1.ui.Calendar();
 
 
-// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
+                         
     private void initGuiBuilderComponents(com.codename1.ui.util.Resources resourceObjectInstance) {
         setLayout(new com.codename1.ui.layouts.GridLayout(2, 1));
         setTitle("");
         setName("CalendarForm");
         addComponent(gui_Calendar_1);
         gui_Calendar_1.setName("Calendar_1");
-    }// </editor-fold>
-
-//-- DON'T EDIT ABOVE THIS LINE!!!
+        gui_Calendar_1.setWidth(20);
+        gui_Calendar_1.setHeight(20);
+    }
 
    
   
@@ -367,8 +429,7 @@ public class CalendarForm extends Form {
         return e;
 
     }
-
-        }
+    }
 
 
 

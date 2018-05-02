@@ -44,8 +44,16 @@ public class Accueil2 extends com.codename1.ui.Form {
           gui_dres.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                 AffichageParc FormProduit = new AffichageParc();
+                 if(str.equals("a:1:{i:0;s:13:\"ROLE_DRESSEUR\";}")){
+                 try {
+                     Dresseur formp = new Dresseur();
+                     formp.show();
+                 } catch (IOException ex) {
+                      }
+             }else{
+             AffichageParc FormProduit = new AffichageParc();
                 FormProduit.getF().show();
+             }
             }}); 
          gui_mag.setIcon(Image.createImage("/storeIcon.png").scaled(70,70));
          gui_mag.addActionListener(new ActionListener() {

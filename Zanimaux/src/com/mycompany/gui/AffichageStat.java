@@ -57,7 +57,8 @@ import javafx.scene.control.TextField;
  * @author macbookpro
  */
 public class AffichageStat 
-{double e = 29;
+{
+String str;
     Container ctn = new Container();
     
     Form f = new Form("Statistique");
@@ -92,6 +93,8 @@ public class AffichageStat
      
 
     public AffichageStat() {
+        UserService u = new UserService();
+           str = SignInForm.connectedUser.getRoles();
     try {
         Toolbar tb = f.getToolbar();
         
@@ -103,9 +106,22 @@ public class AffichageStat
         
         topBar.setUIID("SideCommand");
         tb.addComponentToSideMenu(topBar);
-        tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {});
-        tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  AffichageParc FormProduit = new AffichageParc();
-        FormProduit.getF().show();});
+        tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {try {
+               Accueil2 FormProduit = new Accueil2();
+               FormProduit.show();
+               } catch (IOException ex) {
+                   }
+});
+           tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  if(str.equals("a:1:{i:0;s:13:\"ROLE_DRESSEUR\";}")){
+                 try {
+                     Dresseur formp = new Dresseur();
+                     formp.show();
+                 } catch (IOException ex) {
+                      }
+             }else{
+             AffichageParc FormProduit = new AffichageParc();
+                FormProduit.getF().show();
+             }});
         tb.addCommandToSideMenu("Magasin", Image.createImage("/storeIcon.png").scaled(25,25), e -> {try {
             AffichageMagasin FormProduit = new AffichageMagasin();
             FormProduit.getF().show();

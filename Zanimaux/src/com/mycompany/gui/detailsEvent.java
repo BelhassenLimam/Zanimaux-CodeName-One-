@@ -77,16 +77,7 @@ public class detailsEvent {
             Label partage = new Label("");
             
             FontImage.setMaterialIcon(partage, FontImage.MATERIAL_SHARE);
-            partage.addPointerPressedListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                    
-       String token = "EAACEdEose0cBANx9EJr0CLsNtlWuoCtOkCI3clc8Sli7jhR0B6coZBKunWzamNw4ftp7BDwbBy2ZCuHCZBhYaC7nMiVMoSyORRTpSd9b2uY4iZBl6sunTGrhKTLx4Qug2rKp41kjBowTCNaxjFRJ2oFdLeZA7ZC1ZCXJbyl1IiOz9lFatFHImqxPGKQmZAf03jHFNopnRJvvNT03pGWIJf4kR8gtcyTWA84ZD";
-               FacebookClient fb = new DefaultFacebookClient(token);
-                FacebookType  r = fb.publish("me/feed", FacebookType.class, Parameter.with("message","Evenement "+"\n"+"Type : "+liste.get(0).getType() +"\n"+ "Titre : " + liste.get(0).getTitre()+"\n"+ " aura lieu le " + lbl.getText()+"\n" + " jusqu'au " + lb2.getText() +"\n"+" A : "+ liste.get(0).getLieu()+"\n"+"Qui porte sur :  "+ liste.get(0).getDescription()));
-                   
-            }
-        });
+            
             
             participer.addActionListener(new ActionListener() {
             @Override
@@ -142,12 +133,17 @@ public class detailsEvent {
             }
         });
             
-            
-            
-            
-            
+            Button partageF = new Button("",Image.createImage("/facebookIcon.png").scaled(150,150));
+            partageF.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+String token = "EAACEdEose0cBAK5tfJQiPjjRLwf9AVnuUmnbS0rzIpiO2ykC0yHl2i6EPOuNJczjRXD4dWu8RhJB05uw8SSMBWvnyBPoUDAs5j9XSsHWZC6uohApF7tZAA94h1KPv1kUyFwN5IexeK6jcw5LAG5kiUsMWTUIom07mkooqaGg7nDPdrb8nz2zlIexLFGfoElvFQh3USiQyXf4Q8H9tUxql7FngfuMYZD";
+               FacebookClient fb = new DefaultFacebookClient(token);
+                FacebookType  r = fb.publish("me/feed", FacebookType.class, Parameter.with("message","Evenement "+"\n"+"Type : "+liste.get(0).getType() +"\n"+ "Titre : " + liste.get(0).getTitre()+"\n"+ " aura lieu le " + lbl.getText()+"\n" + " jusqu'au " + lb2.getText() +"\n"+" A : "+ liste.get(0).getLieu()+"\n"+"Qui porte sur :  "+ liste.get(0).getDescription()));
+                                  }
+        });
          
-            ImageViewer iv = new ImageViewer(theme.getImage(liste.get(0).getImageEvt()).scaled(350, 200));
+            ImageViewer iv = new ImageViewer(theme.getImage(liste.get(0).getImageEvt()).scaled(950, 350));
             SpanLabel t =new SpanLabel("Type : "+liste.get(0).getType()+"\n"+"Lieu : "+liste.get(0).getLieu()+"\n"+"Description :"+liste.get(0).getDescription());
          
            int nbPlace=liste.get(0).getNbPlace();
@@ -202,7 +198,7 @@ public class detailsEvent {
             c.add(lbl);
             c.add(lb2);
             c.add(t);
-            c.add(partage);
+            c.add(partageF);
             cButton.add(participer);
             cButton.add(annuler);
             cButton.add(plein);

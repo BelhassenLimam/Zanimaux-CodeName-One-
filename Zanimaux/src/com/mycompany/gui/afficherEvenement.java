@@ -10,7 +10,10 @@ import com.mycompany.services.EvenementService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.MultiButton;
 import com.codename1.components.SpanLabel;
+import com.codename1.io.ConnectionRequest;
 import com.codename1.io.Log;
+import com.codename1.io.NetworkEvent;
+import com.codename1.io.NetworkManager;
 import com.codename1.l10n.SimpleDateFormat;
 import com.codename1.ui.Button;
 import com.codename1.ui.Command;
@@ -24,10 +27,12 @@ import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.events.ActionEvent;
 import com.codename1.ui.events.ActionListener;
+import com.codename1.ui.geom.Dimension;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import static com.mycompany.gui.SignInForm.connectedUser;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -51,7 +56,6 @@ public class afficherEvenement {
      int nbPages = 0;
      int nbEl=3;
      int IndexPages = 0;
-    TextField recherche;
     
     
       public afficherEvenement() throws IOException{ 
@@ -75,48 +79,9 @@ public class afficherEvenement {
          };
         f.getToolbar().addCommandToLeftBar(cmd);
         
-         recherche=new TextField();
-        // recherche.setVisible(false);
+        
        
-            Image loupe= Image.createImage("/loupe.png").scaled(60, 60);
-            f.getToolbar().addSearchCommand(e -> {
-    String text = (String)e.getSource();
-    if(text == null || text.length() == 0) {
-        // clear search
-        for(Component cmp : f.getContentPane()) {
-            cmp.setHidden(false);
-            cmp.setVisible(true);
-        }
-        f.getContentPane().animateLayout(150);
-    } else {
-        text = text.toLowerCase();
-        for(Component cmp :f.getContentPane()) {
-            MultiButton mb = (MultiButton)cmp;
-            String line1 = mb.getTextLine1();
-            String line2 = mb.getTextLine2();
-            boolean show = line1 != null && line1.toLowerCase().indexOf(text) > -1 ||
-                    line2 != null && line2.toLowerCase().indexOf(text) > -1;
-            mb.setHidden(!show);
-            mb.setVisible(show);
-        }
-       f.getContentPane().animateLayout(150);
-    }
-}, 4);
-
-            
-            
-           /*  Command cmd1 = new Command("", loupe){
-             @Override
-             public void actionPerformed(ActionEvent evt) {
-                 
-                  recherche.setVisible(true);
-                 
-             }
-         };
-        f.getToolbar().addCommandToRightBar(cmd1);
-                  */
-                  
-               
+                     
         EvenementService es=new EvenementService();
         ArrayList<Evenement> lis=es.getAllEvent();
         
@@ -200,12 +165,14 @@ public class afficherEvenement {
         {
              if (i <= (0 * nbEl + (nbEl - 1))){
             conth = new Container(BoxLayout.x());
-            ImageViewer imgv=new ImageViewer();
-            imgv.setImage(theme.getImage(lis.get(i).getImageEvt()).scaled(300, 300));
-            Image img= imgv.getImage();
+            ImageViewer iv = new ImageViewer(theme.getImage(lis.get(i).getImageEvt()).scaled(100, 100));
+            Image img= iv.getImage();
           
             format.applyPattern("dd/MM/yyyy");
             MultiButton evt = new MultiButton(lis.get(i).getTitre());
+              Style s1 =evt.getUnselectedStyle();
+                s1.setBgColor(0xff000);
+       // evt.setPreferredSize(new Dimension(1000,500));
             
             evt.setIcon(img);
             evt.setTextLine2(format.format(lis.get(i).getDateDebut())+" - "+ format.format(lis.get(i).getDateFin()));
@@ -236,7 +203,7 @@ public class afficherEvenement {
         contG.add(contv);
         contG.add(contPage);
        f.add(contG);
-       f.add(recherche);
+       
         
          }
 

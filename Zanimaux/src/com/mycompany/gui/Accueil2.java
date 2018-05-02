@@ -103,17 +103,14 @@ public class Accueil2 extends com.codename1.ui.Form {
          Toolbar tb = getToolbar();
          
          Container topBar = BorderLayout.centerAbsolute(new Label());
-         
-         Label t = new Label("Menu");
-         t.getUnselectedStyle().setBgColor(0x3498D1);
+         Label a = new Label("Menu");
+        a.getUnselectedStyle().setBgColor(0x3498D1);
 
-        t.getUnselectedStyle().setFgColor(0xFFFFFF);
-         topBar.add(BorderLayout.CENTER, t);
-         topBar.setUIID("sideCommand");
+        a.getUnselectedStyle().setFgColor(0xFFFFFF);
+         topBar.add(BorderLayout.CENTER, a);
+         topBar.setUIID("SideCommand");
          tb.addComponentToSideMenu(topBar);
-         tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {}); 
-         tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  AffichageParc FormProduit = new AffichageParc();
-         FormProduit.getF().show();});
+       
          tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  
              if(str.equals("a:1:{i:0;s:13:\"ROLE_DRESSEUR\";}")){
                  try {

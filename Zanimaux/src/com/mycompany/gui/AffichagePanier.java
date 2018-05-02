@@ -34,6 +34,7 @@ import com.mycompany.services.ProduitService;
 import java.io.IOException;
 import java.util.ArrayList;
 
+
 /**
  *
  * @author macbookpro
@@ -56,13 +57,14 @@ public class AffichagePanier
         double somme = lis.get(0).getSomme();
         System.out.println(somme);
         Label l = new Label("PANIER");
+        f.add(l);
         for(int i =0;i<cp.size();i++)
 
         {   Container cH= new Container(new BoxLayout(BoxLayout.X_AXIS));
             Container cV= new Container(new BoxLayout(BoxLayout.Y_AXIS));
             TextField quantite= new TextField(String.valueOf(cp.get(i).getQuantite()));
             Style s = quantite.getAllStyles();
-            Dimension d = new Dimension(40, 20);
+            Dimension d = new Dimension(20, 20);
             quantite.setPreferredSize(d);
             Button plus= new Button("+");
             Button minus= new Button("-");
@@ -116,6 +118,8 @@ public class AffichagePanier
             @Override
             public void actionPerformed(ActionEvent evt) {
             ms.suprimerProduitPanier(idCP, Integer.parseInt(quantite.getText()), px);
+            f.show();
+            
 
                 
             }
@@ -126,19 +130,16 @@ public class AffichagePanier
         passerCommande.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                ms.passerCommande();
+                
+                    ms.passerCommande();
+                    try {
+                    AffichageMagasin m = new AffichageMagasin();
+                    m.getF().show();
+                } catch (IOException ex) {
+                }
             }
         });
-                Command cmd = new Command("Back",Image.createImage("/left-arrow(1).png")){
-                    @Override
-                    public void actionPerformed(ActionEvent evt) {
-                        try {
-                            AffichageMagasin ff=new AffichageMagasin();
-                            ff.getF().showBack();
-                        } catch (IOException ex) {
-                        }
-                    }
-                };
+      
              Command cmd1 = new Command("Back",Image.createImage("/left-arrow_1.png")){
              @Override
              public void actionPerformed(ActionEvent evt) {

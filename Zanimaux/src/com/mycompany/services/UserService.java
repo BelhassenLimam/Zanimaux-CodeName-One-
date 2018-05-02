@@ -41,9 +41,9 @@ public class UserService {
                         m = new User();
                         m.setCin(obj.get("cin").toString());
                         m.setRoles(obj.get("roles").toString());
-                        m.setRoles(obj.get("email").toString());   
-                        m.setRoles(obj.get("nom").toString());   
-                        m.setRoles(obj.get("prenom").toString());   
+                        m.setEmail(obj.get("email").toString());   
+                        m.setNom(obj.get("nom").toString());   
+                        m.setPrenom(obj.get("prenom").toString());   
                         m.setTelephone(obj.get("telephone").toString());
 
                        

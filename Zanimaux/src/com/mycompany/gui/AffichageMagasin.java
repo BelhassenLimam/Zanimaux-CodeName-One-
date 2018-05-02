@@ -57,7 +57,6 @@ public class AffichageMagasin
          topBar.add(BorderLayout.CENTER, a);
          topBar.setUIID("SideCommand");
          tb.addComponentToSideMenu(topBar);
-         tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {}); 
          tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  AffichageParc FormProduit = new AffichageParc();
          FormProduit.getF().show();});
          tb.addCommandToSideMenu("Magasin", Image.createImage("/storeIcon.png").scaled(25,25), e -> {try {

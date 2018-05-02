@@ -1,11 +1,10 @@
 <?php
    //open connection to mysql db
-    $connection = mysqli_connect("localhost","root","","nouvelle") or die("Error " . mysqli_error($connection));
+    $connection = mysqli_connect("localhost","root","root","zanimauxfinal") or die("Error " . mysqli_error($connection));
 mysqli_set_charset($connection, "utf8");
     //fetch table rows from mysql db
-
-
-    $sql = "select id from notification_rdv ORDER BY id DESC LIMIT 1";
+$cinDresseur= $_GET['cinDresseur'];
+    $sql = "select * from parc where (cinDresseur = '$cinDresseur') ";
     $result = mysqli_query($connection, $sql) or die("Error in Selecting " . mysqli_error($connection));
 
     //create an array

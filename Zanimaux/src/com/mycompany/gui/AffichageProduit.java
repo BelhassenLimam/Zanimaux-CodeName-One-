@@ -11,8 +11,10 @@ import com.mycompany.services.PanierService;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
+import com.codename1.ui.Command;
 import com.codename1.ui.Container;
 import com.codename1.ui.Form;
+import com.codename1.ui.Image;
 import com.codename1.ui.Label;
 import com.codename1.ui.Stroke;
 import com.codename1.ui.events.ActionEvent;
@@ -21,7 +23,9 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import java.io.IOException;
 import java.util.ArrayList;
+
 
 /**
  *
@@ -33,7 +37,7 @@ public class AffichageProduit {
    
     
     
-    public AffichageProduit(ArrayList<Produit>list) 
+    public AffichageProduit(ArrayList<Produit>list) throws IOException 
     { 
         theme = UIManager.initFirstTheme("/theme");
 
@@ -68,6 +72,17 @@ public class AffichageProduit {
         });
       
         }
+            Command cmd = new Command("Back",Image.createImage("/left-arrow_1.png")){
+             @Override
+             public void actionPerformed(ActionEvent evt) {
+                 try {
+                     AffichageMagasin ff=new AffichageMagasin();
+                     ff.getF().showBack();
+                 } catch (IOException ex) {
+                 }
+             }
+         };
+         f.getToolbar().addCommandToLeftBar(cmd);
     }
 
     public Form getF() {

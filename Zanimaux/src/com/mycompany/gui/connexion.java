@@ -50,11 +50,13 @@ import java.util.List;
 public class connexion {
     private Resources theme;
     Form f;
-    Database db=Database.openOrCreate("Mobile");
+    Database db=Database.openOrCreate("MOB");
    
     public connexion() throws IOException
     {
         theme = UIManager.initFirstTheme("/theme");
+//        Resources css = Resources.openLayered("/boutton.css");
+//        UIManager.getInstance().addThemeProps(css.getTheme(css.getThemeResourceNames()[0]));
         f = new Form( new FlowLayout(CENTER,TOP));  
         f.getToolbar().setVisible(false);
         Image icon = Image.createImage("/user.png");
@@ -96,7 +98,9 @@ public class connexion {
         Style s1 =cbox1.getUnselectedStyle();
         s1.setBgColor(0xff);
         cbox1.setPreferredSize(new Dimension(220,40));
-        Button connexion= new Button("se connecter"); 
+        Button connexion=new Button("se connecter"); 
+       connexion.setUIID("Button");
+       cbox1.setUIID("Button");
         connexion.setPreferredSize(new Dimension(220,40));
         ImageViewer iv = new ImageViewer(Image.createImage("/lock.png"));
         
@@ -159,7 +163,6 @@ public class connexion {
                              boolean exist=false;
                              Cursor c = db.executeQuery("Select * from user");
                                 while((c.next())&& (exist==false)){
-                                    System.out.println(c.getRow().getString(1));
                                     if(c.getRow().getString(0)==username.getText())
                                     {
                                         exist=true;

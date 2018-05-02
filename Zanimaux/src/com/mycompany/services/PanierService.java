@@ -33,7 +33,7 @@ public class PanierService {
     
     public void ajoutAuPanier(Produit p) {
         ConnectionRequest con = new ConnectionRequest();
-        String Url = "http://localhost/zanimauxFinal/web/app_dev.php/api/ajoutProdPanier?cin=" +connectedUser.getCin()+ "&idProduit=" + p.getIdProduit()+"";
+        String Url = "http://localhost:8888/zanimauxWeb/web/app_dev.php/api/ajoutProdPanier?cin=" +connectedUser.getCin()+ "&idProduit=" + p.getIdProduit()+"";
         con.setUrl(Url);
 
         
@@ -50,7 +50,7 @@ public class PanierService {
           public ArrayList<Panier> getPanier(){
         ArrayList<Panier> listPanier = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost/zanimauxFinal/web/app_dev.php/api/affichePanier/"+connectedUser.getCin());
+        con.setUrl("http://localhost:8888/zanimauxWeb/web/app_dev.php/api/affichePanier/"+connectedUser.getCin());
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -87,7 +87,7 @@ public class PanierService {
           public ArrayList<ContenuPanier> getContenuPanier(){
         ArrayList<ContenuPanier> listcontenuPanier = new ArrayList<>();
         ConnectionRequest con = new ConnectionRequest();
-        con.setUrl("http://localhost/WebServiceMobile/afficheContenuPanier.php?cin="+connectedUser.getCin());
+        con.setUrl("http://localhost:8888/MobileServiceWeb/afficheContenuPanier.php?cin="+connectedUser.getCin());
         con.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
@@ -105,7 +105,9 @@ public class PanierService {
                        float id=Float.parseFloat(obj.get("idProduit").toString());
                         float qt = Float.parseFloat(obj.get("quantite").toString());
                         //float cmd = Float.parseFloat(obj.get("commande").toString());
+                        float idcp=Float.parseFloat(obj.get("idContenuPanier").toString());
                         ContenuPanier p = new ContenuPanier();
+                        p.setIdContenuPanier((int)idcp);
                         p.setQuantite((int)qt);
                         p.setIdProduit((int)id);
                         
@@ -127,7 +129,7 @@ public class PanierService {
          /* public void passerCommande() {
         
              ConnectionRequest con = new ConnectionRequest();   
-             String Url = "http://localhost/zanimauxFinal/web/app_dev.php/api/passeCommande?cin=" +connectedUser.getCin();
+             String Url = "http://localhost:8888/zanimauxWeb/web/app_dev.php/api/passeCommande?cin=" +connectedUser.getCin();
           }
 */
     public void modifierQuantite(int idCP, int idP, int i, double prix,String cin) {
@@ -169,12 +171,9 @@ public class PanierService {
 
              con.setUrl(Url);
               NetworkManager.getInstance().addToQueueAndWait(con);
-              Message m = new Message("Body of message");
+              Message m = new Message("Bonjour "+ connectedUser.getNom()+" "+connectedUser.getPrenom()+",\n Votre commande a été passé avec succés.\n Cordialement,");
               
-              //boolean success = m.sendMessageViaCloudSync("zanimo.esprit@gmail.com",  connectedUser.getEmail(), "", "Message Subject",
-                          //  "Check out Codename One at https://www.codenameone.com/");
-              Display.getInstance().sendMessage(new String[] {connectedUser.getEmail()}, "Subject of message", m);
-             // System.out.println(success);
+              Display.getInstance().sendMessage(new String[] {connectedUser.getEmail()}, "COMMANDE ZANIMAUX", m);
              
     }
 

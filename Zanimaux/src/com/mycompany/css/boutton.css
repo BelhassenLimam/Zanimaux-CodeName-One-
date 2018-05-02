@@ -1,0 +1,5 @@
+Round1InnerShadow {
+    cn1-derive: Round1;
+    box-shadow: inset 0px 0px 21pt 10pt rgba(61,59,61,0.48);
+    border: 1pt solid transparent;
+}

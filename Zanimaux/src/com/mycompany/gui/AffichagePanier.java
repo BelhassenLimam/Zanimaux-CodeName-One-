@@ -9,6 +9,7 @@ import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
 import com.codename1.io.Log;
 import com.codename1.ui.Button;
+import com.codename1.ui.Command;
 import com.codename1.ui.Container;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
@@ -47,12 +48,6 @@ public class AffichagePanier
     public AffichagePanier() throws IOException{ 
         theme = UIManager.initFirstTheme("/theme");
         f = new Form(new BoxLayout(BoxLayout.Y_AXIS));  
-        
-            
-            Image logo= Image.createImage("/logo.png").scaled(50, 50);
-       
-           
-        f.getToolbar().addCommandToLeftBar("", logo, (e) -> Log.p("Clicked"));
         Style stitle = f.getToolbar().getAllStyles();
         stitle.setBgColor(0xff);
         PanierService ms=new PanierService();
@@ -134,9 +129,31 @@ public class AffichagePanier
                 ms.passerCommande();
             }
         });
-
+                Command cmd = new Command("Back",Image.createImage("/left-arrow(1).png")){
+                    @Override
+                    public void actionPerformed(ActionEvent evt) {
+                        try {
+                            AffichageMagasin ff=new AffichageMagasin();
+                            ff.getF().showBack();
+                        } catch (IOException ex) {
+                        }
+                    }
+                };
+             Command cmd1 = new Command("Back",Image.createImage("/left-arrow_1.png")){
+             @Override
+             public void actionPerformed(ActionEvent evt) {
+                 try {
+                     AffichageMagasin ff=new AffichageMagasin();
+                     ff.getF().showBack();
+                 } catch (IOException ex) {
+                 }
+             }
+         };
+         f.getToolbar().addCommandToLeftBar(cmd1);
+                        
+}
         
-        }
+        
     
 
 

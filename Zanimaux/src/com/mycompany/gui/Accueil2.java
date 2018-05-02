@@ -15,6 +15,7 @@ import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.util.Resources;
+import static com.mycompany.gui.SignInForm.connectedUser;
 import java.io.IOException;
 
 
@@ -90,16 +91,17 @@ public class Accueil2 extends com.codename1.ui.Form {
          Toolbar tb = getToolbar();
          
          Container topBar = BorderLayout.centerAbsolute(new Label());
-         Label t = new Label("Menu");
-t.getUnselectedStyle().setFgColor(0xffffff);
-
-         topBar.add(BorderLayout.CENTER, t); 
          
-         topBar.setUIID("SideCommand");
+         Label t = new Label("Menu");
+         t.getUnselectedStyle().setBgColor(0x3498D1);
+
+        t.getUnselectedStyle().setFgColor(0xFFFFFF);
+         topBar.add(BorderLayout.CENTER, t);
+         topBar.setUIID("sideCommand");
          tb.addComponentToSideMenu(topBar);
          tb.addMaterialCommandToSideMenu("Accueil", FontImage.MATERIAL_HOME, e -> {}); 
          tb.addCommandToSideMenu("Parc", Image.createImage("/dressage.png").scaled(25,25), e -> {  AffichageParc FormProduit = new AffichageParc();
-                FormProduit.getF().show();});
+         FormProduit.getF().show();});
          tb.addCommandToSideMenu("Magasin", Image.createImage("/storeIcon.png").scaled(25,25), e -> {try {
              AffichageMagasin FormProduit = new AffichageMagasin();
              FormProduit.getF().show();
@@ -128,8 +130,20 @@ t.getUnselectedStyle().setFgColor(0xffffff);
             } catch (IOException ex) {
                 
             }
-                });
+     
+         });
+            Image logout= Image.createImage("/logout.png");
+       
+           
+        tb.addCommandToRightBar("", logout, (e) -> {
+            connexion h=null;
+            try {
+                h = new connexion();
+            } catch (IOException ex) {
+            }
+          h.getF().show();});
     }
+    
     
     public Accueil2(com.codename1.ui.util.Resources resourceObjectInstance) {
         initGuiBuilderComponents(resourceObjectInstance);
